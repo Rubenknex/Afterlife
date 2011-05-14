@@ -1,1 +1,3 @@
-Hello World! :D
+Afterlife is a 2d top-down zombie shooter game which is still in development. It will eventually have a mission/story mode and a survival mode.
+
+In order to run the game you must copy the 'data' folder into the Debug or Release folder.
