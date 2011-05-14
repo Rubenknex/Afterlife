@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<ParticleSystem>
+    <Texture>data/Images/Particles/particle_puff_2.png</Texture>
+    <Color R="50" G="50" B="50" />
+    <DrawOrder>0</DrawOrder>
+    <MinSpeed>10</MinSpeed>
+    <MaxSpeed>50</MaxSpeed>
+    <MinAngle>0</MinAngle>
+    <MaxAngle>360</MaxAngle>
+    <MinScale>0.7</MinScale>
+    <MaxScale>0.9</MaxScale>
+    <MinRotation>0</MinRotation>
+    <MaxRotation>360</MaxRotation>
+    <MinLifespan>1.2</MinLifespan>
+    <MaxLifespan>1.3</MaxLifespan>
+    <MinParticles>7</MinParticles>
+    <MaxParticles>10</MaxParticles>
+</ParticleSystem>

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<Weapon>
+    <Name>AK-47</Name>
+    <Damage>30</Damage>
+    <RPM>600</RPM>
+    <MagCapacity>30</MagCapacity>
+    <ReloadDelay>1.0</ReloadDelay>
+    <Image>data/Images/Weapons/ak47.png</Image>
+    <FireSound>data/Sounds/Weapons/ak47_fire.wav</FireSound>
+    <ReloadSound>data/Sounds/Weapons/ak47_reload.wav</ReloadSound>
+</Weapon>

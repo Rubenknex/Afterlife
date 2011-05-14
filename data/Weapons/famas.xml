@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<Weapon>
+    <Name>FAMAS</Name>
+    <Damage>25</Damage>
+    <RPM>900</RPM>
+    <MagCapacity>30</MagCapacity>
+    <ReloadDelay>1.0</ReloadDelay>
+    <Image>data/Images/Weapons/famas.png</Image>
+    <FireSound>data/Sounds/Weapons/famas_fire.wav</FireSound>
+    <ReloadSound>data/Sounds/Weapons/famas_reload.wav</ReloadSound>
+</Weapon>

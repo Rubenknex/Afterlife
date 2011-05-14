@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<ParticleSystem>
+    <Texture>data/Images/Particles/particle_round.png</Texture>
+    <Color R="119" G="119" B="119" />
+    <DrawOrder>0</DrawOrder>
+    <MinSpeed>20</MinSpeed>
+    <MaxSpeed>30</MaxSpeed>
+    <MinAngle>0</MinAngle>
+    <MaxAngle>360</MaxAngle>
+    <MinScale>0.05</MinScale>
+    <MaxScale>0.1</MaxScale>
+    <MinRotation>0</MinRotation>
+    <MaxRotation>0</MaxRotation>
+    <MinLifespan>0.2</MinLifespan>
+    <MaxLifespan>0.3</MaxLifespan>
+    <MinParticles>1</MinParticles>
+    <MaxParticles>2</MaxParticles>
+</ParticleSystem>

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<Weapon>
+    <Name>Uzi</Name>
+    <Damage>20</Damage>
+    <RPM>600</RPM>
+    <MagCapacity>32</MagCapacity>
+    <ReloadDelay>1.0</ReloadDelay>
+    <Image>data/Images/Weapons/uzi.png</Image>
+    <FireSound>data/Sounds/Weapons/uzi_fire.wav</FireSound>
+    <ReloadSound>data/Sounds/Weapons/famas_reload.wav</ReloadSound>
+</Weapon>
