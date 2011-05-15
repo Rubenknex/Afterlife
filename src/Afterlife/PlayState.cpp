@@ -11,10 +11,16 @@ namespace al
         m_UI(new UI(m_World))
     {
         setWorld(m_World);
+        g_ScriptManager.initialize();
+        m_TestScript = new Script(&g_ScriptManager, "Test");
+        m_TestScript->loadSection("data/Scripts/test.as");
+        m_TestScript->build();
+        m_TestScript->executeFunction("main");
     }
 
     PlayState::~PlayState()
     {
+        delete m_TestScript;
         delete m_World;
     }
 

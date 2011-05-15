@@ -24,7 +24,7 @@ namespace al
 
         m_StateManager.pushState(new PlayState(&m_Window));
 
-        g_ScriptManager.initialize();
+        //g_ScriptManager.initialize();
     }
 
     void Game::update()

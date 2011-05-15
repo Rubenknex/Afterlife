@@ -8,11 +8,11 @@
 #include "../../AngelScript/scriptmath.h"
 #include "../../AngelScript/scriptstdstring.h"
 
-#include "ScriptInterface.h"
+//#include "ScriptInterface.h"
 
 namespace al
 {
-    //class ScriptInterface;
+    class ScriptInterface;
 
     class ScriptManager
     {
@@ -33,7 +33,7 @@ namespace al
             asIScriptEngine* m_Engine;
             asIScriptContext* m_Context;
 
-            ScriptInterface m_Interface;
+            ScriptInterface* m_Interface;
     };
 
     extern ScriptManager g_ScriptManager;

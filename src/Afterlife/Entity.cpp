@@ -7,6 +7,7 @@ namespace al
         m_Id(-1),
         mRadius(0.0f),
         mHealth(0.0f),
+        m_Speed(0.0f),
         mDrawOrder(0),
         mAlive(true),
         mVisible(true),
@@ -102,6 +103,16 @@ namespace al
     void Entity::onDeath()
     {
         mAlive = false;
+    }
+
+    float Entity::getSpeed()
+    {
+        return m_Speed;
+    }
+
+    void Entity::setSpeed(float speed)
+    {
+        m_Speed = speed;
     }
 
     bool Entity::isCollidable()

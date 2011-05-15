@@ -8,6 +8,7 @@
 
 #include "GameState.h"
 #include "InputState.h"
+#include "Scripting/Script.h"
 #include "UI.h"
 
 using boost::shared_ptr;
@@ -38,6 +39,8 @@ namespace al
             UI* m_UI;
 
             World* m_World;
+
+            Script* m_TestScript;
     };
 }
 

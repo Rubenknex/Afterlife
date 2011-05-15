@@ -1,16 +1,21 @@
 #include "ScriptManager.h"
 
+#include "ScriptInterface.h"
+
 namespace al
 {
     ScriptManager g_ScriptManager;
 
-    ScriptManager::ScriptManager()
+    ScriptManager::ScriptManager() :
+        m_Interface(new ScriptInterface())
     {
 
     }
 
     ScriptManager::~ScriptManager()
     {
+        delete m_Interface;
+
         m_Context->Release();
         m_Engine->Release();
     }
@@ -23,7 +28,7 @@ namespace al
 
         RegisterScriptMath(m_Engine);
         RegisterStdString(m_Engine);
-        m_Interface.registerAll(m_Engine);
+        m_Interface->registerAll(m_Engine);
 
         m_Context = m_Engine->CreateContext();
     }

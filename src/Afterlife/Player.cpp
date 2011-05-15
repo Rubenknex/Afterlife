@@ -16,6 +16,7 @@ namespace al
         mWeapon->load("data/Weapons/ak47.xml");
 
         SetPosition(150.0f, 150.0f);
+        setSpeed(3.0f);
         SetImage(*IM.GetResource("data/Images/player_gun.png"));
         SetOrigin(25.5f, 30);
         setType(Entity::PLAYER);
@@ -98,7 +99,7 @@ namespace al
         if (movement.x != 0.0f || movement.y != 0.0f)
         {
             movement = vector2fNormalize(movement);
-            Move(movement * 2.0f);
+            Move(movement * getSpeed());
         }
 
         if (g_Input.isMouseButtonDown(sf::Mouse::Left))

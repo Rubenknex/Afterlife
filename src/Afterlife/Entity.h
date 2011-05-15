@@ -55,6 +55,9 @@ namespace al
             void setAlive(bool alive);
             virtual void onDeath();
 
+            float getSpeed();
+            void setSpeed(float speed);
+
             bool isCollidable();
             void setCollidable(bool collidable);
 
@@ -72,6 +75,7 @@ namespace al
             EntityType mType;
             float mRadius;
             float mHealth;
+            float m_Speed;
             int mDrawOrder;
             bool mAlive;
             bool mCollidable;

@@ -17,7 +17,6 @@
 #include "ResourceManager.h"
 #include "InputState.h"
 #include "Level.h"
-//#include "Weapon.h"
 
 using boost::shared_ptr;
 
