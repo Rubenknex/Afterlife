@@ -8,7 +8,7 @@
     <MinAngle>0</MinAngle>
     <MaxAngle>360</MaxAngle>
     <MinScale>0.7</MinScale>
-    <MaxScale>0.9</MaxScale>
+    <MaxScale>1.5</MaxScale>
     <MinRotation>0</MinRotation>
     <MaxRotation>360</MaxRotation>
     <MinLifespan>1.2</MinLifespan>
