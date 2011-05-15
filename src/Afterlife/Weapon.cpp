@@ -1,5 +1,7 @@
 #include "Weapon.h"
 
+#include "../TinyXML/tinyxml.h"
+
 #include "World.h"
 
 namespace al

@@ -9,7 +9,6 @@
 #include "GameState.h"
 #include "InputState.h"
 #include "UI.h"
-//#include "World.h"
 
 using boost::shared_ptr;
 

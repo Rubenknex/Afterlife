@@ -4,7 +4,6 @@
 #include "LightManager.h"
 #include "ParticleManager.h"
 #include "Player.h"
-#include "ProjectileManager.h"
 #include "Level.h"
 
 namespace al

@@ -1,5 +1,7 @@
 #include "Game.h"
 
+#include "Scripting/ScriptManager.h"
+
 namespace al
 {
     sf::RenderWindow* g_Window;
@@ -21,6 +23,8 @@ namespace al
         g_Window = &m_Window;
 
         m_StateManager.pushState(new PlayState(&m_Window));
+
+        g_ScriptManager.initialize();
     }
 
     void Game::update()

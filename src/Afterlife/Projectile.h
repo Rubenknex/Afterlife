@@ -18,7 +18,7 @@ namespace al
             Projectile(World* world, const sf::Vector2f pos, float angle, float speed, float damage);
             ~Projectile();
 
-            void onCollision(boost::shared_ptr<Entity> other);
+            bool onCollision(boost::shared_ptr<Entity> other);
 
             void update(float dt);
             void draw(sf::RenderTarget& target);

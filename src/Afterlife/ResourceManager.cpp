@@ -51,4 +51,18 @@ namespace al
 
         return sound;
     }
+
+    MusicManager MM;
+
+    shared_ptr<sf::Music> MusicManager::load(const std::string& id)
+    {
+        shared_ptr<sf::Music> music(new sf::Music());
+
+        if (!music->OpenFromFile(id))
+        {
+            std::cout << "Failed to load: " << id << std::endl;
+        }
+
+        return music;
+    }
 }

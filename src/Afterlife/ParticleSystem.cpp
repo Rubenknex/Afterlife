@@ -70,7 +70,7 @@ namespace al
         }
         else
         {
-            std::cout << "Could not load ParticleSystem: " << filename << std::endl;
+            std::cout << "Failed to load ParticleSystem: " << filename << std::endl;
         }
     }
 

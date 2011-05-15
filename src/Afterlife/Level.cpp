@@ -1,5 +1,7 @@
 #include "Level.h"
 
+#include "../TinyXML/tinyxml.h"
+
 namespace al
 {
     Level::Level() :

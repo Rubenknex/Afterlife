@@ -7,10 +7,9 @@
 #include <string>
 #include <vector>
 
-#include "../TinyXML/tinyxml.h"
-
 #include "Collision.h"
 #include "Functions.h"
+#include "Light.h"
 #include "ResourceManager.h"
 #include "Tile.h"
 
@@ -70,6 +69,9 @@ namespace al
             std::vector<std::vector<Tile> > mTiles;
             std::string mTilesetFilename;
             sf::Sprite mTileset;
+
+            std::vector<boost::shared_ptr<Light> > m_Lights;
+
             int mWidth;
             int mHeight;
             int mTileWidth;

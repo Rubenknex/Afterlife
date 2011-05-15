@@ -9,6 +9,7 @@ namespace al
     Projectile::Projectile(World* world, const sf::Vector2f pos, float angle, float speed, float damage) :
         Entity(world)
     {
+        setType(Entity::PROJECTILE);
         setCollidable(true);
         setRadius(1.0f);
 
@@ -25,16 +26,21 @@ namespace al
 
     }
 
-    void Projectile::onCollision(boost::shared_ptr<Entity> other)
+    bool Projectile::onCollision(boost::shared_ptr<Entity> other)
     {
-        if (other->getType() == Entity::ZOMBIE)
+        switch (other->getType())
         {
-            other->changeHealth(-mDamage);
+            case Entity::PLAYER:
 
-            m_World->getParticleManager()->fireSystem("blood", GetPosition());
+                return false;
+            case Entity::ZOMBIE:
+                other->changeHealth(-mDamage);
+                setAlive(false);
 
-            setAlive(false);
+                return false;
         }
+
+        return false;
     }
 
     void Projectile::update(float dt)

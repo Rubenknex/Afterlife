@@ -45,12 +45,10 @@ namespace al
 
                     diff = vector2fNormalize(diff) * (overlap / 2);
 
-                    e1->Move(-diff);
-                    e2->Move(diff);
-
-                    e1->onCollision(e2);
-                    //printVector2(e2->GetPosition());
-                    e2->onCollision(e1);
+                    if (e1->onCollision(e2))
+                        e1->Move(-diff);
+                    if (e2->onCollision(e1))
+                        e2->Move(diff);
                 }
             }
         }

@@ -21,7 +21,10 @@ namespace al
 
     void Entity::draw(sf::RenderTarget& target) { }
 
-    void Entity::onCollision(boost::shared_ptr<Entity> other) { }
+    bool Entity::onCollision(boost::shared_ptr<Entity> other)
+    {
+        return false;
+    }
 
     World* Entity::getWorld()
     {

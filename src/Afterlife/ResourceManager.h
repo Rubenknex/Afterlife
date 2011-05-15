@@ -109,6 +109,14 @@ namespace al
     };
 
     extern SoundManager SM;
+
+    class MusicManager : public ResourceManager<sf::Music>
+    {
+        public:
+            virtual shared_ptr<sf::Music> load(const std::string& id);
+    };
+
+    extern MusicManager MM;
 }
 
 #endif // RESOURCEMANAGER_H_INCLUDED

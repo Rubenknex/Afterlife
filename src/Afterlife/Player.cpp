@@ -183,6 +183,19 @@ namespace al
         //window.Draw(circle);
     }
 
+    bool Player::onCollision(boost::shared_ptr<Entity> other)
+    {
+        switch (other->getType())
+        {
+            case Entity::PROJECTILE:
+                return false;
+            case Entity::ZOMBIE:
+                return true;
+        }
+
+        return false;
+    }
+
     Weapon* Player::getWeapon()
     {
         return mWeapon;

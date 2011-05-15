@@ -1,5 +1,6 @@
 #include "PlayState.h"
 
+#include "Scripting/ScriptInterface.h"
 #include "World.h"
 
 namespace al
@@ -9,7 +10,7 @@ namespace al
         m_World(new World()),
         m_UI(new UI(m_World))
     {
-
+        setWorld(m_World);
     }
 
     PlayState::~PlayState()

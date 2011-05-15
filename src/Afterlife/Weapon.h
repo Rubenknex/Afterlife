@@ -10,8 +10,6 @@
 #include <iostream>
 #include <cmath>
 
-#include "../TinyXML/tinyxml.h"
-
 #include "EntityFactory.h"
 #include "Functions.h"
 #include "EntityManager.h"

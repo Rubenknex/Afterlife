@@ -29,7 +29,9 @@ namespace al
             virtual void update(float dt);
             virtual void draw(sf::RenderTarget& target);
 
-            virtual void onCollision(boost::shared_ptr<Entity> other);
+            /// Performs any actions that are needed when an entity collides with another one.
+            /// Returns a bool wether to correct the entities position or not.
+            virtual bool onCollision(boost::shared_ptr<Entity> other);
 
             World* getWorld();
 

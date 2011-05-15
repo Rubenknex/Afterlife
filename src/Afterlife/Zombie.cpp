@@ -1,6 +1,7 @@
 #include "Zombie.h"
 
 #include "EntityManager.h"
+#include "ParticleManager.h"
 #include "World.h"
 
 namespace al
@@ -154,6 +155,24 @@ namespace al
 
         //sf::Shape circle = sf::Shape::Circle(GetPosition(), getRadius(), sf::Color::Red);
         //window.Draw(circle);
+    }
+
+    bool Zombie::onCollision(boost::shared_ptr<Entity> other)
+    {
+        switch (other->getType())
+        {
+            case Entity::PLAYER:
+                return true;
+            case Entity::PROJECTILE:
+                //std::cout << "Blood!" << std::endl;
+                m_World->getParticleManager()->fireSystem("blood", GetPosition() + sf::Vector2f(sf::Randomizer::Random(-15.0f, 15.0f), sf::Randomizer::Random(-15.0f, 15.0f)));
+
+                return false;
+            case Entity::ZOMBIE:
+                return true;
+        }
+
+        return false;
     }
 
     void Zombie::onDeath()

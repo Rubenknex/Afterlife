@@ -41,6 +41,8 @@ namespace al
             void update(float dt);
             void draw(sf::RenderTarget& target);
 
+            bool onCollision(boost::shared_ptr<Entity> other);
+
             void onDeath();
 
             void setState(ZombieState state);
