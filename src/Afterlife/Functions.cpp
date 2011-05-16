@@ -88,6 +88,11 @@ namespace al
         return xDist * xDist + yDist * yDist;
     }
 
+    std::string randomString()
+    {
+        return boost::lexical_cast<std::string>(sf::Randomizer::Random(0, 1000000));
+    }
+
     float degrees(float radians)
     {
         return radians * (180 / PI);

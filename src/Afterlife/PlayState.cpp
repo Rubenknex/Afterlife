@@ -15,7 +15,6 @@ namespace al
         m_TestScript = new Script(&g_ScriptManager, "Test");
         m_TestScript->loadSection("data/Scripts/test.as");
         m_TestScript->build();
-        m_TestScript->executeFunction("main");
     }
 
     PlayState::~PlayState()
@@ -26,6 +25,8 @@ namespace al
 
     void PlayState::update(float dt)
     {
+        m_TestScript->executeFunctionFloat("main", dt);
+
         //std::cout << "Updating Playstate" << std::endl;
         m_World->update(dt);
 

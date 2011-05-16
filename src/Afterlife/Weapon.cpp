@@ -83,7 +83,7 @@ namespace al
             mReloadTimer = 0.0f;
             mReloading = false;
 
-            m_FireLight = boost::shared_ptr<PointLight>(new PointLight(sf::Vector2f(), 1.0f, 32.0f, sf::Color(255, 230, 150), 16));
+            m_FireLight = boost::shared_ptr<PointLight>(new PointLight("firelight", sf::Vector2f(), 1.0f, 32.0f, sf::Color(255, 230, 150), 16));
             m_FireLight->setOn(false);
             mOwner->getWorld()->getLightManager()->addLight(m_FireLight);
 

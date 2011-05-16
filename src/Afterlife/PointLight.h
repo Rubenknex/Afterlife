@@ -8,7 +8,7 @@ namespace al
     class PointLight : public Light
     {
         public:
-            PointLight(const sf::Vector2f& pos, float intensity, float radius, const sf::Color& color, int quality);
+            PointLight(const std::string& name, const sf::Vector2f& pos, float intensity, float radius, const sf::Color& color, int quality);
             ~PointLight();
 
         private:

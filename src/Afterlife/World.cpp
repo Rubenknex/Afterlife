@@ -45,11 +45,11 @@ namespace al
         m_EntityManager->update(dt);
         m_ParticleManager->update(dt);
 
-        if (m_EntityManager->getCount() < 10)
-        {
-            sf::Vector2f pos(sf::Randomizer::Random(100.0f, m_Level->getWidthPixels() - 100.0f), sf::Randomizer::Random(100.0f, m_Level->getWidthPixels() - 100.0f));
-            m_EntityManager->add(EntityFactory::createZombie(this, pos));
-        }
+        //if (m_EntityManager->getCount() < 10)
+        //{
+        //    sf::Vector2f pos(sf::Randomizer::Random(100.0f, m_Level->getWidthPixels() - 100.0f), sf::Randomizer::Random(100.0f, m_Level->getWidthPixels() - 100.0f));
+        //    m_EntityManager->add(EntityFactory::createZombie(this, pos));
+        //}
     }
 
     void World::draw(sf::RenderTarget& target)

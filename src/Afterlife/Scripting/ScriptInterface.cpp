@@ -4,6 +4,7 @@
 
 #include "../EntityFactory.h"
 #include "../EntityManager.h"
+#include "../LightManager.h"
 #include "../ResourceManager.h"
 
 namespace al
@@ -45,25 +46,107 @@ namespace al
         return sf::Randomizer::Random(min, max);
     }
 
-    class vec2
+    void asSetLightIntensity(const std::string& name, float intensity)
+    {
+        boost::shared_ptr<Light> light = g_World->getLightManager()->getLightByName(name);
+
+        if (light)
+            light->setIntensity(intensity);
+    }
+
+    void asSetLightRadius(const std::string& name, float radius)
+    {
+        boost::shared_ptr<Light> light = g_World->getLightManager()->getLightByName(name);
+
+        if (light)
+            light->setRadius(radius);
+    }
+
+    class Vec2
     {
         public:
-            vec2() : x(0.0f), y(0.0f) { }
-            vec2(float x, float y) : x(x), y(y) { }
+            Vec2() : x(0.0f), y(0.0f) { }
+            Vec2(const sf::Vector2f v) : x(v.x), y(v.y) { }
+            Vec2(float x, float y) : x(x), y(y) { }
+
+            Vec2& operator=(const Vec2& other)
+            {
+                x = other.x;
+                y = other.y;
+                return *this;
+            }
+
+            Vec2 operator+(const Vec2& rhs)
+            {
+                return Vec2(x + rhs.x, y + rhs.y);
+            }
+
+            Vec2 operator-(const Vec2& rhs)
+            {
+                return Vec2(x - rhs.x, y - rhs.y);
+            }
+
+            Vec2 operator*(float rhs)
+            {
+                return Vec2(x * rhs, y * rhs);
+            }
+
+            Vec2 operator/(float rhs)
+            {
+                return Vec2(x / rhs, y / rhs);
+            }
+
+            Vec2& operator+=(const Vec2& other)
+            {
+                x += other.x;
+                y += other.y;
+                return *this;
+            }
+
+            Vec2& operator-=(const Vec2& other)
+            {
+                x -= other.x;
+                y -= other.y;
+                return *this;
+            }
+
+            Vec2& operator*=(float other)
+            {
+                x *= other;
+                y *= other;
+                return *this;
+            }
+
+            Vec2& operator/=(float other)
+            {
+                x /= other;
+                y /= other;
+                return *this;
+            }
 
         public:
             float x;
             float y;
     };
 
-    static void asVec2DefaultConstructor(vec2* self)
+    void asVec2Constructor(Vec2* self)
     {
-        new(self) vec2();
+        new(self) Vec2();
     }
 
-    static void asVec2InitConstructor(vec2* self, float x, float y)
+    void asVec2InitConstructor(Vec2* self, float x, float y)
     {
-        new(self) vec2(x, y);
+        new(self) Vec2(x, y);
+    }
+
+    Vec2 asGetPlayerPosition()
+    {
+        return Vec2(g_World->getEntityManager()->getById(g_World->getPlayerId())->GetPosition());
+    }
+
+    int asGetZombieCount()
+    {
+        return g_World->getEntityManager()->queryType(Entity::ZOMBIE).size();
     }
 
     ScriptInterface::ScriptInterface()
@@ -85,8 +168,8 @@ namespace al
             return;
         }
 
-        registerFunctions(engine);
         registerObjects(engine);
+        registerFunctions(engine);
     }
 
     void ScriptInterface::registerFunctions(asIScriptEngine* engine)
@@ -97,10 +180,29 @@ namespace al
         engine->RegisterGlobalFunction("void setAmbientColor(int r, int g, int b)", asFUNCTIONPR(asSetAmbientColor, (int, int, int), void), asCALL_CDECL);
         engine->RegisterGlobalFunction("int rand(int min, int max)", asFUNCTIONPR(asRandInt, (int, int), int), asCALL_CDECL);
         engine->RegisterGlobalFunction("float rand(float min, float max)", asFUNCTIONPR(asRandFloat, (float, float), float), asCALL_CDECL);
+        engine->RegisterGlobalFunction("void setLightIntensity(const string &in, float intensity)", asFUNCTIONPR(asSetLightIntensity, (const std::string&, float), void), asCALL_CDECL);
+        engine->RegisterGlobalFunction("void setLightRadius(const string &in, float radius)", asFUNCTIONPR(asSetLightRadius, (const std::string&, float), void), asCALL_CDECL);
+        engine->RegisterGlobalFunction("Vec2 getPlayerPosition()", asFUNCTION(asGetPlayerPosition), asCALL_CDECL);
+        engine->RegisterGlobalFunction("int getZombieCount()", asFUNCTION(asGetZombieCount), asCALL_CDECL);
     }
 
     void ScriptInterface::registerObjects(asIScriptEngine* engine)
     {
+        engine->RegisterObjectType("Vec2", sizeof(Vec2), asOBJ_VALUE | asOBJ_POD | asOBJ_APP_CLASS_C);
+        engine->RegisterObjectBehaviour("Vec2", asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(asVec2Constructor), asCALL_CDECL_OBJFIRST);
+        engine->RegisterObjectBehaviour("Vec2", asBEHAVE_CONSTRUCT, "void f(float, float)", asFUNCTION(asVec2InitConstructor), asCALL_CDECL_OBJFIRST);
 
+        engine->RegisterObjectProperty("Vec2", "float x", offsetof(Vec2, x));
+        engine->RegisterObjectProperty("Vec2", "float y", offsetof(Vec2, y));
+
+        engine->RegisterObjectMethod("Vec2", "Vec2 opAdd(const Vec2 &in)", asMETHODPR(Vec2, operator+, (const Vec2&), Vec2), asCALL_THISCALL);
+        engine->RegisterObjectMethod("Vec2", "Vec2 opSub(const Vec2 &in)", asMETHODPR(Vec2, operator-, (const Vec2&), Vec2), asCALL_THISCALL);
+        engine->RegisterObjectMethod("Vec2", "Vec2 opMul(float)", asMETHODPR(Vec2, operator*, (float), Vec2), asCALL_THISCALL);
+        engine->RegisterObjectMethod("Vec2", "Vec2 opDiv(float)", asMETHODPR(Vec2, operator/, (float), Vec2), asCALL_THISCALL);
+
+        engine->RegisterObjectMethod("Vec2", "Vec2& opAddAssign(const Vec2 &in)", asMETHODPR(Vec2, operator+=, (const Vec2&), Vec2&), asCALL_THISCALL);
+        engine->RegisterObjectMethod("Vec2", "Vec2& opSubAssign(const Vec2 &in)", asMETHODPR(Vec2, operator-=, (const Vec2&), Vec2&), asCALL_THISCALL);
+        engine->RegisterObjectMethod("Vec2", "Vec2& opMulAssign(float)", asMETHODPR(Vec2, operator*=, (float), Vec2&), asCALL_THISCALL);
+        engine->RegisterObjectMethod("Vec2", "Vec2& opDivAssign(float)", asMETHODPR(Vec2, operator/=, (float), Vec2&), asCALL_THISCALL);
     }
 }

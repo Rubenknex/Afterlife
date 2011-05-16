@@ -41,6 +41,8 @@ namespace al
     sf::Vector2f vector2fNormalize(const sf::Vector2f vec);
     float vector2fDistSq(const sf::Vector2f v1, const sf::Vector2f v2);
 
+    std::string randomString();
+
     template <class T>
     void printRect(const sf::Rect<T>& rect)
     {

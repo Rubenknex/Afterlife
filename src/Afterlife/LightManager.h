@@ -11,18 +11,20 @@
 
 namespace al
 {
+    typedef boost::shared_ptr<Light> LightPtr;
+
     class LightManager
     {
-        typedef boost::shared_ptr<Light> LightPtr;
-
         public:
             LightManager();
             ~LightManager();
 
             void addLight(LightPtr light);
-            void removeLight(LightPtr light);
+            void removeLight(const std::string& name);
 
             void draw(sf::RenderTarget& target);
+
+            LightPtr getLightByName(const std::string& name);
 
             void setAmbientColor(const sf::Color& color);
 
@@ -33,7 +35,7 @@ namespace al
             sf::RenderImage* mHorizontalPass;
             sf::RenderImage* mVerticalPass;
             sf::Sprite mLightsSprite;
-            std::set<LightPtr> mLights;
+            std::map<std::string, LightPtr> m_Lights;
             sf::Color mAmbientColor;
     };
 }

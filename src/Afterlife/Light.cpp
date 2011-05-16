@@ -2,7 +2,8 @@
 
 namespace al
 {
-    Light::Light(const sf::Vector2f& pos, float intensity, float radius, const sf::Color& color) :
+    Light::Light(const std::string& name, const sf::Vector2f& pos, float intensity, float radius, const sf::Color& color) :
+        m_Name(name),
         mOn(true),
         mPosition(pos),
         mIntensity(intensity),
@@ -26,6 +27,11 @@ namespace al
                 target->Draw(mTriangles[i]);
             }
         }
+    }
+
+    std::string Light::getName()
+    {
+        return m_Name;
     }
 
     void Light::setPosition(const sf::Vector2f& pos)

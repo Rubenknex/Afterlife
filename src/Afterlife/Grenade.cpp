@@ -13,7 +13,7 @@ namespace al
         mDamage(110.0f),
         mDetonationDelay(2.0f),
         mDetonationTimer(0.0f),
-        mLight(shared_ptr<PointLight>(new PointLight(sf::Vector2f(), 1.0f, 150.0f, sf::Color(255, 230, 150), 16))),
+        mLight(shared_ptr<PointLight>(new PointLight(randomString(), sf::Vector2f(), 1.0f, 150.0f, sf::Color(255, 230, 150), 16))),
         mExploded(false)
     {
         mExplosion = sf::Sound(*SM.GetResource("data/Sounds/Weapons/grenade.wav")); // TODO: Fix Sound object gets destroyed before sound has finished playing.
@@ -30,7 +30,7 @@ namespace al
 
     Grenade::~Grenade()
     {
-
+        m_World->getLightManager()->removeLight(mLight->getName());
     }
 
     void Grenade::update(float dt)
@@ -97,27 +97,6 @@ namespace al
                     m_World->getParticleManager()->fireSystem("blood_explode", e->GetPosition());
                 }
             }
-
-            /*
-            for (int i = 0; i < m_World->getEntityManager()->getCount(); i++)
-            {
-                shared_ptr<Entity> e = m_World->getEntityManager()->getEntities()[i];
-
-                if (e->getType() == Entity::ZOMBIE && e->isCollidable() && e->isAlive())
-                {
-                    float distance = vector2fLength(e->GetPosition() - GetPosition());
-
-                    if (distance < mExplosionRadius)
-                    {
-                        float damage = (distance / mExplosionRadius) * mDamage;
-
-                        e->changeHealth(-damage);
-
-                        m_World->getParticleManager()->fireSystem("blood_explode", e->GetPosition());
-                    }
-                }
-            }
-            */
 
             m_World->getParticleManager()->fireSystem("explosion_dust", GetPosition());
             m_World->getParticleManager()->fireSystem("smoke_dark", GetPosition());

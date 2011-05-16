@@ -8,7 +8,7 @@ namespace al
     class DirectionalLight : public Light
     {
         public:
-            DirectionalLight(const sf::Vector2f& pos, float intensity, float radius, const sf::Color& color, float angle, float openAngle);
+            DirectionalLight(const std::string& name, const sf::Vector2f& pos, float intensity, float radius, const sf::Color& color, float angle, float openAngle);
             ~DirectionalLight();
 
             void setAngle(float angle);

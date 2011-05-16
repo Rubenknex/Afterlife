@@ -14,10 +14,12 @@ namespace al
     class Light
     {
         public:
-            Light(const sf::Vector2f& pos, float intensity, float radius, const sf::Color& color);
+            Light(const std::string& name, const sf::Vector2f& pos, float intensity, float radius, const sf::Color& color);
             ~Light();
 
             void draw(sf::RenderTarget* target);
+
+            std::string getName();
 
             void setPosition(const sf::Vector2f& pos);
             void setIntensity(float intensity);
@@ -32,6 +34,7 @@ namespace al
             void addTriangle(const sf::Vector2f v1, const sf::Vector2f v2);
 
         protected:
+            std::string m_Name;
             bool mOn;
             sf::Vector2f mPosition;
             float mIntensity;

@@ -2,8 +2,8 @@
 
 namespace al
 {
-    PointLight::PointLight(const sf::Vector2f& pos, float intensity, float radius, const sf::Color& color, int quality) :
-        Light(pos, intensity, radius, color),
+    PointLight::PointLight(const std::string& name, const sf::Vector2f& pos, float intensity, float radius, const sf::Color& color, int quality) :
+        Light(name, pos, intensity, radius, color),
         mQuality(quality)
     {
         generateVertices();

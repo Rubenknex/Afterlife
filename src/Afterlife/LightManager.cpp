@@ -26,7 +26,7 @@ namespace al
 
     LightManager::~LightManager()
     {
-        mLights.clear();
+        m_Lights.clear();
 
         delete mLightsImage;
         delete mHorizontalPass;
@@ -35,12 +35,15 @@ namespace al
 
     void LightManager::addLight(LightPtr light)
     {
-        mLights.insert(light);
+        m_Lights.insert(std::pair<std::string, LightPtr>(light->getName(), light));
     }
 
-    void LightManager::removeLight(LightPtr light)
+    void LightManager::removeLight(const std::string& name)
     {
-        mLights.erase(mLights.find(light));
+        std::map<std::string, LightPtr>::iterator it = m_Lights.find(name);
+
+        if (it != m_Lights.end())
+            m_Lights.erase(it);
     }
 
     void LightManager::draw(sf::RenderTarget& target)
@@ -53,10 +56,10 @@ namespace al
         mLightsImage->SetView(target.GetView());
 
         // Draw all the lights on the light image.
-        std::set<LightPtr>::iterator it;
-        for (it = mLights.begin(); it != mLights.end(); it++)
+        std::map<std::string, LightPtr>::iterator it;
+        for (it = m_Lights.begin(); it != m_Lights.end(); it++)
         {
-            (*it)->draw(mLightsImage);
+            it->second->draw(mLightsImage);
         }
 
         mLightsImage->Display();
@@ -85,6 +88,15 @@ namespace al
         target.SetView(lightView);
         target.Draw(mLightsSprite);
         target.SetView(gameView);
+    }
+
+    LightPtr LightManager::getLightByName(const std::string& name)
+    {
+        std::map<std::string, LightPtr>::iterator it = m_Lights.find(name);
+        if (it != m_Lights.end())
+            return it->second;
+
+        return boost::shared_ptr<Light>();
     }
 
     void LightManager::setAmbientColor(const sf::Color& color)

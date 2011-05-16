@@ -2,8 +2,8 @@
 
 namespace al
 {
-    DirectionalLight::DirectionalLight(const sf::Vector2f& pos, float intensity, float radius, const sf::Color& color, float angle, float openAngle) :
-        Light(pos, intensity, radius, color),
+    DirectionalLight::DirectionalLight(const std::string& name, const sf::Vector2f& pos, float intensity, float radius, const sf::Color& color, float angle, float openAngle) :
+        Light(name, pos, intensity, radius, color),
         mAngle(angle),
         mOpenAngle(openAngle)
     {
