@@ -5,6 +5,7 @@
 #include "../EntityFactory.h"
 #include "../EntityManager.h"
 #include "../LightManager.h"
+#include "../ParticleManager.h"
 #include "../ResourceManager.h"
 
 namespace al
@@ -149,6 +150,16 @@ namespace al
         return g_World->getEntityManager()->queryType(Entity::ZOMBIE).size();
     }
 
+    void asLoadParticleSystem(const std::string& filename, const std::string& name)
+    {
+        g_World->getParticleManager()->loadSystem(filename, name);
+    }
+
+    void asFireParticleSystem(const std::string& name, float x, float y)
+    {
+        g_World->getParticleManager()->fireSystem(name, sf::Vector2f(x, y));
+    }
+
     ScriptInterface::ScriptInterface()
     {
 
@@ -184,6 +195,8 @@ namespace al
         engine->RegisterGlobalFunction("void setLightRadius(const string &in, float radius)", asFUNCTIONPR(asSetLightRadius, (const std::string&, float), void), asCALL_CDECL);
         engine->RegisterGlobalFunction("Vec2 getPlayerPosition()", asFUNCTION(asGetPlayerPosition), asCALL_CDECL);
         engine->RegisterGlobalFunction("int getZombieCount()", asFUNCTION(asGetZombieCount), asCALL_CDECL);
+        engine->RegisterGlobalFunction("void loadParticleSystem(const string &in, const string &in)", asFUNCTIONPR(asLoadParticleSystem, (const std::string&, const std::string&), void), asCALL_CDECL);
+        engine->RegisterGlobalFunction("void fireParticleSystem(const string &in, float, float)", asFUNCTIONPR(asFireParticleSystem, (const std::string&, float, float), void), asCALL_CDECL);
     }
 
     void ScriptInterface::registerObjects(asIScriptEngine* engine)

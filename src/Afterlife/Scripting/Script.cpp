@@ -26,24 +26,37 @@ namespace al
         m_Compiled = true;
     }
 
-    void Script::executeFunction(const std::string& name)
+    void Script::prepareFunction(const std::string& name)
     {
-        if (m_Compiled)
-        {
-            int funcId = m_Module->GetFunctionIdByName(name.c_str());
-            m_Manager->m_Context->Prepare(funcId);
-            m_Manager->m_Context->Execute();
-        }
+        m_FuncId = m_Module->GetFunctionIdByName(name.c_str());
+        m_Manager->m_Context->Prepare(m_FuncId);
     }
 
-    void Script::executeFunctionFloat(const std::string& name, float arg0)
+    void Script::setArgInt(int arg, int value)
     {
-        if (m_Compiled)
-        {
-            int funcId = m_Module->GetFunctionIdByName(name.c_str());
-            m_Manager->m_Context->Prepare(funcId);
-            m_Manager->m_Context->SetArgFloat(0, arg0);
+        m_Manager->m_Context->SetArgDWord(arg, value);
+    }
+
+    void Script::setArgFloat(int arg, float value)
+    {
+        m_Manager->m_Context->SetArgFloat(arg, value);
+    }
+
+    void Script::setArgDouble(int arg, double value)
+    {
+        m_Manager->m_Context->SetArgDouble(arg, value);
+    }
+
+    void Script::setArgObject(int arg, void* value)
+    {
+        m_Manager->m_Context->SetArgObject(arg, value);
+    }
+
+    void Script::executeFunction()
+    {
+        if (m_FuncId != -1)
             m_Manager->m_Context->Execute();
-        }
+
+        m_FuncId = -1;
     }
 }

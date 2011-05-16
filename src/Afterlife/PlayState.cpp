@@ -25,7 +25,9 @@ namespace al
 
     void PlayState::update(float dt)
     {
-        m_TestScript->executeFunctionFloat("main", dt);
+        m_TestScript->prepareFunction("main");
+        m_TestScript->setArgFloat(0, dt);
+        m_TestScript->executeFunction();
 
         //std::cout << "Updating Playstate" << std::endl;
         m_World->update(dt);
