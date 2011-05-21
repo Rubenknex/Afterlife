@@ -7,7 +7,7 @@
 
 #include "Animation.h"
 #include "Collision.h"
-#include "DirectionalLight.h"
+#include "SpotLight.h"
 #include "Entity.h"
 #include "Functions.h"
 #include "Game.h"
@@ -44,7 +44,7 @@ namespace al
         private:
             Animation mAnimation;
             Weapon* mWeapon;
-            shared_ptr<DirectionalLight> mFlashLight;
+            shared_ptr<SpotLight> mFlashLight;
 
             bool mRightMouseDown;
             float mRightMouseTimer;

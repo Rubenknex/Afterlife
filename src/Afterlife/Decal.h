@@ -16,7 +16,7 @@ namespace al
             ~Decal();
 
             void update(float dt);
-            void draw(sf::RenderWindow& window);
+            void draw(sf::RenderTarget& window);
 
         private:
             float mLifetime;

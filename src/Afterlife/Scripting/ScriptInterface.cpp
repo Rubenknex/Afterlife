@@ -7,7 +7,9 @@
 #include "../LightManager.h"
 #include "../ParticleManager.h"
 #include "../ResourceManager.h"
-#include "../SFXPlayer.h"
+#include "../PointLight.h"
+#include "../AudioPlayer.h"
+#include "../SpotLight.h"
 
 namespace al
 {
@@ -107,6 +109,11 @@ namespace al
         std::cout << msg << std::endl;
     }
 
+    Vec2 asGetWindowSize()
+    {
+        return Vec2((float)g_Window->GetWidth(), (float)g_Window->GetHeight());
+    }
+
     /// Random numbers ///
     int asRandInt(int min, int max)
     {
@@ -124,9 +131,9 @@ namespace al
         std::cout << "Light: " << name << " not found." << std::endl;
     }
 
-    void asAddDirectionalLight(const std::string& name, Vec2& pos, float intensity, float radius, int r, int g, int b, float angle, float openAngle)
+    void asAddSpotLight(const std::string& name, Vec2& pos, float intensity, float radius, int r, int g, int b, float angle, float openAngle)
     {
-        boost::shared_ptr<Light> light(new DirectionalLight(name, pos.toVector2f(), intensity, radius, sf::Color(r, g, b), angle, openAngle));
+        boost::shared_ptr<Light> light(new SpotLight(name, pos.toVector2f(), intensity, radius, sf::Color(r, g, b), angle, openAngle));
         g_World->getLightManager()->addLight(light);
     }
 
@@ -209,7 +216,7 @@ namespace al
 
     void asSetLightAngle(const std::string& name, float angle)
     {
-        boost::shared_ptr<DirectionalLight> light = boost::static_pointer_cast<DirectionalLight>(g_World->getLightManager()->getLightByName(name));
+        boost::shared_ptr<SpotLight> light = boost::static_pointer_cast<SpotLight>(g_World->getLightManager()->getLightByName(name));
 
         if (light)
             light->setAngle(angle);
@@ -261,9 +268,14 @@ namespace al
         MM.GetResource(filename)->Play();
     }
 
+    void asStopMusic(const std::string& filename)
+    {
+        MM.GetResource(filename)->Stop();
+    }
+
     void asPlaySound(const std::string& filename, float volume, float pitch)
     {
-        g_SFXPlayer.play(filename, volume, pitch);
+        g_AudioPlayer.playSound(filename, volume, pitch);
     }
 
     ScriptInterface::ScriptInterface()
@@ -293,13 +305,14 @@ namespace al
     {
         /// General ///
         engine->RegisterGlobalFunction("void print(const string &in)", asFUNCTIONPR(asPrint, (const std::string&), void), asCALL_CDECL);
+        engine->RegisterGlobalFunction("Vec2 getWindowSize()", asFUNCTION(asGetWindowSize), asCALL_CDECL);
 
         /// Random numbers ///
         engine->RegisterGlobalFunction("int rand(int min, int max)", asFUNCTIONPR(asRandInt, (int, int), int), asCALL_CDECL);
         engine->RegisterGlobalFunction("float rand(float min, float max)", asFUNCTIONPR(asRandFloat, (float, float), float), asCALL_CDECL);
 
         /// Lights ///
-        engine->RegisterGlobalFunction("void addDirectionalLight(const string &in, Vec2 &in, float intensity, float radius, int r, int g, int b, float angle, float openAngle)", asFUNCTIONPR(asAddDirectionalLight, (const std::string&, Vec2&, float, float, int, int, int, float, float), void), asCALL_CDECL);
+        engine->RegisterGlobalFunction("void addSpotLight(const string &in, Vec2 &in, float intensity, float radius, int r, int g, int b, float angle, float openAngle)", asFUNCTIONPR(asAddSpotLight, (const std::string&, Vec2&, float, float, int, int, int, float, float), void), asCALL_CDECL);
         engine->RegisterGlobalFunction("void addPointLight(const string &in, Vec2 &in, float intensity, float radius, int r, int g, int b, int quality)", asFUNCTIONPR(asAddPointLight, (const std::string&, Vec2&, float, float, int, int, int, int), void), asCALL_CDECL);
         engine->RegisterGlobalFunction("void setAmbientColor(int r, int g, int b)", asFUNCTIONPR(asSetAmbientColor, (int, int, int), void), asCALL_CDECL);
         engine->RegisterGlobalFunction("Vec2 getLightPosition(const string &in)", asFUNCTIONPR(asGetLightPosition, (const std::string&), Vec2), asCALL_CDECL);
@@ -324,6 +337,7 @@ namespace al
 
         /// Sounds ///
         engine->RegisterGlobalFunction("void playMusic(const string &in)", asFUNCTIONPR(asPlayMusic, (const std::string&), void), asCALL_CDECL);
+        engine->RegisterGlobalFunction("void stopMusic(const string &in)", asFUNCTIONPR(asStopMusic, (const std::string&), void), asCALL_CDECL);
         engine->RegisterGlobalFunction("void playSound(const string &in, float volume, float pitch)", asFUNCTIONPR(asPlaySound, (const std::string&, float, float), void), asCALL_CDECL);
     }
 

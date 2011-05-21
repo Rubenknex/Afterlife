@@ -3,12 +3,12 @@ float timer = 0.0f;
 
 void initialize()
 {
-    //playMusic("data/Sounds/Ambience/ambience_1.ogg");
+    playMusic("data/Sounds/Ambience/ambience_1.ogg");
 
-    setAmbientColor(50, 50, 50);
+    setAmbientColor(90, 90, 90);
 
     addPointLight("lantern", Vec2(500.0f, 500.0f), 1.0f, 75.0f, 255, 230, 150, 16);
-    addDirectionalLight("spot", Vec2(200.0f, 600.0f), 1.0f, 300.0f, 255, 230, 150, 0.0f, 15.0f);
+    addSpotLight("spot", Vec2(200.0f, 600.0f), 1.0f, 300.0f, 255, 230, 150, 0.0f, 15.0f);
     setLightState("spot", false);
 }
 
@@ -27,7 +27,10 @@ void main(float dt)
     else
         setLightState("spot", false);
 
-    if (getZombieCount() < 10)
+    if (getPlayerPosition().x > 500.0f)
+        stopMusic("data/Sounds/Ambience/ambience_1.ogg");
+
+    if (getZombieCount() < 5)
     {
         addZombie(rand(100.0f, 300.0f), rand(100.0f, 300.0f));
     }

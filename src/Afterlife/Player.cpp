@@ -9,7 +9,7 @@ namespace al
         Entity(world),
         mAnimation(Animation(45, 60, 8, 1, 8, 0.1f)),
         mWeapon(new Weapon(this)),
-        mFlashLight(shared_ptr<DirectionalLight>(new DirectionalLight("flashlight", sf::Vector2f(), 0.7f, 280.0f, sf::Color(248, 246, 226), 0.0f, 16.0f))),
+        mFlashLight(shared_ptr<SpotLight>(new SpotLight("flashlight", sf::Vector2f(), 0.7f, 280.0f, sf::Color(248, 246, 226), 0.0f, 16.0f))),
         mRightMouseTimer(0.0f),
         mRightMouseDown(false)
     {

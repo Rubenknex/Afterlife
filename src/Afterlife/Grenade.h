@@ -5,12 +5,12 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
 
+#include "AudioPlayer.h"
 #include "Entity.h"
 #include "EntityFactory.h"
 #include "Functions.h"
 #include "Level.h"
 #include "PointLight.h"
-#include "ResourceManager.h"
 
 using boost::shared_ptr;
 
@@ -29,8 +29,6 @@ namespace al
             void draw(sf::RenderTarget& target);
 
         private:
-            sf::Sound mExplosion;
-
             sf::Vector2f mDirection;
             float mSpeed;
 
@@ -40,7 +38,6 @@ namespace al
             float mDetonationDelay;
             float mDetonationTimer;
 
-            //shared_ptr<PointLight> mLight;
             std::string m_LightName;
 
             bool mExploded;

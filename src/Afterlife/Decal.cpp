@@ -29,7 +29,7 @@ namespace al
             setAlive(false);
     }
 
-    void Decal::draw(sf::RenderWindow& window)
+    void Decal::draw(sf::RenderTarget& window)
     {
         window.Draw(*this);
     }

@@ -71,10 +71,10 @@ namespace al
             mImage.SetOrigin(mImage.GetSize() / 2.0f);
 
             TiXmlElement* fireSound = handle.FirstChild("FireSound").ToElement();
-            mFireSound = sf::Sound(*SM.GetResource(fireSound->FirstChild()->ValueStr()));
+            m_FireSound = fireSound->FirstChild()->ValueStr();
 
             TiXmlElement* reloadSound = handle.FirstChild("ReloadSound").ToElement();
-            mReloadSound = sf::Sound(*SM.GetResource(reloadSound->FirstChild()->ValueStr()));
+            m_ReloadSound = reloadSound->FirstChild()->ValueStr();
 
             mBullets = 1000;
             mBulletsInMag = mMagCapacity;
@@ -156,9 +156,7 @@ namespace al
                     sf::Vector2f offset(cos(rotRadians), sin(rotRadians));
                     em.add(EntityFactory::createProjectile(mOwner->getWorld(), pos + offset * 20.0f, angle, speed, mDamage));
 
-                    //m_FireLight->setOn(true);
-
-                    mFireSound.Play();
+                    g_AudioPlayer.playSound(m_FireSound, 100.0f, 1.0f);
 
                     mBulletsInMag -= 1;
                     mShootTimer = 0.0f;
@@ -177,7 +175,7 @@ namespace al
         {
             if (!mReloading && mBulletsInMag < mMagCapacity && mBullets > 0)
             {
-                mReloadSound.Play();
+                g_AudioPlayer.playSound(m_ReloadSound, 100.0f, 1.0f);
 
                 mReloading = true;
             }

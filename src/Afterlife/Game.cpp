@@ -6,13 +6,15 @@ namespace al
 {
     sf::RenderWindow* g_Window;
 
-    Game::Game() :
-        m_StateManager(this)
+    Game::Game()
     {
 
     }
 
-    Game::~Game() { }
+    Game::~Game()
+    {
+
+    }
 
     void Game::initialize()
     {
@@ -22,9 +24,8 @@ namespace al
 
         g_Window = &m_Window;
 
-        m_StateManager.pushState(new PlayState(&m_Window));
-
-        //g_ScriptManager.initialize();
+        boost::shared_ptr<PlayState> playState(new PlayState(&m_Window));
+        pushState(playState);
     }
 
     void Game::update()
@@ -35,14 +36,16 @@ namespace al
 
         g_Input.update(m_Window.GetInput());
 
-        m_StateManager.update(dt);
+        if (m_States.size() > 0)
+            m_States.front()->update(dt);
     }
 
     void Game::draw()
     {
         m_Window.Clear();
 
-        m_StateManager.draw(m_Window);
+        if (m_States.size() > 0)
+            m_States.front()->draw(m_Window);
 
         m_Window.Display();
     }
@@ -65,5 +68,15 @@ namespace al
 
             draw();
         }
+    }
+
+    void Game::pushState(StatePtr state)
+    {
+        m_States.push(state);
+    }
+
+    void Game::popState()
+    {
+        m_States.pop();
     }
 }

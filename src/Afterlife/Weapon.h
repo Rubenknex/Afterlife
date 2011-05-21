@@ -74,8 +74,8 @@ namespace al
             float mReloadDelay;
 
             sf::Sprite mImage;
-            sf::Sound mFireSound;
-            sf::Sound mReloadSound;
+            std::string m_FireSound;
+            std::string m_ReloadSound;
 
             boost::shared_ptr<PointLight> m_FireLight;
     };

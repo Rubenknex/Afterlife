@@ -13,11 +13,8 @@ namespace al
         mDamage(110.0f),
         mDetonationDelay(2.0f),
         mDetonationTimer(0.0f),
-        //mLight(shared_ptr<PointLight>(new PointLight(randomString(), sf::Vector2f(), 1.0f, 150.0f, sf::Color(255, 230, 150), 16))),
         mExploded(false)
     {
-        mExplosion = sf::Sound(*SM.GetResource("data/Sounds/Weapons/grenade.wav")); // TODO: Fix Sound object gets destroyed before sound has finished playing.
-
         SetPosition(pos);
         SetImage(*IM.GetResource("data/Images/grenade.png"));
         SetOrigin(GetSize() / 2.0f);
@@ -41,12 +38,9 @@ namespace al
         {
             boost::shared_ptr<Light> light = m_World->getLightManager()->getLightByName(m_LightName);
             light->setIntensity(lerp(0.2f, light->getIntensity(), 0.0f));
-            //mLight->setIntensity(lerp(0.2f, mLight->getIntensity(), 0.0f));
 
-            if (mExplosion.GetStatus() == sf::Sound::Stopped)
-            {
+            if (light->getIntensity() <= 0.05f)
                 setAlive(false);
-            }
         }
 
         Move(mDirection * (mSpeed * dt));
@@ -105,7 +99,7 @@ namespace al
             m_LightName = randomString();
             m_World->getLightManager()->addLight(boost::shared_ptr<PointLight>(new PointLight(m_LightName, GetPosition(), 1.0f, 150.0f, sf::Color(255, 230, 150), 16)));
 
-            mExplosion.Play();
+            g_AudioPlayer.playSound("data/Sounds/Weapons/grenade.wav", 90.0f, sf::Randomizer::Random(0.9f, 1.0f));
 
             setVisible(false);
             mExploded = true;
