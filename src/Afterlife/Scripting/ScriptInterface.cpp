@@ -7,6 +7,7 @@
 #include "../LightManager.h"
 #include "../ParticleManager.h"
 #include "../ResourceManager.h"
+#include "../SFXPlayer.h"
 
 namespace al
 {
@@ -17,52 +18,7 @@ namespace al
         g_World = world;
     }
 
-    void asPrint(const std::string& msg)
-    {
-        std::cout << msg << std::endl;
-    }
-
-    void asAddZombie(float x, float y)
-    {
-        g_World->getEntityManager()->add(EntityFactory::createZombie(g_World, sf::Vector2f(x, y)));
-    }
-
-    void asPlayMusic(const std::string& filename)
-    {
-        MM.GetResource(filename)->Play();
-    }
-
-    void asSetAmbientColor(int r, int g, int b)
-    {
-        g_World->getLightManager()->setAmbientColor(sf::Color(r, g, b));
-    }
-
-    int asRandInt(int min, int max)
-    {
-        return sf::Randomizer::Random(min, max);
-    }
-
-    float asRandFloat(float min, float max)
-    {
-        return sf::Randomizer::Random(min, max);
-    }
-
-    void asSetLightIntensity(const std::string& name, float intensity)
-    {
-        boost::shared_ptr<Light> light = g_World->getLightManager()->getLightByName(name);
-
-        if (light)
-            light->setIntensity(intensity);
-    }
-
-    void asSetLightRadius(const std::string& name, float radius)
-    {
-        boost::shared_ptr<Light> light = g_World->getLightManager()->getLightByName(name);
-
-        if (light)
-            light->setRadius(radius);
-    }
-
+    /// Vec2 ///
     class Vec2
     {
         public:
@@ -125,6 +81,11 @@ namespace al
                 return *this;
             }
 
+            sf::Vector2f toVector2f()
+            {
+                return sf::Vector2f(x, y);
+            }
+
         public:
             float x;
             float y;
@@ -140,9 +101,142 @@ namespace al
         new(self) Vec2(x, y);
     }
 
+    /// General ///
+    void asPrint(const std::string& msg)
+    {
+        std::cout << msg << std::endl;
+    }
+
+    /// Random numbers ///
+    int asRandInt(int min, int max)
+    {
+        return sf::Randomizer::Random(min, max);
+    }
+
+    float asRandFloat(float min, float max)
+    {
+        return sf::Randomizer::Random(min, max);
+    }
+
+    /// Lights ///
+    void lightError(const std::string& name)
+    {
+        std::cout << "Light: " << name << " not found." << std::endl;
+    }
+
+    void asAddDirectionalLight(const std::string& name, Vec2& pos, float intensity, float radius, int r, int g, int b, float angle, float openAngle)
+    {
+        boost::shared_ptr<Light> light(new DirectionalLight(name, pos.toVector2f(), intensity, radius, sf::Color(r, g, b), angle, openAngle));
+        g_World->getLightManager()->addLight(light);
+    }
+
+    void asAddPointLight(const std::string& name, Vec2& pos, float intensity, float radius, int r, int g, int b, int quality)
+    {
+        boost::shared_ptr<Light> light(new PointLight(name, pos.toVector2f(), intensity, radius, sf::Color(r, g, b), quality));
+        g_World->getLightManager()->addLight(light);
+    }
+
+    Vec2 asGetLightPosition(const std::string& name)
+    {
+        boost::shared_ptr<Light> light = g_World->getLightManager()->getLightByName(name);
+
+        if (light)
+            return light->getPosition();
+
+        lightError(name);
+
+        return Vec2();
+    }
+
+    void asSetLightPosition(const std::string& name, Vec2& pos)
+    {
+        boost::shared_ptr<Light> light = g_World->getLightManager()->getLightByName(name);
+
+        if (light)
+            light->setPosition(pos.toVector2f());
+        else
+            lightError(name);
+    }
+
+    void asSetAmbientColor(int r, int g, int b)
+    {
+        g_World->getLightManager()->setAmbientColor(sf::Color(r, g, b));
+    }
+
+    float asGetLightIntensity(const std::string& name)
+    {
+        boost::shared_ptr<Light> light = g_World->getLightManager()->getLightByName(name);
+
+        if (light)
+            return light->getIntensity();
+
+        lightError(name);
+
+        return 0.0f;
+    }
+
+    void asSetLightIntensity(const std::string& name, float intensity)
+    {
+        boost::shared_ptr<Light> light = g_World->getLightManager()->getLightByName(name);
+
+        if (light)
+            light->setIntensity(clamp(intensity, 0.0f, 1.0f));
+        else
+            lightError(name);
+    }
+
+    float asGetLightRadius(const std::string& name)
+    {
+        boost::shared_ptr<Light> light = g_World->getLightManager()->getLightByName(name);
+
+        if (light)
+            return light->getRadius();
+
+        lightError(name);
+
+        return 0.0f;
+    }
+
+    void asSetLightRadius(const std::string& name, float radius)
+    {
+        boost::shared_ptr<Light> light = g_World->getLightManager()->getLightByName(name);
+
+        if (light)
+            light->setRadius(radius);
+        else
+            lightError(name);
+    }
+
+    void asSetLightAngle(const std::string& name, float angle)
+    {
+        boost::shared_ptr<DirectionalLight> light = boost::static_pointer_cast<DirectionalLight>(g_World->getLightManager()->getLightByName(name));
+
+        if (light)
+            light->setAngle(angle);
+        else
+            lightError(name);
+    }
+
+    void asSetLightState(const std::string& name, bool on)
+    {
+        boost::shared_ptr<Light> light = g_World->getLightManager()->getLightByName(name);
+
+        if (light)
+            light->setOn(on);
+        else
+            lightError(name);
+    }
+
+    /// Player ///
     Vec2 asGetPlayerPosition()
     {
         return Vec2(g_World->getEntityManager()->getById(g_World->getPlayerId())->GetPosition());
+    }
+
+    /// Zombies ///
+    void asAddZombie(float x, float y)
+    {
+        g_World->getEntityManager()->add(EntityFactory::createZombie(g_World, sf::Vector2f(x, y)));
     }
 
     int asGetZombieCount()
@@ -150,14 +244,26 @@ namespace al
         return g_World->getEntityManager()->queryType(Entity::ZOMBIE).size();
     }
 
+    /// Particles ///
     void asLoadParticleSystem(const std::string& filename, const std::string& name)
     {
         g_World->getParticleManager()->loadSystem(filename, name);
     }
 
-    void asFireParticleSystem(const std::string& name, float x, float y)
+    void asFireParticleSystem(const std::string& name, Vec2& pos)
     {
-        g_World->getParticleManager()->fireSystem(name, sf::Vector2f(x, y));
+        g_World->getParticleManager()->fireSystem(name, pos.toVector2f());
+    }
+
+    /// Sounds ///
+    void asPlayMusic(const std::string& filename)
+    {
+        MM.GetResource(filename)->Play();
+    }
+
+    void asPlaySound(const std::string& filename, float volume, float pitch)
+    {
+        g_SFXPlayer.play(filename, volume, pitch);
     }
 
     ScriptInterface::ScriptInterface()
@@ -185,22 +291,45 @@ namespace al
 
     void ScriptInterface::registerFunctions(asIScriptEngine* engine)
     {
+        /// General ///
         engine->RegisterGlobalFunction("void print(const string &in)", asFUNCTIONPR(asPrint, (const std::string&), void), asCALL_CDECL);
-        engine->RegisterGlobalFunction("void addZombie(float x, float y)", asFUNCTIONPR(asAddZombie, (float, float), void), asCALL_CDECL);
-        engine->RegisterGlobalFunction("void playMusic(const string &in)", asFUNCTIONPR(asPlayMusic, (const std::string&), void), asCALL_CDECL);
-        engine->RegisterGlobalFunction("void setAmbientColor(int r, int g, int b)", asFUNCTIONPR(asSetAmbientColor, (int, int, int), void), asCALL_CDECL);
+
+        /// Random numbers ///
         engine->RegisterGlobalFunction("int rand(int min, int max)", asFUNCTIONPR(asRandInt, (int, int), int), asCALL_CDECL);
         engine->RegisterGlobalFunction("float rand(float min, float max)", asFUNCTIONPR(asRandFloat, (float, float), float), asCALL_CDECL);
+
+        /// Lights ///
+        engine->RegisterGlobalFunction("void addDirectionalLight(const string &in, Vec2 &in, float intensity, float radius, int r, int g, int b, float angle, float openAngle)", asFUNCTIONPR(asAddDirectionalLight, (const std::string&, Vec2&, float, float, int, int, int, float, float), void), asCALL_CDECL);
+        engine->RegisterGlobalFunction("void addPointLight(const string &in, Vec2 &in, float intensity, float radius, int r, int g, int b, int quality)", asFUNCTIONPR(asAddPointLight, (const std::string&, Vec2&, float, float, int, int, int, int), void), asCALL_CDECL);
+        engine->RegisterGlobalFunction("void setAmbientColor(int r, int g, int b)", asFUNCTIONPR(asSetAmbientColor, (int, int, int), void), asCALL_CDECL);
+        engine->RegisterGlobalFunction("Vec2 getLightPosition(const string &in)", asFUNCTIONPR(asGetLightPosition, (const std::string&), Vec2), asCALL_CDECL);
+        engine->RegisterGlobalFunction("void setLightPosition(const string &in, Vec2 &in)", asFUNCTIONPR(asSetLightPosition, (const std::string&, Vec2&), void), asCALL_CDECL);
+        engine->RegisterGlobalFunction("float getLightIntensity(const string &in)", asFUNCTIONPR(asGetLightIntensity, (const std::string&), float), asCALL_CDECL);
         engine->RegisterGlobalFunction("void setLightIntensity(const string &in, float intensity)", asFUNCTIONPR(asSetLightIntensity, (const std::string&, float), void), asCALL_CDECL);
+        engine->RegisterGlobalFunction("float getLightRadius(const string &in)", asFUNCTIONPR(asGetLightRadius, (const std::string&), float), asCALL_CDECL);
         engine->RegisterGlobalFunction("void setLightRadius(const string &in, float radius)", asFUNCTIONPR(asSetLightRadius, (const std::string&, float), void), asCALL_CDECL);
+        engine->RegisterGlobalFunction("void setLightAngle(const string &in, float angle)", asFUNCTIONPR(asSetLightAngle, (const std::string&, float), void), asCALL_CDECL);
+        engine->RegisterGlobalFunction("void setLightState(const string &in, bool on)", asFUNCTIONPR(asSetLightState, (const std::string&, bool), void), asCALL_CDECL);
+
+        /// Player ///
         engine->RegisterGlobalFunction("Vec2 getPlayerPosition()", asFUNCTION(asGetPlayerPosition), asCALL_CDECL);
+
+        /// Zombie ///
+        engine->RegisterGlobalFunction("void addZombie(float x, float y)", asFUNCTIONPR(asAddZombie, (float, float), void), asCALL_CDECL);
         engine->RegisterGlobalFunction("int getZombieCount()", asFUNCTION(asGetZombieCount), asCALL_CDECL);
+
+        /// Particles ///
         engine->RegisterGlobalFunction("void loadParticleSystem(const string &in, const string &in)", asFUNCTIONPR(asLoadParticleSystem, (const std::string&, const std::string&), void), asCALL_CDECL);
-        engine->RegisterGlobalFunction("void fireParticleSystem(const string &in, float, float)", asFUNCTIONPR(asFireParticleSystem, (const std::string&, float, float), void), asCALL_CDECL);
+        engine->RegisterGlobalFunction("void fireParticleSystem(const string &in, Vec2 &in)", asFUNCTIONPR(asFireParticleSystem, (const std::string&, Vec2&), void), asCALL_CDECL);
+
+        /// Sounds ///
+        engine->RegisterGlobalFunction("void playMusic(const string &in)", asFUNCTIONPR(asPlayMusic, (const std::string&), void), asCALL_CDECL);
+        engine->RegisterGlobalFunction("void playSound(const string &in, float volume, float pitch)", asFUNCTIONPR(asPlaySound, (const std::string&, float, float), void), asCALL_CDECL);
     }
 
     void ScriptInterface::registerObjects(asIScriptEngine* engine)
     {
+        /// Vec2
         engine->RegisterObjectType("Vec2", sizeof(Vec2), asOBJ_VALUE | asOBJ_POD | asOBJ_APP_CLASS_C);
         engine->RegisterObjectBehaviour("Vec2", asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(asVec2Constructor), asCALL_CDECL_OBJFIRST);
         engine->RegisterObjectBehaviour("Vec2", asBEHAVE_CONSTRUCT, "void f(float, float)", asFUNCTION(asVec2InitConstructor), asCALL_CDECL_OBJFIRST);

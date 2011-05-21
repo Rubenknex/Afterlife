@@ -12,9 +12,12 @@ namespace al
     {
         setWorld(m_World);
         g_ScriptManager.initialize();
-        m_TestScript = new Script(&g_ScriptManager, "Test");
-        m_TestScript->loadSection("data/Scripts/test.as");
+        m_TestScript = new Script(&g_ScriptManager, "Level");
+        m_TestScript->loadSection("data/Scripts/level.as");
         m_TestScript->build();
+
+        m_TestScript->prepareFunction("initialize");
+        m_TestScript->executeFunction();
     }
 
     PlayState::~PlayState()

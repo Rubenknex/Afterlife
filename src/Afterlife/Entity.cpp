@@ -10,8 +10,8 @@ namespace al
         m_Speed(0.0f),
         mDrawOrder(0),
         mAlive(true),
-        mVisible(true),
-        mCollidable(false)
+        mCollidable(false),
+        mVisible(true)
     {
 
     }

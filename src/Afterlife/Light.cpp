@@ -34,6 +34,11 @@ namespace al
         return m_Name;
     }
 
+    const sf::Vector2f& Light::getPosition()
+    {
+        return mPosition;
+    }
+
     void Light::setPosition(const sf::Vector2f& pos)
     {
         mPosition = pos;
@@ -57,6 +62,11 @@ namespace al
     float Light::getIntensity()
     {
         return mIntensity;
+    }
+
+    float Light::getRadius()
+    {
+        return mRadius;
     }
 
     void Light::setRadius(float radius)

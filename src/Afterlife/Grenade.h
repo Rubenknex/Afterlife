@@ -40,7 +40,8 @@ namespace al
             float mDetonationDelay;
             float mDetonationTimer;
 
-            shared_ptr<PointLight> mLight;
+            //shared_ptr<PointLight> mLight;
+            std::string m_LightName;
 
             bool mExploded;
     };

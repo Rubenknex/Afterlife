@@ -13,12 +13,10 @@ namespace al
         mDamage(110.0f),
         mDetonationDelay(2.0f),
         mDetonationTimer(0.0f),
-        mLight(shared_ptr<PointLight>(new PointLight(randomString(), sf::Vector2f(), 1.0f, 150.0f, sf::Color(255, 230, 150), 16))),
+        //mLight(shared_ptr<PointLight>(new PointLight(randomString(), sf::Vector2f(), 1.0f, 150.0f, sf::Color(255, 230, 150), 16))),
         mExploded(false)
     {
         mExplosion = sf::Sound(*SM.GetResource("data/Sounds/Weapons/grenade.wav")); // TODO: Fix Sound object gets destroyed before sound has finished playing.
-
-        mLight->setOn(false);
 
         SetPosition(pos);
         SetImage(*IM.GetResource("data/Images/grenade.png"));
@@ -30,7 +28,7 @@ namespace al
 
     Grenade::~Grenade()
     {
-        m_World->getLightManager()->removeLight(mLight->getName());
+        m_World->getLightManager()->removeLight(m_LightName);
     }
 
     void Grenade::update(float dt)
@@ -41,7 +39,9 @@ namespace al
         }
         else
         {
-            mLight->setIntensity(lerp(0.2f, mLight->getIntensity(), 0.0f));
+            boost::shared_ptr<Light> light = m_World->getLightManager()->getLightByName(m_LightName);
+            light->setIntensity(lerp(0.2f, light->getIntensity(), 0.0f));
+            //mLight->setIntensity(lerp(0.2f, mLight->getIntensity(), 0.0f));
 
             if (mExplosion.GetStatus() == sf::Sound::Stopped)
             {
@@ -102,9 +102,8 @@ namespace al
             m_World->getParticleManager()->fireSystem("smoke_dark", GetPosition());
             m_World->getEntityManager()->add(EntityFactory::createGrenadeDamageDecal(m_World, GetPosition()));
 
-            mLight->setOn(true);
-            mLight->setPosition(GetPosition());
-            m_World->getLightManager()->addLight(mLight);
+            m_LightName = randomString();
+            m_World->getLightManager()->addLight(boost::shared_ptr<PointLight>(new PointLight(m_LightName, GetPosition(), 1.0f, 150.0f, sf::Color(255, 230, 150), 16)));
 
             mExplosion.Play();
 

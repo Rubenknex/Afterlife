@@ -66,8 +66,7 @@ namespace al
             mReloadDelay = boost::lexical_cast<float>(reloadDelay->FirstChild()->ValueStr());
 
             TiXmlElement* image = handle.FirstChild("Image").ToElement();
-            //mImage = sf::Sprite(*IM.GetResource(image->FirstChild()->ValueStr()));
-            shared_ptr<sf::Image> img = IM.GetResource("data/Images/Weapons/ak47.png");
+            shared_ptr<sf::Image> img = IM.GetResource(image->FirstChild()->ValueStr());
             mImage = sf::Sprite(*img);
             mImage.SetOrigin(mImage.GetSize() / 2.0f);
 

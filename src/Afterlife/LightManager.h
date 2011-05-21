@@ -19,7 +19,7 @@ namespace al
             LightManager();
             ~LightManager();
 
-            void addLight(LightPtr light);
+            void addLight(LightPtr);
             void removeLight(const std::string& name);
 
             void draw(sf::RenderTarget& target);

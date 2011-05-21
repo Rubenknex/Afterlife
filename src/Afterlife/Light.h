@@ -21,9 +21,11 @@ namespace al
 
             std::string getName();
 
+            const sf::Vector2f& getPosition();
             void setPosition(const sf::Vector2f& pos);
             void setIntensity(float intensity);
             float getIntensity();
+            float getRadius();
             void setRadius(float radius);
             void setOn(bool on);
 
