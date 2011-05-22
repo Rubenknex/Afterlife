@@ -6,32 +6,25 @@
 namespace al
 {
     PlayState::PlayState(sf::RenderWindow* window) :
-        mWindow(window),
-        m_World(new World()),
-        m_UI(new UI(m_World))
+        mWindow(window)
     {
+        m_World = new World();
+        m_UI = new UI(m_World);
+
         setWorld(m_World);
         g_ScriptManager.initialize();
-        m_TestScript = new Script(&g_ScriptManager, "Level");
-        m_TestScript->loadSection("data/Scripts/level.as");
-        m_TestScript->build();
 
-        m_TestScript->prepareFunction("initialize");
-        m_TestScript->executeFunction();
+        m_World->initialize();
     }
 
     PlayState::~PlayState()
     {
-        delete m_TestScript;
+        delete m_UI;
         delete m_World;
     }
 
     void PlayState::update(float dt)
     {
-        m_TestScript->prepareFunction("main");
-        m_TestScript->setArgFloat(0, dt);
-        m_TestScript->executeFunction();
-
         //std::cout << "Updating Playstate" << std::endl;
         m_World->update(dt);
 

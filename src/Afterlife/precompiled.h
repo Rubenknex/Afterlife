@@ -1,13 +1,14 @@
 #ifndef PCH_H_INCLUDED
 #define PCH_H_INCLUDED
 
+#include <iostream>
+#include <cmath>
 #include <map>
 #include <vector>
 #include <string>
 
 #include <boost/lexical_cast.hpp>
 #include <boost/shared_ptr.hpp>
-#include <boost/algorithm/string.hpp>
 
 #define TIXML_USE_STL
 #include "../TinyXML/tinyxml.h"

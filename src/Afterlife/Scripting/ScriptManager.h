@@ -8,8 +8,6 @@
 #include "../../AngelScript/scriptmath.h"
 #include "../../AngelScript/scriptstdstring.h"
 
-//#include "ScriptInterface.h"
-
 namespace al
 {
     class ScriptInterface;

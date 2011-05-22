@@ -39,8 +39,6 @@ namespace al
             UI* m_UI;
 
             World* m_World;
-
-            Script* m_TestScript;
     };
 }
 

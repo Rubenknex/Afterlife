@@ -5,8 +5,6 @@
 #include <iostream>
 #include <SFML/Window/Input.hpp>
 
-#include "Singleton.h"
-
 namespace al
 {
     /// Provides high level methods for retrieving input.
@@ -37,6 +35,9 @@ namespace al
             sf::Vector2i getMousePos();
             sf::Vector2i getMouseDelta();
 
+            /// Convert a string to a key code.
+            sf::Key::Code getKeyCode(const std::string& s);
+
         private:
             bool mCurrentKeys[sf::Key::Count];
             bool mPreviousKeys[sf::Key::Count];
@@ -48,6 +49,8 @@ namespace al
             int mPreviousMouseX;
             int mCurrentMouseY;
             int mPreviousMouseY;
+
+            std::map<std::string, sf::Key::Code> m_KeyMap;
     };
 
     /// There is only one keyboard/mouse per game, so just make it a global variable for ease of access.

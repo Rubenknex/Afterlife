@@ -13,6 +13,10 @@ namespace al
         mRightMouseTimer(0.0f),
         mRightMouseDown(false)
     {
+        //m_UpdateScript = new Script(&g_ScriptManager, "Player");
+        //m_UpdateScript->loadSection("data/Scripts/player.as");
+        //m_UpdateScript->build();
+
         mWeapon->load("data/Weapons/ak47.xml");
 
         SetPosition(150.0f, 150.0f);
@@ -30,12 +34,13 @@ namespace al
 
     Player::~Player()
     {
+        //delete m_UpdateScript;
         delete mWeapon;
     }
 
     void Player::update(float dt)
     {
-        //std::cout << "Updating player" << std::endl;
+
 
         if (mRightMouseDown)
         {

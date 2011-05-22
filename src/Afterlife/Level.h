@@ -11,6 +11,7 @@
 #include "Functions.h"
 #include "Light.h"
 #include "ResourceManager.h"
+#include "Scripting/Script.h"
 #include "Tile.h"
 
 namespace al
@@ -71,6 +72,8 @@ namespace al
             sf::Sprite mTileset;
 
             std::vector<boost::shared_ptr<Light> > m_Lights;
+
+            Script* m_UpdateScript;
 
             int mWidth;
             int mHeight;

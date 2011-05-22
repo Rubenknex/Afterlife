@@ -7,6 +7,7 @@ namespace al
     Level::Level() :
         mTilesetFilename(std::string()),
         mTileset(sf::Image()),
+        m_UpdateScript(NULL),
         mWidth(0),
         mHeight(0),
         mTileWidth(0),
@@ -17,7 +18,8 @@ namespace al
 
     Level::~Level()
     {
-
+        if (m_UpdateScript != NULL)
+            delete m_UpdateScript;
     }
 
     void Level::load(const std::string& filename)
@@ -32,7 +34,14 @@ namespace al
             TiXmlElement* tileset = handle.FirstChildElement("Tileset").ToElement();
             mTilesetFilename = tileset->FirstChild()->ValueStr();
             mTileset = sf::Sprite(*IM.GetResource(mTilesetFilename));
-            //mTileset = *IM.GetResource(mTilesetFilename);
+
+            TiXmlElement* script = handle.FirstChildElement("Script").ToElement();
+            m_UpdateScript = new Script(&g_ScriptManager, "Level");
+            m_UpdateScript->loadSection(script->FirstChild()->ValueStr());
+            m_UpdateScript->build();
+
+            m_UpdateScript->prepareFunction("initialize");
+            m_UpdateScript->executeFunction();
 
             TiXmlElement* width = handle.FirstChildElement("Width").ToElement();
             mWidth = atoi(width->FirstChild()->Value());
@@ -122,7 +131,9 @@ namespace al
 
     void Level::update(float dt)
     {
-
+        m_UpdateScript->prepareFunction("update");
+        m_UpdateScript->setArgFloat(0, dt);
+        m_UpdateScript->executeFunction();
     }
 
     void Level::draw(sf::RenderTarget& target)

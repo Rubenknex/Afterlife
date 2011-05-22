@@ -12,7 +12,7 @@ void initialize()
     setLightState("spot", false);
 }
 
-void main(float dt)
+void update(float dt)
 {
     frameCounter += 1;
     timer += dt;
@@ -22,13 +22,13 @@ void main(float dt)
 
     setLightAngle("spot", timer * 20.0f);
 
-    if (getPlayerPosition().x < 200.0f)
+    if (isKeyDown("space"))
         setLightState("spot", true);
     else
         setLightState("spot", false);
 
-    if (getPlayerPosition().x > 500.0f)
-        stopMusic("data/Sounds/Ambience/ambience_1.ogg");
+    //if (getPlayerPosition().x > 500.0f)
+        //stopMusic("data/Sounds/Ambience/ambience_1.ogg");
 
     if (getZombieCount() < 5)
     {
@@ -37,7 +37,7 @@ void main(float dt)
 
     if (frameCounter > 60)
     {
-        fireParticleSystem("blood_explode", getPlayerPosition());
+        //fireParticleSystem("blood_explode", getPlayerPosition());
         //playSound("data/Sounds/Weapons/grenade.wav", 100.0f, 1.0f);
 
         frameCounter = 0;

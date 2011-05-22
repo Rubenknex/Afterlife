@@ -1,9 +1,11 @@
 #include "ScriptInterface.h"
 
+#include <cmath>
 #include <SFML/Audio.hpp>
 
 #include "../EntityFactory.h"
 #include "../EntityManager.h"
+#include "../InputState.h"
 #include "../LightManager.h"
 #include "../ParticleManager.h"
 #include "../ResourceManager.h"
@@ -83,6 +85,23 @@ namespace al
                 return *this;
             }
 
+            float getLength()
+            {
+                return sqrt(x * x + y * y);
+            }
+
+            float getLengthSquared()
+            {
+                return x * x + y * y;
+            }
+
+            void normalize()
+            {
+                float length = getLength();
+                x /= length;
+                y /= length;
+            }
+
             sf::Vector2f toVector2f()
             {
                 return sf::Vector2f(x, y);
@@ -112,6 +131,12 @@ namespace al
     Vec2 asGetWindowSize()
     {
         return Vec2((float)g_Window->GetWidth(), (float)g_Window->GetHeight());
+    }
+
+    /// Input ///
+    bool asIsKeyDown(const std::string& key)
+    {
+        return g_Input.isKeyDown(g_Input.getKeyCode(key));
     }
 
     /// Random numbers ///
@@ -307,6 +332,9 @@ namespace al
         engine->RegisterGlobalFunction("void print(const string &in)", asFUNCTIONPR(asPrint, (const std::string&), void), asCALL_CDECL);
         engine->RegisterGlobalFunction("Vec2 getWindowSize()", asFUNCTION(asGetWindowSize), asCALL_CDECL);
 
+        /// Input ///
+        engine->RegisterGlobalFunction("bool isKeyDown(const string &in)", asFUNCTIONPR(asIsKeyDown, (const std::string&), bool), asCALL_CDECL);
+
         /// Random numbers ///
         engine->RegisterGlobalFunction("int rand(int min, int max)", asFUNCTIONPR(asRandInt, (int, int), int), asCALL_CDECL);
         engine->RegisterGlobalFunction("float rand(float min, float max)", asFUNCTIONPR(asRandFloat, (float, float), float), asCALL_CDECL);
@@ -360,5 +388,9 @@ namespace al
         engine->RegisterObjectMethod("Vec2", "Vec2& opSubAssign(const Vec2 &in)", asMETHODPR(Vec2, operator-=, (const Vec2&), Vec2&), asCALL_THISCALL);
         engine->RegisterObjectMethod("Vec2", "Vec2& opMulAssign(float)", asMETHODPR(Vec2, operator*=, (float), Vec2&), asCALL_THISCALL);
         engine->RegisterObjectMethod("Vec2", "Vec2& opDivAssign(float)", asMETHODPR(Vec2, operator/=, (float), Vec2&), asCALL_THISCALL);
+
+        engine->RegisterObjectMethod("Vec2", "float length()", asMETHOD(Vec2, getLength), asCALL_THISCALL);
+        engine->RegisterObjectMethod("Vec2", "float lengthSquared()", asMETHOD(Vec2, getLengthSquared), asCALL_THISCALL);
+        engine->RegisterObjectMethod("Vec2", "void normalize()", asMETHOD(Vec2, normalize), asCALL_THISCALL);
     }
 }

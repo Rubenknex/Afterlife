@@ -5,7 +5,7 @@ namespace al
     boost::shared_ptr<Decal> EntityFactory::createBloodDecal(World* world, const sf::Vector2f pos)
     {
         std::string decalFile = (boost::format("data/Images/Decals/blood_%1%.png") % sf::Randomizer::Random(1, 4)).str();
-        float lifeTime = sf::Randomizer::Random(5.0f, 20.0f);
+        float lifeTime = sf::Randomizer::Random(15.0f, 20.0f);
         boost::shared_ptr<Decal> bloodDecal(new Decal(world, *IM.GetResource(decalFile), pos, lifeTime));
 
         return bloodDecal;

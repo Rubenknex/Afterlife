@@ -20,6 +20,8 @@ namespace al
             World();
             ~World();
 
+            void initialize();
+
             void update(float dt);
             void draw(sf::RenderTarget& target);
 

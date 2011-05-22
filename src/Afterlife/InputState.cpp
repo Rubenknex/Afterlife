@@ -1,5 +1,7 @@
 #include "InputState.h"
 
+#define ADDKEY(s, key) m_KeyMap.insert(std::pair<std::string, sf::Key::Code>(s, key))
+
 namespace al
 {
     InputState g_Input;
@@ -22,6 +24,17 @@ namespace al
         mPreviousMouseY = 0;
         mCurrentMouseX = 0;
         mCurrentMouseY = 0;
+
+        ADDKEY("a", sf::Key::A);
+        ADDKEY("s", sf::Key::S);
+        ADDKEY("d", sf::Key::D);
+        ADDKEY("w", sf::Key::W);
+        ADDKEY("space", sf::Key::Space);
+        ADDKEY("enter", sf::Key::Return);
+        ADDKEY("left", sf::Key::Left);
+        ADDKEY("right", sf::Key::Right);
+        ADDKEY("up", sf::Key::Up);
+        ADDKEY("down", sf::Key::Down);
     }
 
     InputState::~InputState()
@@ -107,5 +120,15 @@ namespace al
     sf::Vector2i InputState::getMouseDelta()
     {
         return sf::Vector2i(mCurrentMouseX, mCurrentMouseY) - sf::Vector2i(mPreviousMouseX, mPreviousMouseY);
+    }
+
+    sf::Key::Code InputState::getKeyCode(const std::string& s)
+    {
+        std::map<std::string, sf::Key::Code>::iterator it = m_KeyMap.find(s);
+
+        if (it != m_KeyMap.end())
+            return it->second;
+
+        return sf::Key::Count;
     }
 }

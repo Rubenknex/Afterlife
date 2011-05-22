@@ -17,6 +17,7 @@
 #include "ResourceManager.h"
 #include "InputState.h"
 #include "Level.h"
+#include "Scripting/Script.h"
 
 using boost::shared_ptr;
 
@@ -42,6 +43,8 @@ namespace al
             Weapon* getWeapon();
 
         private:
+            //Script m_UpdateScript;
+
             Animation mAnimation;
             Weapon* mWeapon;
             shared_ptr<SpotLight> mFlashLight;

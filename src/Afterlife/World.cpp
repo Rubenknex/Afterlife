@@ -15,6 +15,20 @@ namespace al
         m_Level(new Level()),
         m_PlayerId(-1)
     {
+
+    }
+
+    World::~World()
+    {
+        delete m_EntityManager;
+        delete m_LightManager;
+        delete m_ParticleManager;
+
+        delete m_Level;
+    }
+
+    void World::initialize()
+    {
         m_LightManager->setAmbientColor(sf::Color(100, 100, 100));
 
         m_ParticleManager->loadSystem("data/ParticleSystems/blood.xml", "blood");
@@ -29,27 +43,11 @@ namespace al
         m_PlayerId = m_EntityManager->add(player);
     }
 
-    World::~World()
-    {
-        delete m_EntityManager;
-        delete m_LightManager;
-        delete m_ParticleManager;
-
-        delete m_Level;
-    }
-
     void World::update(float dt)
     {
-        //std::cout << "Updating world" << std::endl;
-
+        m_Level->update(dt);
         m_EntityManager->update(dt);
         m_ParticleManager->update(dt);
-
-        //if (m_EntityManager->getCount() < 10)
-        //{
-        //    sf::Vector2f pos(sf::Randomizer::Random(100.0f, m_Level->getWidthPixels() - 100.0f), sf::Randomizer::Random(100.0f, m_Level->getWidthPixels() - 100.0f));
-        //    m_EntityManager->add(EntityFactory::createZombie(this, pos));
-        //}
     }
 
     void World::draw(sf::RenderTarget& target)

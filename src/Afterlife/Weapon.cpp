@@ -156,7 +156,7 @@ namespace al
                     sf::Vector2f offset(cos(rotRadians), sin(rotRadians));
                     em.add(EntityFactory::createProjectile(mOwner->getWorld(), pos + offset * 20.0f, angle, speed, mDamage));
 
-                    g_AudioPlayer.playSound(m_FireSound, 100.0f, 1.0f);
+                    g_AudioPlayer.playSound(m_FireSound, 100.0f, sf::Randomizer::Random(0.9f, 1.0f));
 
                     mBulletsInMag -= 1;
                     mShootTimer = 0.0f;
