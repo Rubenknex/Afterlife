@@ -12,6 +12,8 @@
 #include "../PointLight.h"
 #include "../AudioPlayer.h"
 #include "../SpotLight.h"
+#include "../Weapon.h"
+#include "../WeaponPickup.h"
 
 namespace al
 {
@@ -276,6 +278,14 @@ namespace al
         return g_World->getEntityManager()->queryType(Entity::ZOMBIE).size();
     }
 
+    /// Weapons///
+    void asAddWeaponPickup(const std::string& filename, Vec2& pos)
+    {
+        WeaponData data;
+        data.load(filename);
+        g_World->getEntityManager()->add(boost::shared_ptr<WeaponPickup>(new WeaponPickup(g_World, pos.toVector2f(), data)));
+    }
+
     /// Particles ///
     void asLoadParticleSystem(const std::string& filename, const std::string& name)
     {
@@ -358,6 +368,9 @@ namespace al
         /// Zombie ///
         engine->RegisterGlobalFunction("void addZombie(float x, float y)", asFUNCTIONPR(asAddZombie, (float, float), void), asCALL_CDECL);
         engine->RegisterGlobalFunction("int getZombieCount()", asFUNCTION(asGetZombieCount), asCALL_CDECL);
+
+        /// Weapons ///
+        engine->RegisterGlobalFunction("void addWeaponPickup(const string &in, Vec2 &in)", asFUNCTIONPR(asAddWeaponPickup, (const std::string&, Vec2&), void), asCALL_CDECL);
 
         /// Particles ///
         engine->RegisterGlobalFunction("void loadParticleSystem(const string &in, const string &in)", asFUNCTIONPR(asLoadParticleSystem, (const std::string&, const std::string&), void), asCALL_CDECL);

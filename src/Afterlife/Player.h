@@ -18,12 +18,14 @@
 #include "InputState.h"
 #include "Level.h"
 #include "Scripting/Script.h"
+#include "Weapon.h"
 
 using boost::shared_ptr;
 
 namespace al
 {
     class Weapon;
+    class WeaponData;
     class World;
 
     class Player : public Entity
@@ -41,6 +43,7 @@ namespace al
             void handleCollision();
 
             Weapon* getWeapon();
+            void setWeapon(const WeaponData& data);
 
         private:
             //Script m_UpdateScript;

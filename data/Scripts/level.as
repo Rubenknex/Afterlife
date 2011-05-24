@@ -10,6 +10,10 @@ void initialize()
     addPointLight("lantern", Vec2(500.0f, 500.0f), 1.0f, 75.0f, 255, 230, 150, 16);
     addSpotLight("spot", Vec2(200.0f, 600.0f), 1.0f, 300.0f, 255, 230, 150, 0.0f, 15.0f);
     setLightState("spot", false);
+
+    addWeaponPickup("data/Weapons/ak47.xml", Vec2(500.0f, 500.0f));
+    addWeaponPickup("data/Weapons/uzi.xml", Vec2(600.0f, 500.0f));
+    addWeaponPickup("data/Weapons/famas.xml", Vec2(500.0f, 600.0f));
 }
 
 void update(float dt)

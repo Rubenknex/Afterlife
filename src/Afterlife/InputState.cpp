@@ -1,7 +1,5 @@
 #include "InputState.h"
 
-#define ADDKEY(s, key) m_KeyMap.insert(std::pair<std::string, sf::Key::Code>(s, key))
-
 namespace al
 {
     InputState g_Input;
@@ -25,16 +23,16 @@ namespace al
         mCurrentMouseX = 0;
         mCurrentMouseY = 0;
 
-        ADDKEY("a", sf::Key::A);
-        ADDKEY("s", sf::Key::S);
-        ADDKEY("d", sf::Key::D);
-        ADDKEY("w", sf::Key::W);
-        ADDKEY("space", sf::Key::Space);
-        ADDKEY("enter", sf::Key::Return);
-        ADDKEY("left", sf::Key::Left);
-        ADDKEY("right", sf::Key::Right);
-        ADDKEY("up", sf::Key::Up);
-        ADDKEY("down", sf::Key::Down);
+        addKey("a", sf::Key::A);
+        addKey("s", sf::Key::S);
+        addKey("d", sf::Key::D);
+        addKey("w", sf::Key::W);
+        addKey("space", sf::Key::Space);
+        addKey("enter", sf::Key::Return);
+        addKey("left", sf::Key::Left);
+        addKey("right", sf::Key::Right);
+        addKey("up", sf::Key::Up);
+        addKey("down", sf::Key::Down);
     }
 
     InputState::~InputState()
@@ -130,5 +128,10 @@ namespace al
             return it->second;
 
         return sf::Key::Count;
+    }
+
+    void InputState::addKey(const std::string& s, sf::Key::Code keyCode)
+    {
+        m_KeyMap.insert(std::pair<std::string, sf::Key::Code>(s, keyCode));
     }
 }

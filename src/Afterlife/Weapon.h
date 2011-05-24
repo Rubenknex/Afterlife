@@ -22,16 +22,36 @@ namespace al
     class Entity;
     class World;
 
+    /// The data of a weapon, like rate of fire or magazine size.
+    class WeaponData
+    {
+        friend class Weapon;
+        friend class WeaponPickup;
+
+        public:
+            void load(const std::string& filename);
+
+        private:
+            std::string m_Name;
+            std::string m_ImageFile;
+            std::string m_FireFile;
+            std::string m_ReloadFile;
+            int m_MagCapacity;
+            int m_FireRate;
+            float m_Damage;
+            float m_ReloadDelay;
+    };
+
     /// Weapon provides behaviour of a weapon like reloading, shooting and ammunition management.
     class Weapon
     {
         public:
-            Weapon(Entity* owner);
-            Weapon(const std::string& name, int capacity, int firerate, float damage, float reloadTime);
+            //Weapon(Entity* owner);
+            Weapon(const WeaponData& data);
             ~Weapon();
 
             /// Load a weapon from an XML file.
-            void load(const std::string& filename);
+            //void load(const std::string& filename);
 
             void update(float dt);
             void draw(sf::RenderTarget& target);
@@ -41,6 +61,8 @@ namespace al
             /// Reload the weapon.
             void reload();
 
+            void setOwner(Entity* e);
+
             int getBullets();
             void setBullets(int bullets);
 
@@ -48,36 +70,20 @@ namespace al
 
             int getBulletsInMag();
 
-            /// Copy's the weapon. At the beginning of the game all weapons will be loaded and when
-            /// the player picks up a weapon the loaded weapon will be copied.
-            Weapon copy();
-
         private:
-            Entity* mOwner;
+            Entity* m_Owner;
 
-            bool m_Loaded;
+            WeaponData m_Data;
 
-            std::string mName;
-
-            float mDamage;
-
-            int m_Firerate;
             float mShootTimer;
-            float mShootDelay;
 
             int mBullets;
             int mBulletsInMag;
-            int mMagCapacity;
 
             bool mReloading;
             float mReloadTimer;
-            float mReloadDelay;
 
-            sf::Sprite mImage;
-            std::string m_FireSound;
-            std::string m_ReloadSound;
-
-            boost::shared_ptr<PointLight> m_FireLight;
+            sf::Sprite m_Image;
     };
 }
 

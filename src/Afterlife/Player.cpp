@@ -8,16 +8,15 @@ namespace al
     Player::Player(World* world) :
         Entity(world),
         mAnimation(Animation(45, 60, 8, 1, 8, 0.1f)),
-        mWeapon(new Weapon(this)),
         mFlashLight(shared_ptr<SpotLight>(new SpotLight("flashlight", sf::Vector2f(), 0.7f, 280.0f, sf::Color(248, 246, 226), 0.0f, 16.0f))),
         mRightMouseTimer(0.0f),
         mRightMouseDown(false)
     {
-        //m_UpdateScript = new Script(&g_ScriptManager, "Player");
-        //m_UpdateScript->loadSection("data/Scripts/player.as");
-        //m_UpdateScript->build();
+        WeaponData weaponData;
+        weaponData.load("data/Weapons/ak47.xml");
+        mWeapon = new Weapon(weaponData);
 
-        mWeapon->load("data/Weapons/ak47.xml");
+        mWeapon->setOwner(this);
 
         SetPosition(150.0f, 150.0f);
         setSpeed(3.0f);
@@ -34,14 +33,11 @@ namespace al
 
     Player::~Player()
     {
-        //delete m_UpdateScript;
         delete mWeapon;
     }
 
     void Player::update(float dt)
     {
-
-
         if (mRightMouseDown)
         {
             mRightMouseTimer += dt;
@@ -70,7 +66,6 @@ namespace al
 
         // Interpolate the center of the screen towards the position of the player,
         // this looks nice and smooth.
-
         sf::Vector2f center = g_Window->GetView().GetCenter();
         sf::Vector2f move = lerpVector2f(0.05f, center, GetPosition()) - center;
         sf::Vector2f viewSize = g_Window->GetView().GetSize();
@@ -79,7 +74,6 @@ namespace al
 
 
         // Get the angle between the mouse cursor and the player.
-
         sf::Vector2f mousePos(g_Input.getMouseX(), g_Input.getMouseY());
         sf::Vector2f screenPos = g_Window->ConvertCoords(mousePos.x, mousePos.y);
         float rotation = atan2(screenPos.y - GetPosition().y, screenPos.x - GetPosition().x);
@@ -118,7 +112,7 @@ namespace al
         }
         else if (g_Input.isMouseButtonFirstUp(sf::Mouse::Right))
         {
-            shared_ptr<Grenade> grenade(new Grenade(m_World, GetPosition(), GetRotation() + 90.0f, mRightMouseTimer * 150.0f));
+            shared_ptr<Grenade> grenade(new Grenade(m_World, GetPosition(), GetRotation() + 90.0f, mRightMouseTimer * 250.0f));
             m_World->getEntityManager()->add(grenade);
 
             mRightMouseDown = false;
@@ -184,9 +178,6 @@ namespace al
         target.Draw(*this);
 
         mWeapon->draw(target);
-
-        //sf::Shape circle = sf::Shape::Circle(GetPosition(), getRadius(), sf::Color::Red);
-        //window.Draw(circle);
     }
 
     bool Player::onCollision(boost::shared_ptr<Entity> other)
@@ -205,5 +196,11 @@ namespace al
     Weapon* Player::getWeapon()
     {
         return mWeapon;
+    }
+
+    void Player::setWeapon(const WeaponData& data)
+    {
+        mWeapon = new Weapon(data);
+        mWeapon->setOwner(this);
     }
 }

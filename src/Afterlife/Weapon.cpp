@@ -6,41 +6,8 @@
 
 namespace al
 {
-    Weapon::Weapon(Entity* owner) :
-        mOwner(owner),
-        m_Loaded(false)
-    {
-
-    }
-
-    Weapon::Weapon(const std::string& name, int capacity, int firerate, float damage, float reloadTime)
-    {
-        mName = name;
-
-        mMagCapacity = capacity;
-
-        mShootTimer = 0.0f;
-        m_Firerate = firerate;
-        mShootDelay = 1.0f / (firerate / 60.0f);
-
-        mBullets = 1000;
-        mBulletsInMag = capacity;
-
-        mReloading = false;
-        mReloadTimer = 0.0f;
-        mReloadDelay = reloadTime;
-
-        mDamage = damage;
-
-        m_Loaded = true;
-    }
-
-    Weapon::~Weapon()
-    {
-
-    }
-
-    void Weapon::load(const std::string& filename)
+    /// WeaponData
+    void WeaponData::load(const std::string& filename)
     {
         TiXmlDocument doc;
 
@@ -50,43 +17,28 @@ namespace al
             handle = handle.FirstChildElement();
 
             TiXmlElement* name = handle.FirstChild("Name").ToElement();
-            mName = name->FirstChild()->ValueStr();
+            m_Name = name->FirstChild()->ValueStr();
 
             TiXmlElement* damage = handle.FirstChild("Damage").ToElement();
-            mDamage = boost::lexical_cast<int>(damage->FirstChild()->ValueStr());
+            m_Damage = boost::lexical_cast<int>(damage->FirstChild()->ValueStr());
 
             TiXmlElement* rpm = handle.FirstChild("RPM").ToElement();
-            m_Firerate = boost::lexical_cast<int>(rpm->FirstChild()->ValueStr());
-            mShootDelay = 1.0f / (m_Firerate / 60.0f);
+            m_FireRate = boost::lexical_cast<int>(rpm->FirstChild()->ValueStr());
 
             TiXmlElement* magCapacity = handle.FirstChild("MagCapacity").ToElement();
-            mMagCapacity = boost::lexical_cast<int>(magCapacity->FirstChild()->ValueStr());
+            m_MagCapacity = boost::lexical_cast<int>(magCapacity->FirstChild()->ValueStr());
 
             TiXmlElement* reloadDelay = handle.FirstChild("ReloadDelay").ToElement();
-            mReloadDelay = boost::lexical_cast<float>(reloadDelay->FirstChild()->ValueStr());
+            m_ReloadDelay = boost::lexical_cast<float>(reloadDelay->FirstChild()->ValueStr());
 
             TiXmlElement* image = handle.FirstChild("Image").ToElement();
-            shared_ptr<sf::Image> img = IM.GetResource(image->FirstChild()->ValueStr());
-            mImage = sf::Sprite(*img);
-            mImage.SetOrigin(mImage.GetSize() / 2.0f);
+            m_ImageFile = image->FirstChild()->ValueStr();
 
             TiXmlElement* fireSound = handle.FirstChild("FireSound").ToElement();
-            m_FireSound = fireSound->FirstChild()->ValueStr();
+            m_FireFile = fireSound->FirstChild()->ValueStr();
 
             TiXmlElement* reloadSound = handle.FirstChild("ReloadSound").ToElement();
-            m_ReloadSound = reloadSound->FirstChild()->ValueStr();
-
-            mBullets = 1000;
-            mBulletsInMag = mMagCapacity;
-            mShootTimer = 0.0f;
-            mReloadTimer = 0.0f;
-            mReloading = false;
-
-            m_FireLight = boost::shared_ptr<PointLight>(new PointLight("firelight", sf::Vector2f(), 1.0f, 32.0f, sf::Color(255, 230, 150), 16));
-            m_FireLight->setOn(false);
-            mOwner->getWorld()->getLightManager()->addLight(m_FireLight);
-
-            m_Loaded = true;
+            m_ReloadFile = reloadSound->FirstChild()->ValueStr();
         }
         else
         {
@@ -94,21 +46,36 @@ namespace al
         }
     }
 
+    /// Weapon
+    Weapon::Weapon(const WeaponData& data) :
+        m_Data(data),
+        m_Owner(NULL)
+    {
+        m_Image = sf::Sprite(*IM.GetResource(data.m_ImageFile));
+        m_Image.SetOrigin(m_Image.GetSize() / 2.0f);
+
+        mBulletsInMag = m_Data.m_MagCapacity;
+        mBullets = 10000;
+    }
+
+    Weapon::~Weapon()
+    {
+
+    }
+
     void Weapon::update(float dt)
     {
-        if (m_Loaded)
-        {
             if (mReloading)
             {
-                if (mReloadTimer <= mReloadDelay)
+                if (mReloadTimer <= m_Data.m_ReloadDelay)
                     mReloadTimer += dt;
                 else
                 {
-                    float bulletsToAdd = mMagCapacity - mBulletsInMag;
+                    float bulletsToAdd = m_Data.m_MagCapacity - mBulletsInMag;
 
                     if (mBullets > bulletsToAdd)
                     {
-                        mBulletsInMag = mMagCapacity;
+                        mBulletsInMag = m_Data.m_MagCapacity;
                         mBullets -= bulletsToAdd;
                     }
                     else
@@ -123,63 +90,58 @@ namespace al
             }
             else
             {
-                if (mShootTimer <= mShootDelay)
+                if (mShootTimer <= (60.0f / m_Data.m_FireRate))
                     mShootTimer += dt;
             }
-        }
     }
 
     void Weapon::draw(sf::RenderTarget& target)
     {
-        if (m_Loaded)
-        {
-            float rotRadians = radians(mOwner->GetRotation() + 90.0f);
+            float rotRadians = radians(m_Owner->GetRotation() + 90.0f);
             sf::Vector2f rotNormal(cos(rotRadians), sin(rotRadians));
-            mImage.SetPosition(mOwner->GetPosition() + rotNormal * 14.0f);
-            mImage.SetRotation(mOwner->GetRotation());
+            m_Image.SetPosition(m_Owner->GetPosition() + rotNormal * 14.0f);
+            m_Image.SetRotation(m_Owner->GetRotation());
 
-            m_FireLight->setPosition(mOwner->GetPosition() + rotNormal * 14.0f);
+            //m_FireLight->setPosition(m_Owner->GetPosition() + rotNormal * 14.0f);
 
-            target.Draw(mImage);
-        }
+            target.Draw(m_Image);
     }
 
     void Weapon::fire(EntityManager& em, const sf::Vector2f pos, float angle, float speed)
     {
-        if (m_Loaded)
-        {
-            if (mShootTimer > mShootDelay)
+            if (mShootTimer > (60.0f / m_Data.m_FireRate))
             {
                 if (mBulletsInMag > 0)
                 {
                     float rotRadians = radians(angle);
                     sf::Vector2f offset(cos(rotRadians), sin(rotRadians));
-                    em.add(EntityFactory::createProjectile(mOwner->getWorld(), pos + offset * 20.0f, angle, speed, mDamage));
+                    em.add(EntityFactory::createProjectile(m_Owner->getWorld(), pos + offset * 20.0f, angle, speed, m_Data.m_Damage));
 
-                    g_AudioPlayer.playSound(m_FireSound, 100.0f, sf::Randomizer::Random(0.9f, 1.0f));
+                    g_AudioPlayer.playSound(m_Data.m_FireFile, 100.0f, sf::Randomizer::Random(0.9f, 1.0f));
 
                     mBulletsInMag -= 1;
                     mShootTimer = 0.0f;
                 }
                 else
                 {
-                    reload();
+                    //reload();
                 }
             }
-        }
     }
 
     void Weapon::reload()
     {
-        if (m_Loaded)
-        {
-            if (!mReloading && mBulletsInMag < mMagCapacity && mBullets > 0)
+            if (!mReloading && mBulletsInMag < m_Data.m_MagCapacity && mBullets > 0)
             {
-                g_AudioPlayer.playSound(m_ReloadSound, 100.0f, 1.0f);
+                g_AudioPlayer.playSound(m_Data.m_ReloadFile, 100.0f, 1.0f);
 
                 mReloading = true;
             }
-        }
+    }
+
+    void Weapon::setOwner(Entity* e)
+    {
+        m_Owner = e;
     }
 
     int Weapon::getBullets()
@@ -194,16 +156,11 @@ namespace al
 
     int Weapon::getMagCapacity()
     {
-        return mMagCapacity;
+        return m_Data.m_MagCapacity;
     }
 
     int Weapon::getBulletsInMag()
     {
         return mBulletsInMag;
-    }
-
-    Weapon Weapon::copy()
-    {
-        return Weapon(mName, mMagCapacity, m_Firerate, mDamage, mReloadDelay);
     }
 }

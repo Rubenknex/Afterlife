@@ -37,6 +37,7 @@ namespace al
 
             /// Convert a string to a key code.
             sf::Key::Code getKeyCode(const std::string& s);
+            void addKey(const std::string& s, sf::Key::Code keyCode);
 
         private:
             bool mCurrentKeys[sf::Key::Count];

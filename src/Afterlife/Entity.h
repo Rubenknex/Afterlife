@@ -17,6 +17,7 @@ namespace al
             enum EntityType
             {
                 DECAL,
+                PICKUP,
                 PLAYER,
                 PROJECTILE,
                 ZOMBIE,

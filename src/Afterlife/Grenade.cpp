@@ -46,7 +46,7 @@ namespace al
         Move(mDirection * (mSpeed * dt));
         Rotate(0.2f);
 
-        mSpeed = lerp(0.01f, mSpeed, 0.0f);
+        mSpeed = lerp(0.05f, mSpeed, 0.0f);
 
         sf::Vector2f pos = GetPosition();
 
