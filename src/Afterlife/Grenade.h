@@ -10,6 +10,7 @@
 #include "EntityFactory.h"
 #include "Functions.h"
 #include "Level.h"
+#include "Math.h"
 #include "PointLight.h"
 
 using boost::shared_ptr;

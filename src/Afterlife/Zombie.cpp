@@ -89,7 +89,7 @@ namespace al
 
             if (mMoveTimer > mMoveDelay)
             {
-                float angle = radians(sf::Randomizer::Random(0.0f, 360.0f));
+                float angle = math::radians(sf::Randomizer::Random(0.0f, 360.0f));
                 sf::Vector2f direction(cos(angle), sin(angle));
                 mTarget = GetPosition() + direction * sf::Randomizer::Random(100.0f, 150.0f);
 
@@ -98,16 +98,16 @@ namespace al
 
             sf::Vector2f direction = mTarget - GetPosition();
 
-            if (vector2fLength(direction) > 1.0f)
+            if (math::length(direction) > 1.0f)
             {
-                Move(vector2fNormalize(direction) * (mSpeed * dt));
+                Move(math::normalize(direction) * (mSpeed * dt));
             }
 
-            SetRotation(degrees(atan2(direction.y, direction.x)) - 90.0f);
+            SetRotation(math::degrees(atan2(direction.y, direction.x)) - 90.0f);
 
             sf::Vector2f playerDistance = m_World->getEntityManager()->getById(m_World->getPlayerId())->GetPosition() - GetPosition();
 
-            if (vector2fLength(playerDistance) < 200.0f)
+            if (math::length(playerDistance) < 200.0f)
             {
                 bool seePlayer = !m_World->getLevel()->rayCast(GetPosition(), GetPosition() + playerDistance);
 
@@ -117,10 +117,10 @@ namespace al
         }
         else if (mZombieState == ALERTED)
         {
-            sf::Vector2f playerDirection = vector2fNormalize(m_World->getEntityManager()->getById(m_World->getPlayerId())->GetPosition() - GetPosition());
+            sf::Vector2f playerDirection = math::normalize(m_World->getEntityManager()->getById(m_World->getPlayerId())->GetPosition() - GetPosition());
             Move(playerDirection * (mSpeed * dt));
 
-            SetRotation(degrees(atan2(playerDirection.y, playerDirection.x)) - 90.0f);
+            SetRotation(math::degrees(atan2(playerDirection.y, playerDirection.x)) - 90.0f);
         }
 
         sf::Vector2f pos = GetPosition();
@@ -139,7 +139,7 @@ namespace al
             {
                 mFadingTimer += dt;
 
-                int alpha = clamp(255 - ((mFadingTimer / mFadingTime) * 255), 0.0f, 255.0f);
+                int alpha = math::clamp(255 - ((mFadingTimer / mFadingTime) * 255), 0.0f, 255.0f);
                 SetColor(sf::Color(255, 255, 255, alpha));
             }
             else

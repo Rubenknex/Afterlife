@@ -97,7 +97,7 @@ namespace al
 
     void Weapon::draw(sf::RenderTarget& target)
     {
-            float rotRadians = radians(m_Owner->GetRotation() + 90.0f);
+            float rotRadians = math::radians(m_Owner->GetRotation() + 90.0f);
             sf::Vector2f rotNormal(cos(rotRadians), sin(rotRadians));
             m_Image.SetPosition(m_Owner->GetPosition() + rotNormal * 14.0f);
             m_Image.SetRotation(m_Owner->GetRotation());
@@ -113,7 +113,7 @@ namespace al
             {
                 if (mBulletsInMag > 0)
                 {
-                    float rotRadians = radians(angle);
+                    float rotRadians = math::radians(angle);
                     sf::Vector2f offset(cos(rotRadians), sin(rotRadians));
                     em.add(EntityFactory::createProjectile(m_Owner->getWorld(), pos + offset * 20.0f, angle, speed, m_Data.m_Damage));
 

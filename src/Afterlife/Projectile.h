@@ -6,6 +6,7 @@
 
 #include "Entity.h"
 #include "Functions.h"
+#include "Math.h"
 
 namespace al
 {
@@ -23,7 +24,6 @@ namespace al
             void update(float dt);
             void draw(sf::RenderTarget& target);
 
-            //bool isAlive();
             void kill();
 
             float getDamage();
@@ -32,8 +32,6 @@ namespace al
             sf::Vector2f mVelocity;
 
             float mDamage;
-
-            //bool mAlive;
     };
 }
 

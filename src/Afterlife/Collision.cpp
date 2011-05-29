@@ -6,19 +6,19 @@ namespace al
     {
         CollisionResult result;
 
-        float closestX = clamp(cPos.x, rect.Left, rect.Left + rect.Width);
-        float closestY = clamp(cPos.y, rect.Top, rect.Top + rect.Height);
+        float closestX = math::clamp(cPos.x, rect.Left, rect.Left + rect.Width);
+        float closestY = math::clamp(cPos.y, rect.Top, rect.Top + rect.Height);
 
         sf::Vector2f diff(cPos.x - closestX, cPos.y - closestY);
 
-        if (vector2fLengthSq(diff) > cRadius * cRadius)
+        if (math::lengthSquared(diff) > cRadius * cRadius)
         {
             result.collision = false;
 
             return result;
         }
 
-        float length = vector2fLength(diff);
+        float length = math::length(diff);
 
         if (length == 0.0f)
         {
@@ -27,7 +27,7 @@ namespace al
             return result;
         }
 
-        sf::Vector2f normal = vector2fNormalize(diff);
+        sf::Vector2f normal = math::normalize(diff);
 
         result.collision = true;
         result.normal = normal;
@@ -40,7 +40,7 @@ namespace al
     {
         sf::Vector2f difference = point - cPos;
 
-        return vector2fLengthSq(difference) < radius * radius;
+        return math::lengthSquared(difference) < radius * radius;
     }
 
     bool pointInTriangle(const sf::Vector2f& point, const sf::Vector2f v1, const sf::Vector2f v2, const sf::Vector2f v3)

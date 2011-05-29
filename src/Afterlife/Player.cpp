@@ -52,14 +52,14 @@ namespace al
 
         handleCollision();
 
-        if (abs(vector2fLength(prevPosition - GetPosition())) < 1.0f)
+        if (abs(math::length(prevPosition - GetPosition())) < 1.0f)
             mAnimation.reset();
         else
             mAnimation.start(Animation::Loop);
 
         mWeapon->update(dt);
 
-        float rotRadians = radians(GetRotation() + 90.0f);
+        float rotRadians = math::radians(GetRotation() + 90.0f);
         sf::Vector2f rotNormal(cos(rotRadians), sin(rotRadians));
         mFlashLight->setPosition(GetPosition() + rotNormal * 14.0f);
         mFlashLight->setAngle(GetRotation() + 90.0f);
@@ -67,7 +67,7 @@ namespace al
         // Interpolate the center of the screen towards the position of the player,
         // this looks nice and smooth.
         sf::Vector2f center = g_Window->GetView().GetCenter();
-        sf::Vector2f move = lerpVector2f(0.05f, center, GetPosition()) - center;
+        sf::Vector2f move = math::lerp(center, GetPosition(), 0.05f) - center;
         sf::Vector2f viewSize = g_Window->GetView().GetSize();
         sf::View view(center + move, viewSize);
         g_Window->SetView(view);
@@ -77,7 +77,7 @@ namespace al
         sf::Vector2f mousePos(g_Input.getMouseX(), g_Input.getMouseY());
         sf::Vector2f screenPos = g_Window->ConvertCoords(mousePos.x, mousePos.y);
         float rotation = atan2(screenPos.y - GetPosition().y, screenPos.x - GetPosition().x);
-        SetRotation(degrees(rotation) - 90.0f);
+        SetRotation(math::degrees(rotation) - 90.0f);
 
     }
 
@@ -97,7 +97,7 @@ namespace al
         // because it may try to divide by zero.
         if (movement.x != 0.0f || movement.y != 0.0f)
         {
-            movement = vector2fNormalize(movement);
+            movement = math::normalize(movement);
             Move(movement * getSpeed());
         }
 

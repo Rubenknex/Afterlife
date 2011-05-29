@@ -37,13 +37,13 @@ namespace al
                     continue;
 
                 sf::Vector2f diff = e2->GetPosition() - e1->GetPosition();
-                float distance = vector2fLength(diff);
+                float distance = math::length(diff);
 
                 if (distance < e1->getRadius() + e2->getRadius())
                 {
                     float overlap = (e1->getRadius() + e2->getRadius()) - distance;
 
-                    diff = vector2fNormalize(diff) * (overlap / 2);
+                    diff = math::normalize(diff) * (overlap / 2);
 
                     if (e1->onCollision(e2))
                         e1->Move(-diff);
@@ -111,7 +111,7 @@ namespace al
         std::map<int, EntityPtr>::iterator it;
         for (it = m_Entities.begin(); it != m_Entities.end(); it++)
         {
-            float distSq = vector2fDistSq(pos, it->second->GetPosition());
+            float distSq = math::distanceSquared(pos, it->second->GetPosition());
 
             if (distSq < radiusSq)
                 entities.push_back(it->second);

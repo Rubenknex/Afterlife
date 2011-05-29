@@ -54,52 +54,8 @@ namespace al
         return points;
     }
 
-    sf::Vector2f lerpVector2f(float value, sf::Vector2f start, sf::Vector2f end)
-    {
-        sf::Vector2f result;
-        result.x = start.x + (end.x - start.x) * value;
-        result.y = start.y + (end.y - start.y) * value;
-
-        return result;
-    }
-
-    float vector2fLength(const sf::Vector2f vec)
-    {
-        return sqrt(vec.x * vec.x + vec.y * vec.y);
-    }
-
-    float vector2fLengthSq(const sf::Vector2f vec)
-    {
-        return vec.x * vec.x + vec.y * vec.y;
-    }
-
-    sf::Vector2f vector2fNormalize(const sf::Vector2f vec)
-    {
-        float length = vector2fLength(vec);
-
-        return sf::Vector2f(vec.x / length, vec.y / length);
-    }
-
-    float vector2fDistSq(const sf::Vector2f v1, const sf::Vector2f v2)
-    {
-        float xDist = v2.x - v1.x;
-        float yDist = v2.y - v1.y;
-
-        return xDist * xDist + yDist * yDist;
-    }
-
     std::string randomString()
     {
         return boost::lexical_cast<std::string>(sf::Randomizer::Random(0, 1000000));
-    }
-
-    float degrees(float radians)
-    {
-        return radians * (180 / PI);
-    }
-
-    float radians(float degrees)
-    {
-        return degrees * (PI / 180);
     }
 }

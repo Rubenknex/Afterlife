@@ -22,31 +22,33 @@ namespace al
 
     void UI::update(float dt)
     {
-        //int framerate = 1.0f / m_World->getWindow()->GetFrameTime();
-        //std::string framerateText = (boost::format("FPS: %1%") % framerate).str();
-        //mFramerate.SetString(framerateText);
+        int framerate = 1.0f / g_Window->GetFrameTime();
+        std::string framerateText = (boost::format("FPS: %1%") % framerate).str();
+        mFramerate.SetString(framerateText);
 
-        //std::string weaponAmmo = (boost::format("%1% / %2%") % m_World->getPlayer()->getWeapon()->getBulletsInMag() % m_World->getPlayer()->getWeapon()->getBullets()).str();
-        //mWeaponAmmo.SetString(weaponAmmo);
+        boost::shared_ptr<Player> player = boost::static_pointer_cast<Player>(m_World->getEntityManager()->getById(m_World->getPlayerId()));
+        std::string weaponAmmo = (boost::format("%1% / %2%") % player->getWeapon()->getBulletsInMag() % player->getWeapon()->getBullets()).str();
+        mWeaponAmmo.SetString(weaponAmmo);
     }
 
     void UI::draw(sf::RenderTarget& target)
     {
         sf::View gameView(target.GetView().GetCenter(), target.GetView().GetSize());
 
-        //window.GetDefaultView().SetFromRect(sf::FloatRect(0.0f, 0.0f, gameRect.GetWidth(), gameRect.GetHeight()));
-        target.SetView(sf::View(sf::FloatRect(0.0f, 0.0f, gameView.GetSize().x, gameView.GetSize().y)));
+        sf::View uiView(gameView.GetSize() / 2.0f, gameView.GetSize());
+        target.SetView(uiView);
 
-        //target.Draw(mFramerate);
+        target.Draw(mFramerate);
 
-        //mWeaponAmmo.SetColor(sf::Color::Black);
-        //mWeaponAmmo.SetPosition(1101.0f, 681.0f);
-        //target.Draw(mWeaponAmmo);
+        mWeaponAmmo.SetColor(sf::Color::Black);
+        mWeaponAmmo.SetPosition(1101.0f, 681.0f);
+        target.Draw(mWeaponAmmo);
 
-        //mWeaponAmmo.SetColor(sf::Color::White);
-        //mWeaponAmmo.SetPosition(1100.0f, 680.0f);
-        //target.Draw(mWeaponAmmo);
+        mWeaponAmmo.SetColor(sf::Color::White);
+        mWeaponAmmo.SetPosition(1100.0f, 680.0f);
+        target.Draw(mWeaponAmmo);
 
         target.SetView(gameView);
+
     }
 }

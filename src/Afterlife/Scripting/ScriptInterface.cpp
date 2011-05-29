@@ -130,6 +130,11 @@ namespace al
         std::cout << msg << std::endl;
     }
 
+    float asLerp(float value, float start, float end)
+    {
+        return start + value * (start - end);
+    }
+
     Vec2 asGetWindowSize()
     {
         return Vec2((float)g_Window->GetWidth(), (float)g_Window->GetHeight());
@@ -214,7 +219,7 @@ namespace al
         boost::shared_ptr<Light> light = g_World->getLightManager()->getLightByName(name);
 
         if (light)
-            light->setIntensity(clamp(intensity, 0.0f, 1.0f));
+            light->setIntensity(math::clamp(intensity, 0.0f, 1.0f));
         else
             lightError(name);
     }
@@ -340,6 +345,7 @@ namespace al
     {
         /// General ///
         engine->RegisterGlobalFunction("void print(const string &in)", asFUNCTIONPR(asPrint, (const std::string&), void), asCALL_CDECL);
+        engine->RegisterGlobalFunction("float lerp(float value, float start, float end)", asFUNCTIONPR(asLerp, (float, float, float), float), asCALL_CDECL);
         engine->RegisterGlobalFunction("Vec2 getWindowSize()", asFUNCTION(asGetWindowSize), asCALL_CDECL);
 
         /// Input ///

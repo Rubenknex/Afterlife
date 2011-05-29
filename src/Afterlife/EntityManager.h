@@ -10,6 +10,7 @@
 #include "Collision.h"
 #include "Entity.h"
 #include "Functions.h"
+#include "Math.h"
 
 namespace al
 {

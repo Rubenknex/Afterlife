@@ -19,7 +19,7 @@ namespace al
         SetImage(*IM.GetResource("data/Images/grenade.png"));
         SetOrigin(GetSize() / 2.0f);
 
-        float rads = radians(angle);
+        float rads = math::radians(angle);
         mDirection = sf::Vector2f(cos(rads), sin(rads));
     }
 
@@ -37,7 +37,7 @@ namespace al
         else
         {
             boost::shared_ptr<Light> light = m_World->getLightManager()->getLightByName(m_LightName);
-            light->setIntensity(lerp(0.2f, light->getIntensity(), 0.0f));
+            light->setIntensity(math::lerp(0.2f, light->getIntensity(), 0.0f));
 
             if (light->getIntensity() <= 0.05f)
                 setAlive(false);
@@ -46,7 +46,7 @@ namespace al
         Move(mDirection * (mSpeed * dt));
         Rotate(0.2f);
 
-        mSpeed = lerp(0.05f, mSpeed, 0.0f);
+        mSpeed = math::lerp(mSpeed, 0.0f, 0.05f);
 
         sf::Vector2f pos = GetPosition();
 
@@ -84,7 +84,7 @@ namespace al
 
                 if (e->getType() == Entity::ZOMBIE && e->isCollidable() && e->isAlive())
                 {
-                    float damage = (vector2fDistSq(GetPosition(), e->GetPosition()) / (mExplosionRadius * mExplosionRadius)) * mDamage;
+                    float damage = (math::distanceSquared(GetPosition(), e->GetPosition()) / (mExplosionRadius * mExplosionRadius)) * mDamage;
 
                     e->changeHealth(-damage);
 

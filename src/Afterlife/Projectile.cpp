@@ -14,7 +14,7 @@ namespace al
         setRadius(1.0f);
 
         SetPosition(pos);
-        mVelocity = sf::Vector2f(cos(radians(angle)) * speed, sin(radians(angle)) * speed);
+        mVelocity = sf::Vector2f(cos(math::radians(angle)) * speed, sin(math::radians(angle)) * speed);
 
         mDamage = damage;
 
@@ -57,7 +57,7 @@ namespace al
 
     void Projectile::draw(sf::RenderTarget& target)
     {
-        sf::Shape line = sf::Shape::Line(GetPosition(), GetPosition() - vector2fNormalize(mVelocity) * 8.0f, 2, sf::Color(253, 204, 54));
+        sf::Shape line = sf::Shape::Line(GetPosition(), GetPosition() - math::normalize(mVelocity) * 8.0f, 2, sf::Color(253, 204, 54));
 
         target.Draw(line);
     }
