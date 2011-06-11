@@ -7,8 +7,6 @@
 
 #include "../World.h"
 
-namespace al
-{
     void setWorld(World* world);
 
     class ScriptInterface
@@ -23,6 +21,5 @@ namespace al
     };
 
     extern World* g_World;
-}
 
 #endif // SCRIPTINTERFACE_H_INCLUDED

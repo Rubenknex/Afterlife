@@ -2,8 +2,6 @@
 
 #include "ScriptInterface.h"
 
-namespace al
-{
     ScriptManager g_ScriptManager;
 
     ScriptManager::ScriptManager() :
@@ -44,4 +42,3 @@ namespace al
 
         std::cout << msg->section << "(" << msg->row << "," << msg->col << ") : " << type << " : " << msg->message << std::endl;
     }
-}

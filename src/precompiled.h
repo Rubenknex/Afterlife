@@ -11,10 +11,12 @@
 #include <boost/shared_ptr.hpp>
 
 #define TIXML_USE_STL
-#include "../TinyXML/tinyxml.h"
+#include "TinyXML/tinyxml.h"
 
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+
+#include <Box2D/Box2D.h>
 
 #endif // PCH_H_INCLUDED

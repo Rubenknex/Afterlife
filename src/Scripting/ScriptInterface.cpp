@@ -15,8 +15,6 @@
 #include "../Weapon.h"
 #include "../WeaponPickup.h"
 
-namespace al
-{
     World* g_World = NULL;
 
     void setWorld(World* world)
@@ -412,4 +410,3 @@ namespace al
         engine->RegisterObjectMethod("Vec2", "float lengthSquared()", asMETHOD(Vec2, getLengthSquared), asCALL_THISCALL);
         engine->RegisterObjectMethod("Vec2", "void normalize()", asMETHOD(Vec2, normalize), asCALL_THISCALL);
     }
-}

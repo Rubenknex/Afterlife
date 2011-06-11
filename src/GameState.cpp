@@ -1,12 +1,10 @@
 #include "GameState.h"
-
-namespace al
-{
-    GameState::GameState() { }
-
-    GameState::~GameState() { }
-
-    void GameState::update(float dt) { }
-
-    void GameState::draw(sf::RenderTarget& target) { }
-}
+ 
+GameState::GameState() { }
+ 
+GameState::~GameState() { }
+ 
+void GameState::update(float dt) { }
+ 
+void GameState::draw(sf::RenderTarget& target) { }
+ 

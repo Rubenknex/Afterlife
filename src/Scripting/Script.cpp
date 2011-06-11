@@ -1,7 +1,5 @@
 #include "Script.h"
 
-namespace al
-{
     Script::Script(ScriptManager* manager, const std::string& moduleName) :
         m_Manager(manager)
     {
@@ -59,4 +57,3 @@ namespace al
 
         m_FuncId = -1;
     }
-}

@@ -4,40 +4,37 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
-namespace al
+/// Animation provides frames for animation sprite sheets.
+class Animation
 {
-    /// Animation provides frames for animation sprite sheets.
-    class Animation
+public:
+    enum AnimationMode
     {
-        public:
-            enum AnimationMode
-            {
-                Loop,
-                LoopReverse,
-                Single,
-                SingleReverse,
-            };
-
-        public:
-            Animation(int frameW, int frameH, int numX, int numY, int frameCount, float frameTime);
-            ~Animation();
-
-            void update(float dt);
-
-            void pause();
-            void reset();
-            void start(AnimationMode mode);
-
-            const sf::IntRect& getRect();
-
-        private:
-            int mFrameCount;
-            std::vector<sf::IntRect> mFrames;
-            float mTimer;
-            float mFrameTime;
-            bool mPlaying;
-            AnimationMode mMode;
+        Loop,
+        LoopReverse,
+        Single,
+        SingleReverse,
     };
-}
+
+public:
+    Animation(int frameW, int frameH, int numX, int numY, int frameCount, float frameTime);
+    ~Animation();
+
+    void update(float dt);
+
+    void pause();
+    void reset();
+    void start(AnimationMode mode);
+
+    const sf::IntRect& getRect();
+
+private:
+    int mFrameCount;
+    std::vector<sf::IntRect> mFrames;
+    float mTimer;
+    float mFrameTime;
+    bool mPlaying;
+    AnimationMode mMode;
+};
 
 #endif // ANIMATION_H_INCLUDED

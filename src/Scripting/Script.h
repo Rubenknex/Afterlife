@@ -2,12 +2,10 @@
 #define SCRIPT_H_INCLUDED
 
 #include <angelscript.h>
-#include "../../AngelScript/scriptbuilder.h"
+#include "AngelScript/scriptbuilder.h"
 
 #include "ScriptManager.h"
 
-namespace al
-{
     /// Script manager a single AngelScript script module.
     class Script
     {
@@ -40,6 +38,5 @@ namespace al
 
             int m_FuncId;
     };
-}
 
 #endif // SCRIPT_H_INCLUDED

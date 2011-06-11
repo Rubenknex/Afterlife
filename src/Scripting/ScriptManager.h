@@ -4,12 +4,10 @@
 #include <iostream>
 
 #include <angelscript.h>
-#include "../../AngelScript/scriptbuilder.h"
-#include "../../AngelScript/scriptmath.h"
-#include "../../AngelScript/scriptstdstring.h"
+#include "AngelScript/scriptbuilder.h"
+#include "AngelScript/scriptmath.h"
+#include "AngelScript/scriptstdstring.h"
 
-namespace al
-{
     class ScriptInterface;
 
     class ScriptManager
@@ -35,6 +33,5 @@ namespace al
     };
 
     extern ScriptManager g_ScriptManager;
-}
 
 #endif // SCRIPTMANAGER_H_INCLUDED
