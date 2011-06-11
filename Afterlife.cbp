@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Afterlife" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../bin/Debug/Afterlife" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../" />
+				<Option object_output="../obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="../bin/Release/Afterlife" prefix_auto="1" extension_auto="1" />
+				<Option object_output="../obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-Winvalid-pch" />
+			<Add option='-include &quot;../src/Afterlife/precompiled.h&quot;' />
+		</Compiler>
+		<Linker>
+			<Add option="-lsfml-audio" />
+			<Add option="-lsfml-graphics" />
+			<Add option="-lsfml-window" />
+			<Add option="-lsfml-system" />
+			<Add option="-langelscript" />
+		</Linker>
+		<Unit filename="../src/Afterlife/Animation.cpp" />
+		<Unit filename="../src/Afterlife/Animation.h" />
+		<Unit filename="../src/Afterlife/AudioPlayer.cpp" />
+		<Unit filename="../src/Afterlife/AudioPlayer.h" />
+		<Unit filename="../src/Afterlife/Collision.cpp" />
+		<Unit filename="../src/Afterlife/Collision.h" />
+		<Unit filename="../src/Afterlife/Decal.cpp" />
+		<Unit filename="../src/Afterlife/Decal.h" />
+		<Unit filename="../src/Afterlife/Entity.cpp" />
+		<Unit filename="../src/Afterlife/Entity.h" />
+		<Unit filename="../src/Afterlife/EntityFactory.cpp" />
+		<Unit filename="../src/Afterlife/EntityFactory.h" />
+		<Unit filename="../src/Afterlife/EntityManager.cpp" />
+		<Unit filename="../src/Afterlife/EntityManager.h" />
+		<Unit filename="../src/Afterlife/Functions.cpp" />
+		<Unit filename="../src/Afterlife/Functions.h" />
+		<Unit filename="../src/Afterlife/Game.cpp" />
+		<Unit filename="../src/Afterlife/Game.h" />
+		<Unit filename="../src/Afterlife/GameState.cpp" />
+		<Unit filename="../src/Afterlife/GameState.h" />
+		<Unit filename="../src/Afterlife/Grenade.cpp" />
+		<Unit filename="../src/Afterlife/Grenade.h" />
+		<Unit filename="../src/Afterlife/InputState.cpp" />
+		<Unit filename="../src/Afterlife/InputState.h" />
+		<Unit filename="../src/Afterlife/Level.cpp" />
+		<Unit filename="../src/Afterlife/Level.h" />
+		<Unit filename="../src/Afterlife/Light.cpp" />
+		<Unit filename="../src/Afterlife/Light.h" />
+		<Unit filename="../src/Afterlife/LightManager.cpp" />
+		<Unit filename="../src/Afterlife/LightManager.h" />
+		<Unit filename="../src/Afterlife/Logger.cpp" />
+		<Unit filename="../src/Afterlife/Logger.h" />
+		<Unit filename="../src/Afterlife/Math.h" />
+		<Unit filename="../src/Afterlife/MenuState.cpp" />
+		<Unit filename="../src/Afterlife/MenuState.h" />
+		<Unit filename="../src/Afterlife/Particle.cpp" />
+		<Unit filename="../src/Afterlife/Particle.h" />
+		<Unit filename="../src/Afterlife/ParticleManager.cpp" />
+		<Unit filename="../src/Afterlife/ParticleManager.h" />
+		<Unit filename="../src/Afterlife/ParticleSystem.cpp" />
+		<Unit filename="../src/Afterlife/ParticleSystem.h" />
+		<Unit filename="../src/Afterlife/PlayState.cpp" />
+		<Unit filename="../src/Afterlife/PlayState.h" />
+		<Unit filename="../src/Afterlife/Player.cpp" />
+		<Unit filename="../src/Afterlife/Player.h" />
+		<Unit filename="../src/Afterlife/PointLight.cpp" />
+		<Unit filename="../src/Afterlife/PointLight.h" />
+		<Unit filename="../src/Afterlife/Projectile.cpp" />
+		<Unit filename="../src/Afterlife/Projectile.h" />
+		<Unit filename="../src/Afterlife/ResourceManager.cpp" />
+		<Unit filename="../src/Afterlife/ResourceManager.h" />
+		<Unit filename="../src/Afterlife/Scripting/Script.cpp" />
+		<Unit filename="../src/Afterlife/Scripting/Script.h" />
+		<Unit filename="../src/Afterlife/Scripting/ScriptInterface.cpp" />
+		<Unit filename="../src/Afterlife/Scripting/ScriptInterface.h" />
+		<Unit filename="../src/Afterlife/Scripting/ScriptManager.cpp" />
+		<Unit filename="../src/Afterlife/Scripting/ScriptManager.h" />
+		<Unit filename="../src/Afterlife/Singleton.h" />
+		<Unit filename="../src/Afterlife/SpotLight.cpp" />
+		<Unit filename="../src/Afterlife/SpotLight.h" />
+		<Unit filename="../src/Afterlife/Tile.cpp" />
+		<Unit filename="../src/Afterlife/Tile.h" />
+		<Unit filename="../src/Afterlife/UI.cpp" />
+		<Unit filename="../src/Afterlife/UI.h" />
+		<Unit filename="../src/Afterlife/Weapon.cpp" />
+		<Unit filename="../src/Afterlife/Weapon.h" />
+		<Unit filename="../src/Afterlife/WeaponManager.cpp" />
+		<Unit filename="../src/Afterlife/WeaponManager.h" />
+		<Unit filename="../src/Afterlife/WeaponPickup.cpp" />
+		<Unit filename="../src/Afterlife/WeaponPickup.h" />
+		<Unit filename="../src/Afterlife/World.cpp" />
+		<Unit filename="../src/Afterlife/World.h" />
+		<Unit filename="../src/Afterlife/Zombie.cpp" />
+		<Unit filename="../src/Afterlife/Zombie.h" />
+		<Unit filename="../src/Afterlife/main.cpp" />
+		<Unit filename="../src/Afterlife/precompiled.h">
+			<Option compile="1" />
+			<Option weight="0" />
+		</Unit>
+		<Unit filename="../src/AngelScript/scriptbuilder.cpp" />
+		<Unit filename="../src/AngelScript/scriptbuilder.h" />
+		<Unit filename="../src/AngelScript/scriptmath.cpp" />
+		<Unit filename="../src/AngelScript/scriptmath.h" />
+		<Unit filename="../src/AngelScript/scriptstdstring.cpp" />
+		<Unit filename="../src/AngelScript/scriptstdstring.h" />
+		<Unit filename="../src/TinyXML/tinystr.cpp" />
+		<Unit filename="../src/TinyXML/tinystr.h" />
+		<Unit filename="../src/TinyXML/tinyxml.cpp" />
+		<Unit filename="../src/TinyXML/tinyxml.h" />
+		<Unit filename="../src/TinyXML/tinyxmlerror.cpp" />
+		<Unit filename="../src/TinyXML/tinyxmlparser.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
