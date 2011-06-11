@@ -11,32 +11,32 @@
 namespace al
 {
     class StateManager;
-
+    
     typedef boost::shared_ptr<GameState> StatePtr;
-
+    
     class Game
     {
         public:
             Game();
             ~Game();
-
+            
             void initialize();
             void update();
             void draw();
             void run();
-
+            
             void pushState(StatePtr state);
             void popState();
-
+            
         private:
             sf::RenderWindow m_Window;
             sf::Clock m_Clock;
-
+            
             float m_Framerate;
-
+            
             std::queue<StatePtr> m_States;
     };
-
+    
     extern sf::RenderWindow* g_Window;
 }
 
