@@ -9,9 +9,9 @@
 #include "../LightManager.h"
 #include "../ParticleManager.h"
 #include "../ResourceManager.h"
-#include "../PointLight.h"
+#include "../Scene/PointLight.h"
 #include "../AudioPlayer.h"
-#include "../SpotLight.h"
+#include "../Scene/SpotLight.h"
 #include "../Weapon.h"
 #include "../WeaponPickup.h"
 
@@ -316,29 +316,6 @@
         g_AudioPlayer.playSound(filename, volume, pitch);
     }
 
-    ScriptInterface::ScriptInterface()
-    {
-
-    }
-
-    ScriptInterface::~ScriptInterface()
-    {
-
-    }
-
-    void ScriptInterface::registerAll(asIScriptEngine* engine)
-    {
-        if (g_World == NULL)
-        {
-            std::cout << "Failed to register script interface, g_World is NULL." << std::endl;
-
-            return;
-        }
-
-        registerObjects(engine);
-        registerFunctions(engine);
-    }
-
     void ScriptInterface::registerFunctions(asIScriptEngine* engine)
     {
         /// General ///
@@ -386,7 +363,7 @@
         engine->RegisterGlobalFunction("void playSound(const string &in, float volume, float pitch)", asFUNCTIONPR(asPlaySound, (const std::string&, float, float), void), asCALL_CDECL);
     }
 
-    void ScriptInterface::registerObjects(asIScriptEngine* engine)
+    void ScriptInterface::registerTypes(asIScriptEngine* engine)
     {
         /// Vec2
         engine->RegisterObjectType("Vec2", sizeof(Vec2), asOBJ_VALUE | asOBJ_POD | asOBJ_APP_CLASS_C);

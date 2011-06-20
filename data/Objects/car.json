@@ -1,0 +1,14 @@
+{
+    "type" : "car",
+    "image" : "data/Images/car_2.png",
+    "vertices" :
+    [
+        "-111.0 41.0",
+        "-111.0 -41.0",
+        "111.0 -41.0",
+        "111.0 41.0"
+    ],
+    "friction" : 0.3,
+    "density" : 1.0,
+    "restitution" : 0.1
+}

@@ -5,19 +5,17 @@
 #include <boost/shared_ptr.hpp>
 #include <iostream>
 
+#include "IScriptInterface.h"
 #include "../World.h"
 
     void setWorld(World* world);
 
-    class ScriptInterface
+    class ScriptInterface : public IScriptInterface
     {
         public:
-            ScriptInterface();
-            ~ScriptInterface();
-
-            void registerAll(asIScriptEngine* engine);
+            void registerProperties(asIScriptEngine* engine);
             void registerFunctions(asIScriptEngine* engine);
-            void registerObjects(asIScriptEngine* engine);
+            void registerTypes(asIScriptEngine* engine);
     };
 
     extern World* g_World;

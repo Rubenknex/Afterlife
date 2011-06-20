@@ -1,0 +1,14 @@
+{
+    "type" : "background",
+    "image" : "data/Images/asphalt.jpg",
+    "vertices" :
+    [
+        "-64.0 64.0",
+        "-64.0 -64.0",
+        "64.0 -64.0",
+        "64.0 64.0"
+    ],
+    "friction" : 0.0,
+    "density" : 0.0,
+    "restitution" : 0.0
+}

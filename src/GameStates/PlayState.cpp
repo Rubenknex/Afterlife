@@ -1,7 +1,7 @@
 #include "PlayState.h"
  
-#include "Scripting/ScriptInterface.h"
-#include "World.h"
+#include "../Scripting/ScriptInterface.h"
+#include "../World.h"
  
 PlayState::PlayState(sf::RenderWindow* window) :
     mWindow(window)
@@ -9,10 +9,10 @@ PlayState::PlayState(sf::RenderWindow* window) :
     m_World = new World();
     m_UI = new UI(m_World);
  
-    setWorld(m_World);
-    g_ScriptManager.initialize();
+    //setWorld(m_World);
+    //g_ScriptManager.initialize();
  
-    m_World->initialize();
+    //m_World->initialize();
 }
  
 PlayState::~PlayState()

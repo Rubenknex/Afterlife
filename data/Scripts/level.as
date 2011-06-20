@@ -4,9 +4,6 @@ void initialize()
     
     setAmbientColor(60, 60, 60);
     
-    addPointLight("lantern", Vec2(64.0f, 500.0f), 1.0f, 300.0f, 255, 230, 230, 16);
-    addPointLight("lantern2", Vec2(1200.0f, 800.0f), 1.0f, 300.0f, 255, 230, 230, 16);
-    
     addWeaponPickup("data/Weapons/ak47.xml", Vec2(500.0f, 500.0f));
     addWeaponPickup("data/Weapons/uzi.xml", Vec2(600.0f, 500.0f));
     addWeaponPickup("data/Weapons/famas.xml", Vec2(500.0f, 600.0f));

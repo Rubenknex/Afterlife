@@ -8,30 +8,29 @@
 #include "AngelScript/scriptmath.h"
 #include "AngelScript/scriptstdstring.h"
 
-    class ScriptInterface;
+class IScriptInterface;
 
-    class ScriptManager
-    {
-        friend class Script;
+class ScriptManager
+{
+    friend class Script;
 
-        public:
-            ScriptManager();
-            ~ScriptManager();
+public:
+    ScriptManager();
+    ~ScriptManager();
 
-            void initialize();
+    void initialize();
+    void registerInterface(IScriptInterface* interface);
 
-        private:
-            void messageCallBack(const asSMessageInfo* msg, void* param);
+private:
+    void messageCallBack(const asSMessageInfo* msg, void* param);
 
-        private:
-            CScriptBuilder m_Builder;
+private:
+    CScriptBuilder m_Builder;
 
-            asIScriptEngine* m_Engine;
-            asIScriptContext* m_Context;
+    asIScriptEngine* m_Engine;
+    asIScriptContext* m_Context;
+};
 
-            ScriptInterface* m_Interface;
-    };
-
-    extern ScriptManager g_ScriptManager;
+extern ScriptManager g_ScriptManager;
 
 #endif // SCRIPTMANAGER_H_INCLUDED

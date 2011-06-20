@@ -6,10 +6,10 @@
 #include <cmath>
 #include <iostream>
  
-#include "GameState.h"
-#include "InputState.h"
-#include "Scripting/Script.h"
-#include "UI.h"
+#include "IGameState.h"
+#include "../InputState.h"
+#include "../Scripting/Script.h"
+#include "../UI.h"
  
 using boost::shared_ptr;
  
@@ -21,7 +21,7 @@ class Weapon;
 class World;
 class Zombie;
  
-class PlayState : public GameState
+class PlayState : public IGameState
 {
 public:
     PlayState(sf::RenderWindow* window);

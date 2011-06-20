@@ -1,0 +1,68 @@
+{
+    "name" : "Scene1",
+    "script" : "data/Scripts/scene1.as",
+    "load" :
+    [
+        "data/Objects/background.json",
+        "data/Objects/car.json",
+        "data/Objects/crate.json"
+    ],
+    "objects" :
+    [
+        {
+            "type" : "background",
+            "id" : "background_1",
+            "physics" : false,
+            "position" : "350.0 250.0",
+            "rotation" : 0.0,
+            "scale" : 1.0
+        },
+        {
+            "type" : "car",
+            "id" : "car_1",
+            "physics" : true,
+            "position" : "100.0 250.0",
+            "rotation" : 40.0,
+            "scale" : 0.6
+        },
+        {
+            "type" : "crate",
+            "id" : "crate_1",
+            "physics" : true,
+            "position" : "100.0 100.0",
+            "rotation" : 60.0,
+            "scale" : 0.5
+        },
+        {
+            "type" : "crate",
+            "id" : "crate_2",
+            "physics" : true,
+            "position" : "200.0 400.0",
+            "rotation" : 20.0,
+            "scale" : 0.7
+        }
+    ],
+    "ambientColor" : "100 100 100",
+    "lights" :
+    [
+        {
+            "type" : "point",
+            "id" : "ambient_point_1",
+            "position" : "150.0 150.0",
+            "radius" : 200.0,
+            "intensity" : 1.0,
+            "color" : "255 230 230",
+            "quality" : 16
+        },
+        {
+            "type" : "spot",
+            "id" : "ambient_spot_1",
+            "position" : "400.0 150.0",
+            "radius" : 200.0,
+            "intensity" : 1.0,
+            "color" : "255 0 0",
+            "angle" : 45.0,
+            "openAngle" : 15.0
+        }
+    ]
+}
