@@ -128,7 +128,7 @@ Object::Object(Scene* scene, const std::string& id, ObjectDef* def, const sf::Ve
 
 Object::~Object()
 {
-    
+    std::cout << "Object Destructor!" << std::endl;
 }
 
 void Object::draw(sf::RenderTarget& target)

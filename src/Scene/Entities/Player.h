@@ -18,6 +18,9 @@ public:
     
     void update(float dt);
     void draw(sf::RenderTarget& target);
+    
+    void handleBeginContact(Entity* entity);
+    void handleEndContact(Entity* entity);
 
 private:
     

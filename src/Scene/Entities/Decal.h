@@ -19,7 +19,8 @@ public:
     void draw(sf::RenderTarget& target);
 
 private:
-    
+    float m_fadingTime;
+    float m_fadingTimer;
 };
 
 #endif // DECAL_H_INCLUDED

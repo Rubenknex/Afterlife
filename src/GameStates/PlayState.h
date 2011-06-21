@@ -1,3 +1,4 @@
+/*
 #ifndef PLAYSTATE_H_INCLUDED
 #define PLAYSTATE_H_INCLUDED
  
@@ -40,4 +41,4 @@ private:
 };
  
 #endif // PLAYSTATE_H_INCLUDED
- 
+*/

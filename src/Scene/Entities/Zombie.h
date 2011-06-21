@@ -1,5 +1,5 @@
-#ifndef PROJECTILE_H_INCLUDED
-#define PROJECTILE_H_INCLUDED
+#ifndef ZOMBIE_H_INCLUDED
+#define ZOMBIE_H_INCLUDED
 
 #include <Box2D/Box2D.h>
 #include <SFML/Graphics.hpp>
@@ -7,21 +7,20 @@
 #include "Entity.h"
 #include "../../Math.h"
 
-class Projectile : public Entity
+class Zombie : public Entity
 {
 public:
-    Projectile(Scene* scene, const std::string& id);
-    ~Projectile();
+    Zombie(Scene* scene, const std::string& id, const sf::Vector2f& pos);
+    ~Zombie();
     
     void update(float dt);
     void draw(sf::RenderTarget& target);
     
     void handleBeginContact(Entity* entity);
+    void handleEndContact(Entity* entity);
 
 private:
-    sf::Shape m_line;
-
-    float m_damage;
+    
 };
 
-#endif // PROJECTILE_H_INCLUDED
+#endif // ZOMBIE_H_INCLUDED

@@ -6,7 +6,9 @@
 #include "IGameState.h"
 #include "../Scene/Scene.h"
 #include "../Scene/Entities/Player.h"
+#include "../Scene/Entities/Zombie.h"
 #include "../Scripting/ScriptManager.h"
+#include "../InputState.h"
 
 class TestState : public IGameState
 {
@@ -20,7 +22,7 @@ public:
 private:
     Scene* m_scene;
     
-    EntityPtr m_player;
+    Entity* m_player;
 };
 
 #endif // TESTSTATE_H_INCLUDED

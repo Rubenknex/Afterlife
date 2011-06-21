@@ -1,5 +1,7 @@
 #include "Entity.h"
 
+#include "../Scene.h"
+
 Entity::Entity(Scene* scene, const std::string& id) :
     m_scene(scene),
     m_id(id),
@@ -11,12 +13,22 @@ Entity::Entity(Scene* scene, const std::string& id) :
 
 Entity::~Entity()
 {
+    std::cout << "Entity Destructor!" << std::endl;
     
+    if (hasPhysics())
+        m_scene->getB2World()->DestroyBody(m_body);
+    
+    if (hasScripting())
+        delete m_script;
 }
 
 void Entity::update(float dt) { }
 
 void Entity::draw(sf::RenderTarget& target) { }
+
+void Entity::handleBeginContact(Entity* entity) { }
+
+void Entity::handleEndContact(Entity* entity) { }
 
 std::string Entity::getId()
 {
@@ -41,14 +53,4 @@ bool Entity::hasPhysics()
 bool Entity::hasScripting()
 {
     return m_script != NULL;
-}
-
-Entity* Entity::getUserData()
-{
-    if (m_body != NULL && m_body->GetUserData() != NULL)
-    {
-        return static_cast<Entity*>(m_body->GetUserData());
-    }
-    
-    return NULL;
 }

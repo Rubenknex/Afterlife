@@ -1,3 +1,4 @@
+/*
 #include "PlayState.h"
  
 #include "../Scripting/ScriptInterface.h"
@@ -41,4 +42,4 @@ sf::RenderWindow* PlayState::getWindow()
 {
     return mWindow;
 }
- 
+*/

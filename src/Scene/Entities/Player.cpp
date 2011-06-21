@@ -30,7 +30,7 @@ Player::Player(Scene* scene, const std::string& id) :
 
 Player::~Player()
 {
-    
+    std::cout << "Player Destructor!" << std::endl;
 }
 
 void Player::update(float dt)
@@ -63,7 +63,7 @@ void Player::update(float dt)
     float rotation = atan2(screenPos.y - m_sprite.GetPosition().y, screenPos.x - m_sprite.GetPosition().x);
     m_sprite.SetRotation(math::degrees(rotation) - 90.0f);
     
-    m_body->SetTransform(m_body->GetPosition(), rotation);
+    //m_body->SetTransform(m_body->GetPosition(), rotation);
 }
 
 void Player::draw(sf::RenderTarget& target)
@@ -72,4 +72,14 @@ void Player::draw(sf::RenderTarget& target)
     m_sprite.SetPosition(pos.x * m_scene->getMeterPixelRatio(), pos.y * m_scene->getMeterPixelRatio());
     
     target.Draw(m_sprite);
+}
+
+void Player::handleBeginContact(Entity* entity)
+{
+    
+}
+
+void Player::handleEndContact(Entity* entity)
+{
+    
 }

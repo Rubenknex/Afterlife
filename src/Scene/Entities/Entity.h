@@ -13,10 +13,13 @@ class Entity
 {
 public:
     Entity(Scene* scene, const std::string& id);
-    ~Entity();
+    virtual ~Entity();
     
     virtual void update(float dt);
     virtual void draw(sf::RenderTarget& target);
+    
+    virtual void handleBeginContact(Entity* entity);
+    virtual void handleEndContact(Entity* entity);
     
     std::string getId();
     
@@ -25,8 +28,6 @@ public:
     
     bool hasPhysics();
     bool hasScripting();
-    
-    Entity* getUserData();
     
 protected:
     Scene* m_scene;

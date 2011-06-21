@@ -1,7 +1,7 @@
 #ifndef SCENE_H_INCLUDED
 #define SCENE_H_INCLUDED
 
-#include <boost/shared_ptr.hpp>
+#include <boost/ptr_container/ptr_vector.hpp>
 #include <Box2D/Box2D.h>
 #include <fstream>
 #include <json/json.h>
@@ -9,19 +9,19 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
+#include "ContactListener.h"
+#include "DebugDrawer.h"
 #include "Entities/Entity.h"
 #include "Entities/Object.h"
 #include "Light.h"
 #include "PointLight.h"
 #include "SpotLight.h"
-#include "../DebugDrawer.h"
 #include "../Game.h"
 #include "../Parsing.h"
 #include "../Renderers/LightRenderer.h"
 #include "../Scripting/Script.h"
 #include "../Scripting/ScriptManager.h"
 
-//typedef boost::shared_ptr<Actor> ActorPtr;
 typedef boost::shared_ptr<Entity> EntityPtr;
 typedef boost::shared_ptr<Light> LightPtr;
 
@@ -37,9 +37,8 @@ public:
     void update(float dt);
     void draw(sf::RenderTarget& target);
     
-    void addEntity(EntityPtr entity);
-    EntityPtr getEntityById(const std::string& id);
-    void destroyEntityById(const std::string& id);
+    void addEntity(Entity* entity);
+    void scheduleEntityForRemoval(Entity* entity);
     
     void addLight(LightPtr light);
     LightPtr getLightByName(const std::string& name);
@@ -56,7 +55,8 @@ private:
     
     std::map<std::string, ObjectDef> m_objectDefs;
     
-    std::vector<EntityPtr> m_entities;
+    std::vector<std::string> m_entitiesToRemove;
+    boost::ptr_vector<Entity> m_entities;
     
     sf::Color m_ambientColor;
     std::map<std::string, LightPtr> m_lights;
@@ -65,6 +65,8 @@ private:
     
     b2World m_b2World;
     float m_meterPixelRatio;
+    
+    ContactListener m_contactListener;
     DebugDrawer m_debugDrawer;
 };
 

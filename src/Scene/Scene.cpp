@@ -10,12 +10,21 @@ Scene::Scene() :
 {
     m_debugDrawer.SetFlags(DebugDrawer::e_shapeBit);
     m_b2World.SetDebugDraw(&m_debugDrawer);
+    m_b2World.SetContactListener(&m_contactListener);
 }
 
 Scene::~Scene()
 {
+    std::cout << "Beginning Scene destruction" << std::endl;
+    
     if (m_script != NULL)
         delete m_script;
+        
+    m_entities.clear();
+    
+    std::cout << "Destroying b2world" << std::endl;
+    
+    std::cout << m_b2World.GetBodyCount() << std::endl;
 }
 
 void Scene::load(const std::string& filename)
@@ -71,7 +80,7 @@ void Scene::load(const std::string& filename)
             float scale = object["scale"].asDouble();
             bool physics = object["physics"].asBool();
             
-            EntityPtr obj(new Object(this, id, &it->second, pos, rotation, scale, physics));
+            Object* obj = new Object(this, id, &it->second, pos, rotation, scale, physics);
             
             m_entities.push_back(obj);
         }
@@ -119,6 +128,7 @@ void Scene::save(const std::string& filename)
 
 void Scene::update(float dt)
 {
+    // Run the script update function
     if (m_script != NULL)
     {
         m_script->prepareFunction("update");
@@ -126,20 +136,37 @@ void Scene::update(float dt)
         m_script->executeFunction();
     }
     
+    // Update all the entities
     for (int i = 0; i < (int)m_entities.size(); i++)
     {
-        m_entities[i]->update(dt);
+        m_entities[i].update(dt);
     }
     
+    // Update the Box2D world
     m_b2World.Step(1.0f / 60.0f, 6, 2);
     m_b2World.ClearForces();
+    
+    // Go through the list of entities to remove and remove them
+    for (int i = 0; i < (int)m_entitiesToRemove.size(); i++)
+    {
+        for (int j = 0; j < (int)m_entities.size(); j++)
+        {
+            if (m_entities[j].getId() == m_entitiesToRemove[i])
+            {
+                m_entities.erase(m_entities.begin() + j);
+                
+                break;
+            }
+        }
+    }
+    m_entitiesToRemove.clear();
 }
 
 void Scene::draw(sf::RenderTarget& target)
 {
     for (int i = 0; i < (int)m_entities.size(); i++)
     {
-         m_entities[i]->draw(target);
+         m_entities[i].draw(target);
     }
     
     m_lightRenderer.setLights(m_lights);
@@ -149,32 +176,14 @@ void Scene::draw(sf::RenderTarget& target)
     m_b2World.DrawDebugData();
 }
 
-void Scene::addEntity(EntityPtr entity)
+void Scene::addEntity(Entity* entity)
 {
     m_entities.push_back(entity);
 }
 
-EntityPtr Scene::getEntityById(const std::string& id)
+void Scene::scheduleEntityForRemoval(Entity* entity)
 {
-    for (int i = 0; i < (int)m_entities.size(); i++)
-    {
-        if (m_entities[i]->getId().compare(id) == 0)
-            return m_entities[i];
-    }
-    
-    return EntityPtr();
-}
-
-void Scene::destroyEntityById(const std::string& id)
-{
-    for (int i = 0; i < (int)m_entities.size(); i++)
-    {
-        if (m_entities[i]->getId().compare(id) == 0)
-        {
-            m_entities.erase(m_entities.begin() + i);
-            break;
-        }
-    }
+    m_entitiesToRemove.push_back(entity->getId());
 }
 
 void Scene::addLight(LightPtr light)
