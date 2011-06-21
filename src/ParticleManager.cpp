@@ -22,7 +22,7 @@ void ParticleManager::loadSystem(const std::string& filename, const std::string&
  
 void ParticleManager::fireSystem(const std::string& name, sf::Vector2f pos)
 {
-    for (int i = 0; i < mParticleSystems.size(); i++)
+    for (int i = 0; i < (int)mParticleSystems.size(); i++)
     {
         if (mParticleSystems[i].getName() == name)
         {
@@ -35,7 +35,7 @@ void ParticleManager::fireSystem(const std::string& name, sf::Vector2f pos)
  
 void ParticleManager::update(float dt)
 {
-    for (int i = 0; i < mParticleSystems.size(); i++)
+    for (int i = 0; i < (int)mParticleSystems.size(); i++)
     {
         mParticleSystems[i].update(dt);
     }
@@ -43,7 +43,7 @@ void ParticleManager::update(float dt)
  
 void ParticleManager::draw(sf::RenderTarget& target)
 {
-    for (int i = 0; i < mParticleSystems.size(); i++)
+    for (int i = 0; i < (int)mParticleSystems.size(); i++)
     {
         mParticleSystems[i].draw(target);
     }

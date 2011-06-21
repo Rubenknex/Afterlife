@@ -6,11 +6,12 @@
 #include <queue>
  
 #include "InputState.h"
-#include "PlayState.h"
+#include "GameStates/PlayState.h"
+#include "GameStates/TestState.h"
  
 class StateManager;
  
-typedef boost::shared_ptr<GameState> StatePtr;
+typedef boost::shared_ptr<IGameState> GameStatePtr;
  
 class Game
 {
@@ -23,7 +24,7 @@ public:
     void draw();
     void run();
  
-    void pushState(StatePtr state);
+    void pushState(GameStatePtr state);
     void popState();
  
 private:
@@ -32,7 +33,7 @@ private:
  
     float m_Framerate;
  
-    std::queue<StatePtr> m_States;
+    std::queue<GameStatePtr> m_States;
 };
  
 extern sf::RenderWindow* g_Window;

@@ -9,8 +9,9 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
+#include "Entities/Entity.h"
+#include "Entities/Object.h"
 #include "Light.h"
-#include "Object.h"
 #include "PointLight.h"
 #include "SpotLight.h"
 #include "../DebugDrawer.h"
@@ -20,6 +21,8 @@
 #include "../Scripting/Script.h"
 #include "../Scripting/ScriptManager.h"
 
+//typedef boost::shared_ptr<Actor> ActorPtr;
+typedef boost::shared_ptr<Entity> EntityPtr;
 typedef boost::shared_ptr<Light> LightPtr;
 
 class Scene
@@ -33,6 +36,10 @@ public:
     
     void update(float dt);
     void draw(sf::RenderTarget& target);
+    
+    void addEntity(EntityPtr entity);
+    EntityPtr getEntityById(const std::string& id);
+    void destroyEntityById(const std::string& id);
     
     void addLight(LightPtr light);
     LightPtr getLightByName(const std::string& name);
@@ -48,7 +55,8 @@ private:
     Script* m_script;
     
     std::map<std::string, ObjectDef> m_objectDefs;
-    std::vector<Object> m_objects;
+    
+    std::vector<EntityPtr> m_entities;
     
     sf::Color m_ambientColor;
     std::map<std::string, LightPtr> m_lights;

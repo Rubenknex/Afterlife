@@ -1,0 +1,10 @@
+{
+    "name" : "AK-47",
+    "damage" : 30,
+    "rpm" : 600,
+    "clipSize" : 30,
+    "reloadDelay" : 1.0,
+    "image" : "data/Images/Weapons/ak47.png",
+    "fireSound" : "data/Sounds/Weapons/ak47_fire.wav",
+    "reloadSound" : "data/Sounds/Weapons/ak47_reload.wav"
+}

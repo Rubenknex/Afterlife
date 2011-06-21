@@ -47,7 +47,7 @@ void Scene::load(const std::string& filename)
     m_script->build();
     
     Json::Value objectsToLoad = root["load"];
-    for (int i = 0; i < objectsToLoad.size(); i++)
+    for (int i = 0; i < (int)objectsToLoad.size(); i++)
     {
         ObjectDef def;
         def.load(objectsToLoad[i].asString());
@@ -56,7 +56,7 @@ void Scene::load(const std::string& filename)
     }
     
     Json::Value objects = root["objects"];
-    for (int i = 0; i < objects.size(); i++)
+    for (int i = 0; i < (int)objects.size(); i++)
     {
         Json::Value object = objects[i];
         
@@ -64,15 +64,16 @@ void Scene::load(const std::string& filename)
         
         if (it != m_objectDefs.end())
         {
-            Object obj(this, &it->second, object["physics"].asBool());
-            
-            obj.setId(object["id"].asString());
+            std::string id = object["id"].asString();
             parsing::Vector2 position = parsing::vector2(object["position"].asString());
-            obj.setPosition(position.x, position.y);
-            obj.setRotation(object["rotation"].asDouble());
-            obj.setScale(object["scale"].asDouble());
+            sf::Vector2f pos(position.x, position.y);
+            float rotation = object["rotation"].asDouble();
+            float scale = object["scale"].asDouble();
+            bool physics = object["physics"].asBool();
             
-            m_objects.push_back(obj);
+            EntityPtr obj(new Object(this, id, &it->second, pos, rotation, scale, physics));
+            
+            m_entities.push_back(obj);
         }
     }
     
@@ -80,7 +81,7 @@ void Scene::load(const std::string& filename)
     m_ambientColor = sf::Color(ambientColor.r, ambientColor.g, ambientColor.b, ambientColor.a);
     
     Json::Value lights = root["lights"];
-    for (int i = 0; i < lights.size(); i++)
+    for (int i = 0; i < (int)lights.size(); i++)
     {
         Json::Value light = lights[i];
         
@@ -125,14 +126,20 @@ void Scene::update(float dt)
         m_script->executeFunction();
     }
     
+    for (int i = 0; i < (int)m_entities.size(); i++)
+    {
+        m_entities[i]->update(dt);
+    }
     
+    m_b2World.Step(1.0f / 60.0f, 6, 2);
+    m_b2World.ClearForces();
 }
 
 void Scene::draw(sf::RenderTarget& target)
 {
-    for (int i = 0; i < m_objects.size(); i++)
+    for (int i = 0; i < (int)m_entities.size(); i++)
     {
-         m_objects[i].draw(target);
+         m_entities[i]->draw(target);
     }
     
     m_lightRenderer.setLights(m_lights);
@@ -140,6 +147,34 @@ void Scene::draw(sf::RenderTarget& target)
     m_lightRenderer.draw(target);
     
     m_b2World.DrawDebugData();
+}
+
+void Scene::addEntity(EntityPtr entity)
+{
+    m_entities.push_back(entity);
+}
+
+EntityPtr Scene::getEntityById(const std::string& id)
+{
+    for (int i = 0; i < (int)m_entities.size(); i++)
+    {
+        if (m_entities[i]->getId().compare(id) == 0)
+            return m_entities[i];
+    }
+    
+    return EntityPtr();
+}
+
+void Scene::destroyEntityById(const std::string& id)
+{
+    for (int i = 0; i < (int)m_entities.size(); i++)
+    {
+        if (m_entities[i]->getId().compare(id) == 0)
+        {
+            m_entities.erase(m_entities.begin() + i);
+            break;
+        }
+    }
 }
 
 void Scene::addLight(LightPtr light)

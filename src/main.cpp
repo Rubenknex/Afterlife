@@ -1,10 +1,19 @@
+#include <iostream>
+
 #include "Game.h"
 
 int main()
 {
     Game game;
 
-    game.run();
+    try
+    {
+        game.run();
+    }
+    catch(const char* error)
+    {
+        std::cout << error << std::endl;
+    }
 
     return 0;
 }

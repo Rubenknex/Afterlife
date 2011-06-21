@@ -1,0 +1,10 @@
+{
+    "name" : "Uzi",
+    "damage" : 20,
+    "rpm" : 600,
+    "clipSize" : 32,
+    "reloadDelay" : 1.0,
+    "image" : "data/Images/Weapons/uzi.png",
+    "fireSound" : "data/Sounds/Weapons/uzi_fire.wav",
+    "reloadSound" : "data/Sounds/Weapons/famas_reload.wav"
+}

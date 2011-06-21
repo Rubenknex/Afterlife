@@ -20,7 +20,7 @@ void Light::draw(sf::RenderTarget* target)
 {
     if (mOn)
     {
-        for (int i = 0; i < mTriangles.size(); i++)
+        for (int i = 0; i < (int)mTriangles.size(); i++)
         {
             target->Draw(mTriangles[i]);
         }
@@ -41,7 +41,7 @@ void Light::setPosition(const sf::Vector2f& pos)
 {
     mPosition = pos;
  
-    for (int i = 0; i < mTriangles.size(); i++)
+    for (int i = 0; i < (int)mTriangles.size(); i++)
     {
         mTriangles[i].SetPosition(pos);
     }
@@ -51,7 +51,7 @@ void Light::setIntensity(float intensity)
 {
     mIntensity = intensity;
  
-    for (int i = 0; i < mTriangles.size(); i++)
+    for (int i = 0; i < (int)mTriangles.size(); i++)
     {
         mTriangles[i].SetPointColor(0, sf::Color((int)(mIntensity * mColor.r), (int)(mIntensity * mColor.g), (int)(mIntensity * mColor.b)));
     }

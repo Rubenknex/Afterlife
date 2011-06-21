@@ -13,6 +13,8 @@
 #define TIXML_USE_STL
 #include "TinyXML/tinyxml.h"
 
+#include <json/json.h>
+
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>

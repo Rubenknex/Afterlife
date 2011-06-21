@@ -31,8 +31,6 @@ shared_ptr<sf::Image> ImageManager::load(const std::string& id)
         return image;
     }
  
-    image->SetSmooth(false);
- 
     return image;
 }
  

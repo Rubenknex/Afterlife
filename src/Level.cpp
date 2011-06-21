@@ -1,8 +1,9 @@
 #include "Level.h"
  
-#include "TinyXML/tinyxml.h"
+#include "World.h"
  
-Level::Level() :
+Level::Level(World* world) :
+    m_world(world),
     mTilesetFilename(std::string()),
     mTileset(sf::Image()),
     m_UpdateScript(NULL),
@@ -90,7 +91,26 @@ void Level::load(const std::string& filename)
  
             yPos++;
         }
+        
+        TiXmlElement* lights = handle.FirstChildElement("Lights").ToElement();
+        for (TiXmlElement* light = lights->FirstChildElement(); light; light = light->NextSiblingElement())
+        {
+            std::string type = light->Attribute("type");
+            
+            if (type.compare("point") == 0)
+            {
+                //boost::shared_ptr<Light> pointLight(new PointLight(light->Attribute("name"), parsing::vector2f(light->Attribute("position")), atof(light->Attribute("intensity")), atof(light->Attribute("radius")), parsing::color(light->Attribute("color")), atoi(light->Attribute("quality"))));
+                //m_world->getLightManager()->addLight(pointLight);
+            }
+            else if (type.compare("spot") == 0)
+            {
+                //boost::shared_ptr<Light> spotLight(new SpotLight(light->Attribute("name"), parsing::vector2f(light->Attribute("position")), atof(light->Attribute("intensity")), atof(light->Attribute("radius")), parsing::color(light->Attribute("color")), atof(light->Attribute("angle")), atof(light->Attribute("openAngle"))));
+                //m_world->getLightManager()->addLight(spotLight);
+            }
+        }
     }
+    else
+        throw "Could not load level file.";
 }
  
 void Level::save(const std::string& filename)
@@ -129,9 +149,12 @@ sf::IntRect Level::indexToRect(int index)
  
 void Level::update(float dt)
 {
-    m_UpdateScript->prepareFunction("update");
-    m_UpdateScript->setArgFloat(0, dt);
-    m_UpdateScript->executeFunction();
+    if (m_UpdateScript != NULL)
+    {
+        m_UpdateScript->prepareFunction("update");
+        m_UpdateScript->setArgFloat(0, dt);
+        m_UpdateScript->executeFunction();
+    }
 }
  
 void Level::draw(sf::RenderTarget& target)
@@ -264,7 +287,7 @@ bool Level::rayCast(const sf::Vector2f& start, const sf::Vector2f& end)
             {
                 pointIndex++;
  
-                if (pointIndex >= points.size())
+                if (pointIndex >= (int)points.size())
                     break;
             }
         }

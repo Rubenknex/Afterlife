@@ -14,7 +14,7 @@
 #include "Functions.h"
 #include "EntityManager.h"
 #include "LightManager.h"
-#include "PointLight.h"
+#include "Scene/PointLight.h"
 #include "ResourceManager.h"
  
 class Entity;

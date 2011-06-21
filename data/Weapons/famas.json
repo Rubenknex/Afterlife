@@ -1,0 +1,10 @@
+{
+    "name" : "FAMAS",
+    "damage" : 25,
+    "rpm" : 900,
+    "clipSize" : 30,
+    "reloadDelay" : 1.0,
+    "image" : "data/Images/Weapons/famas.png",
+    "fireSound" : "data/Sounds/Weapons/famas_fire.wav",
+    "reloadSound" : "data/Sounds/Weapons/famas_reload.wav"
+}

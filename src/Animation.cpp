@@ -8,7 +8,7 @@ Animation::Animation(int frameW, int frameH, int numX, int numY, int frameCount,
     {
         for (int x = 0; x < numX; x++)
         {
-            if (mFrames.size() < frameCount)
+            if ((int)mFrames.size() < frameCount)
                 mFrames.push_back(sf::IntRect(x * frameW, y * frameH, frameW, frameH));
         }
     }

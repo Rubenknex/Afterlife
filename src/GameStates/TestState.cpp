@@ -2,10 +2,11 @@
 
 TestState::TestState()
 {
-    
-    
     m_scene = new Scene();
     m_scene->load("data/Scenes/scene1.json");
+    
+    m_player = EntityPtr(new Player(m_scene, "player"));
+    m_scene->addEntity(m_player);
 }
 
 TestState::~TestState()

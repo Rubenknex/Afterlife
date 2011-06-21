@@ -41,7 +41,7 @@ namespace parsing
         
         std::vector<sf::Vector2f> vertices;
         
-        for (int i = 0; i < parts.size(); i += 2)
+        for (int i = 0; i < (int)parts.size(); i += 2)
         {
             sf::Vector2f vertex(atof(parts[i].c_str()), atof(parts[i + 1].c_str()));
             
