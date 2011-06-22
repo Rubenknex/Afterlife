@@ -12,11 +12,22 @@ class Gizmo
 public:
     enum GizmoMode
     {
-        MOVE,
-        ROTATE,
-        SCALE,
+        GM_MOVE,
+        GM_ROTATE,
+        GM_SCALE,
     };
 
+    enum EditMode
+    {
+        EM_NONE,
+        EM_MOVE_FREE,
+        EM_MOVE_GLOBAL_X,
+        EM_MOVE_GLOBAL_Y,
+        EM_ROTATE_FREE,
+        EM_SCALE_LOCAL_X,
+        EM_SCALE_LOCAL_Y,
+    };
+    
 public:
     Gizmo(Scene* scene);
     ~Gizmo();
@@ -32,11 +43,8 @@ public:
 private:
     Scene* m_currentScene;
     
-    GizmoMode m_mode;
-    bool m_movingFree;
-    bool m_movingHorizontally;
-    bool m_movingVertically;
-    bool m_rotating;
+    GizmoMode m_gizmoMode;
+    EditMode m_editMode;
 
     Object* m_selectedObject;
     

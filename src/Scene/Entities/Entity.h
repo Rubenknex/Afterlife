@@ -44,10 +44,13 @@ public:
     void setDrawLayer(int drawLayer);
     
     const sf::Vector2f getPosition() const;
-    void setPosition(const sf::Vector2f& pos);
+    virtual void setPosition(const sf::Vector2f& pos);
     
     float getRotation() const;
-    void setRotation(float rotation);
+    virtual void setRotation(float rotation);
+    
+    const sf::Vector2f& getScale() const;
+    virtual void setScale(const sf::Vector2f& scale);
     
     b2Body* getBody() const;
     

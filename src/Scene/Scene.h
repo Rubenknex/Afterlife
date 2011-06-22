@@ -67,6 +67,7 @@ private:
     std::string m_scriptFile;
     Script* m_script;
     
+    std::vector<std::string> m_objectDefFilenames;
     std::map<std::string, ObjectDef> m_objectDefs;
     
     std::vector<std::string> m_entitiesToRemove;

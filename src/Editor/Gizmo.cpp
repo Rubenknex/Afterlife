@@ -2,16 +2,15 @@
 
 #include "../Game.h"
 #include "../InputState.h"
+#include "../Math.h"
 #include "../Scene/Entities/Entity.h"
 #include "../Scene/Entities/Object.h"
 #include "../Scene/Scene.h"
 
 Gizmo::Gizmo(Scene* scene) :
     m_currentScene(scene),
-    m_mode(Gizmo::MOVE),
-    m_movingFree(false),
-    m_movingHorizontally(false),
-    m_movingVertically(false),
+    m_gizmoMode(Gizmo::GM_MOVE),
+    m_editMode(Gizmo::EM_NONE),
     m_selectedObject(NULL)
 {
     m_triangleUp.AddPoint(-5.0f, -48.0f, sf::Color::Blue);
@@ -70,11 +69,11 @@ void Gizmo::update(float dt)
         sf::Vector2f objPos = m_selectedObject->getPosition();
         sf::Vector2f mousePos = g_Window->ConvertCoords(g_Input.getMouseX(), g_Input.getMouseY());
         
-        switch (m_mode)
+        switch (m_gizmoMode)
         {
-            case Gizmo::MOVE:
+            case Gizmo::GM_MOVE:
             {
-                if (!m_movingFree && !m_movingHorizontally && !m_movingVertically)
+                if (m_editMode != Gizmo::EM_MOVE_FREE && m_editMode != Gizmo::EM_MOVE_GLOBAL_X && m_editMode != Gizmo::EM_MOVE_GLOBAL_Y)
                 {
                     sf::FloatRect upArrowRect(objPos.x - 10.0f, objPos.y - 50.0f - 10.0f, 20.0f, 20.0f);
                     sf::FloatRect rightArrowRect(objPos.x + 50.0f - 10.0f, objPos.y - 10.0f, 20.0f, 20.0f);
@@ -82,83 +81,118 @@ void Gizmo::update(float dt)
                     
                     if (freeRect.Contains(mousePos))
                     {
-                        m_movingFree = true;
+                        m_editMode = Gizmo::EM_MOVE_FREE;
                     }
                     else if (upArrowRect.Contains(mousePos))
                     {
-                        m_movingVertically = true;
+                        m_editMode = Gizmo::EM_MOVE_GLOBAL_Y;
                     }
                     else if (rightArrowRect.Contains(mousePos))
                     {
-                        m_movingHorizontally = true;
+                        m_editMode = Gizmo::EM_MOVE_GLOBAL_X;
                     }
                 }
             }
             break;
-            case Gizmo::ROTATE:
+            case Gizmo::GM_ROTATE:
             {
                 float angle = m_selectedObject->getRotation();
                 sf::Vector2f dirNormal(cos(math::radians(angle)), sin(math::radians(angle)));
                 sf::Vector2f knobPos = objPos + dirNormal * 50.0f;
                 
-                if (!m_rotating)
+                if (m_editMode != Gizmo::EM_ROTATE_FREE)
                 {
                     sf::FloatRect knobRect(knobPos.x - 10.0f, knobPos.y - 10.0f, 20.0f, 20.0f);
                     
                     if (knobRect.Contains(mousePos))
                     {
-                        m_rotating = true;
+                        m_editMode = Gizmo::EM_ROTATE_FREE;
                     }
                 }
             }
             break;
-            case Gizmo::SCALE:
+            case Gizmo::GM_SCALE:
             {
+                float angle = m_selectedObject->getRotation();
+                sf::Vector2f dirNormal(cos(math::radians(angle)), sin(math::radians(angle)));
+                sf::Vector2f localXRectPos = objPos + dirNormal * 50.0f;
+                sf::Vector2f localYRectPos = objPos + math::cross(dirNormal) * 50.0f;
                 
+                if (m_editMode != Gizmo::EM_SCALE_LOCAL_X)
+                {
+                    sf::FloatRect localXRect(localXRectPos.x - 10.0f, localXRectPos.y - 10.0f, 20.0f, 20.0f);
+                    sf::FloatRect localYRect(localYRectPos.x - 10.0f, localYRectPos.y - 10.0f, 20.0f, 20.0f);
+                    
+                    if (localXRect.Contains(mousePos))
+                    {
+                        m_editMode = Gizmo::EM_SCALE_LOCAL_X;
+                    }
+                    else if (localYRect.Contains(mousePos))
+                    {
+                        m_editMode = Gizmo::EM_SCALE_LOCAL_Y;
+                    }
+                }
             }
             break;
         }
     }
     else if (g_Input.isMouseButtonFirstUp(sf::Mouse::Left))
     {
-        m_movingFree = false;
-        m_movingHorizontally = false;
-        m_movingVertically = false;
-        m_rotating = false;
+        m_editMode = Gizmo::EM_NONE;
     }
     
     if (m_selectedObject != NULL)
     {
         sf::Vector2f objPos = m_selectedObject->getPosition();
         
-        if (m_movingFree)
+        switch (m_editMode)
         {
-            m_selectedObject->setPosition(sf::Vector2f(objPos.x + g_Input.getMouseDelta().x, objPos.y + g_Input.getMouseDelta().y));
-        }
-        else if (m_movingHorizontally)
-        {
-            m_selectedObject->setPosition(sf::Vector2f(objPos.x + g_Input.getMouseDelta().x, objPos.y));
-        }
-        else if (m_movingVertically)
-        {
-            m_selectedObject->setPosition(sf::Vector2f(objPos.x, objPos.y + g_Input.getMouseDelta().y));
-        }
-        else if (m_rotating)
-        {
-            sf::Vector2f mousePos = g_Window->ConvertCoords(g_Input.getMouseX(), g_Input.getMouseY());
-            
-            float objectMouseAngle = atan2(mousePos.y - objPos.y, mousePos.x - objPos.x);
-            
-            m_selectedObject->setRotation(math::degrees(objectMouseAngle));
+            case Gizmo::EM_MOVE_FREE:
+            {
+                m_selectedObject->setPosition(sf::Vector2f(objPos.x + g_Input.getMouseDelta().x, objPos.y + g_Input.getMouseDelta().y));
+            }
+            break;
+            case Gizmo::EM_MOVE_GLOBAL_X:
+            {
+                m_selectedObject->setPosition(sf::Vector2f(objPos.x + g_Input.getMouseDelta().x, objPos.y));
+            }
+            break;
+            case Gizmo::EM_MOVE_GLOBAL_Y:
+            {
+                m_selectedObject->setPosition(sf::Vector2f(objPos.x, objPos.y + g_Input.getMouseDelta().y));
+            }
+            break;
+            case Gizmo::EM_ROTATE_FREE:
+            {
+                sf::Vector2f mousePos = g_Window->ConvertCoords(g_Input.getMouseX(), g_Input.getMouseY());
+                float objectMouseAngle = atan2(mousePos.y - objPos.y, mousePos.x - objPos.x);
+                
+                m_selectedObject->setRotation(math::degrees(objectMouseAngle));
+            }
+            break;
+            case Gizmo::EM_SCALE_LOCAL_X:
+            {
+                sf::Vector2f scale = m_selectedObject->getScale();
+                scale.x += (float)g_Input.getMouseDelta().x / 100.0f;
+                m_selectedObject->setScale(scale);
+            }
+            break;
+            case Gizmo::EM_SCALE_LOCAL_Y:
+            {
+                sf::Vector2f scale = m_selectedObject->getScale();
+                scale.x += (float)g_Input.getMouseDelta().x / 100.0f;
+                m_selectedObject->setScale(scale);
+            }
+            break;
         }
     }
     
     if (g_Input.isKeyFirstDown(sf::Key::T))
-        m_mode = Gizmo::MOVE;
+        m_gizmoMode = Gizmo::GM_MOVE;
     else if (g_Input.isKeyFirstDown(sf::Key::R))
-        m_mode = Gizmo::ROTATE;
+        m_gizmoMode = Gizmo::GM_ROTATE;
     else if (g_Input.isKeyFirstDown(sf::Key::S))
-        m_mode = Gizmo::SCALE;
+        m_gizmoMode = Gizmo::GM_SCALE;
 }
 
 void Gizmo::draw(sf::RenderTarget& target)
@@ -167,9 +201,9 @@ void Gizmo::draw(sf::RenderTarget& target)
     {
         sf::Vector2f objPos = m_selectedObject->getPosition();
         
-        switch (m_mode)
+        switch (m_gizmoMode)
         {
-            case Gizmo::MOVE:
+            case Gizmo::GM_MOVE:
             {
                 m_lineUp.SetPosition(objPos);
                 m_lineRight.SetPosition(objPos);
@@ -184,7 +218,7 @@ void Gizmo::draw(sf::RenderTarget& target)
                 target.Draw(m_triangleRight);
             }
             break;
-            case Gizmo::ROTATE:
+            case Gizmo::GM_ROTATE:
             {
                 float angle = m_selectedObject->getRotation();
                 sf::Vector2f dirNormal(cos(math::radians(angle)), sin(math::radians(angle)));
@@ -198,7 +232,7 @@ void Gizmo::draw(sf::RenderTarget& target)
                 target.Draw(m_circleKnob);
             }
             break;
-            case Gizmo::SCALE:
+            case Gizmo::GM_SCALE:
             {
                 float angle = m_selectedObject->getRotation();
                 sf::Vector2f dirNormal(cos(math::radians(angle)), sin(math::radians(angle)));
@@ -225,7 +259,7 @@ void Gizmo::draw(sf::RenderTarget& target)
 
 void Gizmo::setMode(GizmoMode mode)
 {
-    m_mode = mode;
+    m_gizmoMode = mode;
 }
 
 void Gizmo::setSelectedObject(Object* object)

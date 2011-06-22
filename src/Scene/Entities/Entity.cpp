@@ -97,6 +97,16 @@ void Entity::setRotation(float rotation)
     m_sprite.SetRotation(rotation);
 }
 
+const sf::Vector2f& Entity::getScale() const
+{
+    return m_sprite.GetScale();
+}
+
+void Entity::setScale(const sf::Vector2f& scale)
+{
+    m_sprite.SetScale(scale);
+}
+
 b2Body* Entity::getBody() const
 {
     return m_body;

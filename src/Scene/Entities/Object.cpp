@@ -150,6 +150,11 @@ void Object::handleBeginContact(Entity* entity)
     
 }
 
+ObjectDef* Object::getObjectDef() const
+{
+    return m_def;
+}
+
 /*
 void Object::setPosition(float x, float y)
 {

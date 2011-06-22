@@ -41,6 +41,8 @@ public:
     void draw(sf::RenderTarget& target);
     
     void handleBeginContact(Entity* entity);
+    
+    ObjectDef* getObjectDef() const;
 
 private:
     ObjectDef* m_def;

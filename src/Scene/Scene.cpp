@@ -72,8 +72,12 @@ void Scene::load(const std::string& filename)
     Json::Value objectsToLoad = root["load"];
     for (int i = 0; i < (int)objectsToLoad.size(); i++)
     {
+        std::string filename = objectsToLoad[i].asString();
+        
+        m_objectDefFilenames.push_back(filename);
+        
         ObjectDef def;
-        def.load(objectsToLoad[i].asString());
+        def.load(filename);
         
         m_objectDefs.insert(std::pair<std::string, ObjectDef>(def.m_type, def));
     }
@@ -138,7 +142,72 @@ void Scene::load(const std::string& filename)
 
 void Scene::save(const std::string& filename)
 {
+    Json::Value root;
     
+    root["name"] = m_name;
+    root["script"] = m_scriptFile;
+    
+    Json::Value load(Json::arrayValue);
+    for (int i = 0; i < (int)m_objectDefFilenames.size(); i++)
+    {
+        load.append(m_objectDefFilenames[i]);
+    }
+    root["load"] = load;
+    
+    Json::Value objects(Json::arrayValue);
+    for (int i = 0; i < (int)m_entities.size(); i++)
+    {
+        if (m_entities[i].getType() == Entity::OBJECT)
+        {
+            Object* obj = static_cast<Object*>(&m_entities[i]);
+            
+            Json::Value object;
+            
+            object["type"] = obj->getObjectDef()->m_type;
+            object["id"] = obj->getId();
+            object["drawLayer"] = obj->getDrawLayer();
+            object["physics"] = obj->hasPhysics();
+            object["position"] = boost::str(boost::format("%1% %2%") % obj->getPosition().x % obj->getPosition().y);
+            object["rotation"] = obj->getRotation();
+            object["scale"] = boost::str(boost::format("%1% %2%") % obj->getScale().x % obj->getScale().y);
+            
+            objects.append(object);
+        }
+    }
+    root["objects"] = objects;
+    
+    root["ambientColor"] = boost::str(boost::format("%1% %2% %3%") % m_ambientColor.r % m_ambientColor.g % m_ambientColor.b);
+    
+    Json::Value lights(Json::arrayValue);
+    boost::ptr_map<std::string, Light>::iterator it;
+    for (it = m_lights.begin(); it != m_lights.end(); it++)
+    {
+        Json::Value light;
+        
+        light["type"] = "";
+        light["id"] = it->second->getId();
+        light["position"] = "";
+        light["radius"] = "";
+        light["intensity"] = "";
+        light["color"] = "";
+        
+        // quality or angle and open angle
+        
+        lights.append(light);
+    }
+    root["lights"] = lights;
+    
+    std::ofstream out(filename.c_str());
+    
+    if (!out.is_open())
+    {
+        return;
+    }
+    
+    Json::StyledStreamWriter writer;
+    writer.write(out, root);
+    
+    out.close();
 }
 
 void Scene::update(float dt)
