@@ -105,18 +105,18 @@ void Scene::load(const std::string& filename)
         {
             int quality = light["quality"].asInt();
             
-            LightPtr lightPtr(new PointLight(id, sf::Vector2f(position.x, position.y), intensity, radius, sf::Color(color.r, color.g, color.b, color.a), quality));
+            Light* lightPtr = new PointLight(id, sf::Vector2f(position.x, position.y), intensity, radius, sf::Color(color.r, color.g, color.b, color.a), quality);
             
-            m_lights.insert(std::pair<std::string, LightPtr>(id, lightPtr));
+            m_lights.insert(id, lightPtr);
         }
         else if (type.compare("spot") == 0)
         {
            float angle = light["angle"].asDouble();
            float openAngle = light["openAngle"].asDouble();
            
-           LightPtr lightPtr(new SpotLight(id, sf::Vector2f(position.x, position.y), intensity, radius, sf::Color(color.r, color.g, color.b, color.a), angle, openAngle));
+           Light* lightPtr = new SpotLight(id, sf::Vector2f(position.x, position.y), intensity, radius, sf::Color(color.r, color.g, color.b, color.a), angle, openAngle);
            
-           m_lights.insert(std::pair<std::string, LightPtr>(id, lightPtr));
+           m_lights.insert(id, lightPtr);
         }
     }
 }
@@ -159,7 +159,7 @@ void Scene::update(float dt)
             }
         }
     }
-    m_entitiesToRemove.clear();
+    m_entitiesToRemove.clear(); 
 }
 
 void Scene::draw(sf::RenderTarget& target)
@@ -169,16 +169,19 @@ void Scene::draw(sf::RenderTarget& target)
          m_entities[i].draw(target);
     }
     
-    m_lightRenderer.setLights(m_lights);
+    m_lightRenderer.setLights(&m_lights);
     m_lightRenderer.setAmbientColor(m_ambientColor);
     m_lightRenderer.draw(target);
     
-    m_b2World.DrawDebugData();
+    //m_b2World.DrawDebugData();
 }
 
 void Scene::addEntity(Entity* entity)
 {
     m_entities.push_back(entity);
+    
+    //boost::ptr_vector<Entity>::iterator it = m_entities.begin();
+    //m_entities.sort(it; it);
 }
 
 void Scene::scheduleEntityForRemoval(Entity* entity)
@@ -186,21 +189,24 @@ void Scene::scheduleEntityForRemoval(Entity* entity)
     m_entitiesToRemove.push_back(entity->getId());
 }
 
-void Scene::addLight(LightPtr light)
+void Scene::addLight(Light* light)
 {
-    m_lights.insert(std::pair<std::string, LightPtr>(light->getName(), light));
+    std::string key = light->getName();
+    m_lights.insert(key, light);
 }
 
-LightPtr Scene::getLightByName(const std::string& name)
+Light* Scene::getLightByName(const std::string& name)
 {
-    std::map<std::string, LightPtr>::iterator it = m_lights.find(name);
-    
-    if (it != m_lights.end())
+    boost::ptr_map<std::string, Light>::iterator it;
+    for (it = m_lights.begin(); it != m_lights.end(); it++)
     {
-        return it->second;
+        if (it->second->getName() == name)
+        {
+            return it->second;
+        }
     }
     
-    return LightPtr();
+    return NULL;
 }
 
 b2World* Scene::getB2World()
@@ -211,4 +217,12 @@ b2World* Scene::getB2World()
 float Scene::getMeterPixelRatio()
 {
     return m_meterPixelRatio;
+}
+
+std::string Scene::getRandomId()
+{
+    int id = sf::Randomizer::Random(0, 1000000);
+    
+    // Check if id is already in use
+    return boost::lexical_cast<std::string>(id);
 }

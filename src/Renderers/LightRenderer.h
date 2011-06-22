@@ -1,15 +1,13 @@
 #ifndef LIGHTRENDERER_H_INCLUDED
 #define LIGHTRENDERER_H_INCLUDED
 
-#include <boost/shared_ptr.hpp>
+#include <boost/ptr_container/ptr_map.hpp>
 #include <SFML/Graphics.hpp>
 
 #include "IRenderer.h"
 #include "../Scene/Light.h"
 #include "../Scene/PointLight.h"
 #include "../Scene/SpotLight.h"
-
-typedef boost::shared_ptr<Light> LightPtr;
 
 class LightRenderer : public IRenderer
 {
@@ -19,7 +17,7 @@ public:
 
     void draw(sf::RenderTarget& target);
     
-    void setLights(std::map<std::string, LightPtr> lights);
+    void setLights(boost::ptr_map<std::string, Light>* lights);
     void setAmbientColor(const sf::Color ambient);
 
 private:
@@ -30,7 +28,7 @@ private:
     sf::RenderImage* m_verticalPass;
     sf::Sprite m_lightsSprite;
     
-    std::map<std::string, LightPtr> m_lights;
+    boost::ptr_map<std::string, Light>* m_lights;
     sf::Color m_ambientColor;
 };
 

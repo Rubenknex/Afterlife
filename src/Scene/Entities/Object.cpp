@@ -121,6 +121,8 @@ Object::Object(Scene* scene, const std::string& id, ObjectDef* def, const sf::Ve
         fixtureDef.friction = m_def->m_friction;
         fixtureDef.density = m_def->m_density;
         fixtureDef.restitution = m_def->m_restitution;
+        fixtureDef.filter.categoryBits = Entity::OBJECT;
+        fixtureDef.filter.maskBits = Entity::PLAYER | Entity::PROJECTILE | Entity::ZOMBIE;
         
         m_body->CreateFixture(&fixtureDef);
     }

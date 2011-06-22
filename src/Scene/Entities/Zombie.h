@@ -1,6 +1,7 @@
 #ifndef ZOMBIE_H_INCLUDED
 #define ZOMBIE_H_INCLUDED
 
+#include <boost/lexical_cast.hpp>
 #include <Box2D/Box2D.h>
 #include <SFML/Graphics.hpp>
 
@@ -18,9 +19,11 @@ public:
     
     void handleBeginContact(Entity* entity);
     void handleEndContact(Entity* entity);
+    
+    void inflictDamage(float damage);
 
 private:
-    
+    float m_health;
 };
 
 #endif // ZOMBIE_H_INCLUDED

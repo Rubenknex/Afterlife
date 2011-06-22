@@ -1,6 +1,8 @@
 #ifndef SCENE_H_INCLUDED
 #define SCENE_H_INCLUDED
 
+#include <boost/lexical_cast.hpp>
+#include <boost/ptr_container/ptr_map.hpp>
 #include <boost/ptr_container/ptr_vector.hpp>
 #include <Box2D/Box2D.h>
 #include <fstream>
@@ -22,9 +24,6 @@
 #include "../Scripting/Script.h"
 #include "../Scripting/ScriptManager.h"
 
-typedef boost::shared_ptr<Entity> EntityPtr;
-typedef boost::shared_ptr<Light> LightPtr;
-
 class Scene
 {
 public:
@@ -40,12 +39,14 @@ public:
     void addEntity(Entity* entity);
     void scheduleEntityForRemoval(Entity* entity);
     
-    void addLight(LightPtr light);
-    LightPtr getLightByName(const std::string& name);
+    void addLight(Light* light);
+    Light* getLightByName(const std::string& name);
     
     b2World* getB2World();
     
     float getMeterPixelRatio();
+    
+    std::string getRandomId();
 
 private:
     std::string m_name;
@@ -59,8 +60,7 @@ private:
     boost::ptr_vector<Entity> m_entities;
     
     sf::Color m_ambientColor;
-    std::map<std::string, LightPtr> m_lights;
-    
+    boost::ptr_map<std::string, Light> m_lights;
     LightRenderer m_lightRenderer;
     
     b2World m_b2World;

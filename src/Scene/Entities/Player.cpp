@@ -1,10 +1,14 @@
 #include "Player.h"
 
+#include "Projectile.h"
 #include "../Scene.h"
 
 Player::Player(Scene* scene, const std::string& id) : 
-    Entity(scene, id)
+    Entity(scene, id),
+    m_flashLight(new SpotLight("flashlight", sf::Vector2f(0.0f, 0.0f), 1.0f, 200.0f, sf::Color(255, 230, 230), 0.0f, 15.0f))
 {
+    setType("player");
+    
     m_sprite.SetImage(*IM.GetResource("data/Images/player_gun.png"));
     m_sprite.SetSubRect(sf::IntRect(0, 0, 45, 60));
     m_sprite.SetOrigin(m_sprite.GetSize() / 2.0f);
@@ -24,8 +28,12 @@ Player::Player(Scene* scene, const std::string& id) :
     fixtureDef.friction = 0.3f;
     fixtureDef.density = 1.0f;
     fixtureDef.restitution = 0.1f;
+    fixtureDef.filter.categoryBits = Entity::PLAYER;
+    fixtureDef.filter.maskBits = Entity::OBJECT | Entity::ZOMBIE;
     
     m_body->CreateFixture(&fixtureDef);
+    
+    m_scene->addLight(m_flashLight);
 }
 
 Player::~Player()
@@ -49,7 +57,7 @@ void Player::update(float dt)
     {
         movement = math::normalize(movement);
         
-        movement *= 3.0f;
+        movement *= 4.0f;
         
         m_body->SetLinearVelocity(b2Vec2(movement.x, movement.y));
     }
@@ -63,7 +71,16 @@ void Player::update(float dt)
     float rotation = atan2(screenPos.y - m_sprite.GetPosition().y, screenPos.x - m_sprite.GetPosition().x);
     m_sprite.SetRotation(math::degrees(rotation) - 90.0f);
     
-    //m_body->SetTransform(m_body->GetPosition(), rotation);
+    if (g_Input.isMouseButtonFirstDown(sf::Mouse::Left))
+    {
+        b2Vec2 bPos = m_body->GetPosition();
+        sf::Vector2f pos(bPos.x * m_scene->getMeterPixelRatio(), bPos.y * m_scene->getMeterPixelRatio());
+        
+        m_scene->addEntity(new Projectile(m_scene, m_scene->getRandomId(), getPosition(), math::degrees(rotation), 30.0f, 30.0f));
+    }
+    
+    m_flashLight->setPosition(getPosition());
+    m_flashLight->setAngle(m_sprite.GetRotation() + 90.0f);
 }
 
 void Player::draw(sf::RenderTarget& target)

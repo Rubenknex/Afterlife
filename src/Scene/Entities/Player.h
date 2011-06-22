@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Entity.h"
+#include "../SpotLight.h"
 #include "../../InputState.h"
 #include "../../Math.h"
 #include "../../ResourceManager.h"
@@ -23,7 +24,7 @@ public:
     void handleEndContact(Entity* entity);
 
 private:
-    
+    SpotLight* m_flashLight;
 };
 
 #endif // PLAYER_H_INCLUDED

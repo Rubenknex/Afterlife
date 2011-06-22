@@ -12,7 +12,7 @@ class Scene;
 class Decal : public Entity
 {
 public:
-    Decal(Scene* scene, const std::string& id);
+    Decal(Scene* scene, const std::string& id, const sf::Vector2f& pos, float rotation, const std::string& decalFile, float fadingTime);
     ~Decal();
     
     void update(float dt);

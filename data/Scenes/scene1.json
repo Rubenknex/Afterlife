@@ -4,7 +4,9 @@
     "load" :
     [
         "data/Objects/background.json",
-        "data/Objects/car.json",
+        "data/Objects/car_blue.json",
+        "data/Objects/car_red.json",
+        "data/Objects/car_green.json",
         "data/Objects/crate.json"
     ],
     "objects" :
@@ -18,12 +20,20 @@
             "scale" : 1.0
         },
         {
-            "type" : "car",
+            "type" : "car_blue",
             "id" : "car_1",
             "physics" : true,
             "position" : "100.0 250.0",
             "rotation" : 40.0,
-            "scale" : 0.6
+            "scale" : 1.2
+        },
+        {
+            "type" : "car_red",
+            "id" : "car_2",
+            "physics" : true,
+            "position" : "700.0 300.0",
+            "rotation" : 90.0,
+            "scale" : 1.2
         },
         {
             "type" : "crate",
@@ -37,9 +47,9 @@
             "type" : "crate",
             "id" : "crate_2",
             "physics" : true,
-            "position" : "200.0 400.0",
+            "position" : "500.0 400.0",
             "rotation" : 20.0,
-            "scale" : 0.7
+            "scale" : 0.5
         }
     ],
     "ambientColor" : "100 100 100",

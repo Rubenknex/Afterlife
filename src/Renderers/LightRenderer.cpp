@@ -42,8 +42,8 @@ void LightRenderer::draw(sf::RenderTarget& target)
         m_lightsImage->SetView(target.GetView());
         
         // Draw all the lights on the light image.
-        std::map<std::string, LightPtr>::iterator it;
-        for (it = m_lights.begin(); it != m_lights.end(); it++)
+        boost::ptr_map<std::string, Light>::iterator it;
+        for (it = m_lights->begin(); it != m_lights->end(); it++)
         {
             it->second->draw(m_lightsImage);
         }
@@ -77,7 +77,7 @@ void LightRenderer::draw(sf::RenderTarget& target)
     }
 }
 
-void LightRenderer::setLights(std::map<std::string, LightPtr> lights)
+void LightRenderer::setLights(boost::ptr_map<std::string, Light>* lights)
 {
     m_lights = lights;
 }
