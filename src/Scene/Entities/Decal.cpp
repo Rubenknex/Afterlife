@@ -7,7 +7,7 @@ Decal::Decal(Scene* scene, const std::string& id, const sf::Vector2f& pos, float
     m_fadingTime(fadingTime),
     m_fadingTimer(0.0f)
 {
-    setType("decal");
+    setType(Entity::DECAL);
     setDrawLayer(2);
     
     m_sprite.SetImage(*IM.GetResource(decalFile));

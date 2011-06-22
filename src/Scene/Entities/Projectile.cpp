@@ -9,7 +9,7 @@ Projectile::Projectile(Scene* scene, const std::string& id, const sf::Vector2f& 
     m_lifeTime(5.0f),
     m_lifeTimeTimer(0.0f)
 {
-    setType("projectile");
+    setType(Entity::PROJECTILE);
     setDrawLayer(4);
     
     m_velocity = b2Vec2(cos(math::radians(direction)), sin(math::radians(direction)));
@@ -67,15 +67,15 @@ void Projectile::draw(sf::RenderTarget& target)
 
 void Projectile::handleBeginContact(Entity* entity)
 {
-    std::string type = entity->getType();
+    EntityType type = entity->getType();
     
-    if (type == "object")
+    if (type == Entity::OBJECT)
     {
         m_scene->fireParticleSystem("dust", getPosition());
         
         m_scene->scheduleEntityForRemoval(this);
     }
-    else if (type == "zombie")
+    else if (type == Entity::ZOMBIE)
     {
         Zombie* zombie = static_cast<Zombie*>(entity);
         

@@ -1,7 +1,16 @@
 #include "Scene.h"
 
-Scene::Scene() :
+#include "Entities/Entity.h"
+#include "Light.h"
+#include "PointLight.h"
+#include "SpotLight.h"
+#include "../Game.h"
+#include "../Scripting/Script.h"
+#include "../Scripting/ScriptManager.h"
+
+Scene::Scene(bool scriptingEnabled) :
     m_initialized(false),
+    m_scriptingEnabled(scriptingEnabled),
     m_script(NULL),
     m_ambientColor(sf::Color::White),
     m_lightRenderer(1280, 720, 640, 360),
@@ -20,7 +29,7 @@ Scene::~Scene()
     
     if (m_script != NULL)
         delete m_script;
-        
+    
     m_entities.clear();
     
     std::cout << "Destroying b2world" << std::endl;
@@ -52,9 +61,13 @@ void Scene::load(const std::string& filename)
     m_name = root["name"].asString();
     
     m_scriptFile = root["script"].asString();
-    m_script = new Script(&g_scriptManager, m_name);
-    m_script->loadSection(m_scriptFile);
-    m_script->build();
+    
+    if (m_scriptingEnabled)
+    {
+        m_script = new Script(&g_scriptManager, m_name);
+        m_script->loadSection(m_scriptFile);
+        m_script->build();
+    }
     
     Json::Value objectsToLoad = root["load"];
     for (int i = 0; i < (int)objectsToLoad.size(); i++)
@@ -131,7 +144,7 @@ void Scene::save(const std::string& filename)
 void Scene::update(float dt)
 {
     // Run the script update function
-    if (m_script != NULL)
+    if (m_script != NULL && m_scriptingEnabled)
     {
         if (!m_initialized)
         {
@@ -192,31 +205,34 @@ void Scene::draw(sf::RenderTarget& target)
         m_particleSystems[i].draw(target);
     }
     
-    m_lightRenderer.setLights(&m_lights);
-    m_lightRenderer.setAmbientColor(m_ambientColor);
-    m_lightRenderer.draw(target);
+    if (m_lightingEnabled)
+    {
+        m_lightRenderer.setLights(&m_lights);
+        m_lightRenderer.setAmbientColor(m_ambientColor);
+        m_lightRenderer.draw(target);
+    }
     
     //m_b2World.DrawDebugData();
+}
+
+bool Scene::isScriptingEnabled() const
+{
+    return m_scriptingEnabled;
+}
+
+void Scene::setScriptingEnabled(bool enabled)
+{
+    m_scriptingEnabled = enabled;
 }
 
 void Scene::addEntity(Entity* entity)
 {
     m_entities.push_back(entity);
-    
-    //std::cout << "Sorting Entities" << std::endl;
-    
-    //m_entities.sort(m_entities.begin(), m_entities.end());
-    
-    //std::cout << "Draw Layers:" << std::endl;
-    //for (int i = 0; i < m_entities.size(); i++)
-    //{
-    //    std::cout << m_entities[i].getId() << ": " << m_entities[i].getDrawLayer() << std::endl;
-    //}
 }
 
 Entity* Scene::getEntityById(const std::string& id)
 {
-    for (int i = 0; i < m_entities.size(); i++)
+    for (int i = 0; i < (int)m_entities.size(); i++)
     {
         if (m_entities[i].getId() == id)
         {
@@ -227,9 +243,41 @@ Entity* Scene::getEntityById(const std::string& id)
     return NULL;
 }
 
+std::vector<Entity*> Scene::getEntitiesAtPosition(const sf::Vector2f& pos)
+{
+    std::vector<Entity*> entities;
+    
+    b2Vec2 physicsPosition(pos.x / m_meterPixelRatio, pos.y / m_meterPixelRatio);
+    
+    for (int i = 0; i < (int)m_entities.size(); i++)
+    {
+        if (m_entities[i].hasPhysics())
+        {
+            b2Body* body = m_entities[i].getBody();
+            
+            if (body->GetFixtureList()->GetShape()->TestPoint(body->GetTransform(), physicsPosition))
+            {
+                entities.push_back(&m_entities[i]);
+            }
+        }
+    }
+    
+    return entities;
+}
+
 void Scene::scheduleEntityForRemoval(Entity* entity)
 {
     m_entitiesToRemove.push_back(entity->getId());
+}
+
+bool Scene::isLightingEnabled() const
+{
+    return m_lightingEnabled;
+}
+
+void Scene::setLightingEnabled(bool enabled)
+{
+    m_lightingEnabled = enabled;
 }
 
 void Scene::setAmbientColor(const sf::Color& ambientColor)

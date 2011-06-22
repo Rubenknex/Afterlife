@@ -4,6 +4,7 @@
 #include <SFML/Audio.hpp>
 
 #include "../AudioPlayer.h"
+#include "../Game.h"
 #include "../InputState.h"
 #include "../ResourceManager.h"
 #include "../Scene/PointLight.h"

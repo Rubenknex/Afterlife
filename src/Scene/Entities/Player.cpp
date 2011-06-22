@@ -2,12 +2,13 @@
 
 #include "Projectile.h"
 #include "../Scene.h"
+#include "../../Game.h"
 
 Player::Player(Scene* scene, const std::string& id, const sf::Vector2f& pos) : 
     Entity(scene, id),
-    m_flashLight(new SpotLight("flashlight", sf::Vector2f(0.0f, 0.0f), 1.0f, 200.0f, sf::Color(255, 230, 230), 0.0f, 15.0f))
+    m_flashLight(new SpotLight("flashlight", sf::Vector2f(0.0f, 0.0f), 1.0f, 300.0f, sf::Color(255, 230, 230), 0.0f, 15.0f))
 {
-    setType("player");
+    setType(Entity::PLAYER);
     setDrawLayer(3);
     
     m_sprite.SetImage(*IM.GetResource("data/Images/player_gun.png"));

@@ -7,7 +7,7 @@ Grenade::Grenade(Scene* scene, const std::string& id, const sf::Vector2f& pos, f
     m_detonationTime(detonationTime),
     m_detonationTimer(0.0f)
 {
-    setType("grenade");
+    setType(Entity::GRENADE);
     setDrawLayer(4);
     
     m_sprite.SetImage(*IM.GetResource("data/Images/grenade.png"));
@@ -64,5 +64,5 @@ void Grenade::draw(sf::RenderTarget& target)
 
 void Grenade::handleBeginContact(Entity* entity)
 {
-    std::string type = entity->getType();
+    
 }

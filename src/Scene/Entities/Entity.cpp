@@ -37,12 +37,12 @@ const std::string& Entity::getId() const
     return m_id;
 }
 
-const std::string& Entity::getType() const
+Entity::EntityType Entity::getType() const
 {
     return m_type;
 }
 
-void Entity::setType(const std::string& type)
+void Entity::setType(EntityType type)
 {
     m_type = type;
 }
@@ -75,6 +75,31 @@ void Entity::setPosition(const sf::Vector2f& pos)
     {
         m_body->SetTransform(b2Vec2(pos.x / m_scene->getMeterPixelRatio(), pos.y / m_scene->getMeterPixelRatio()), m_body->GetAngle());
     }
+}
+
+float Entity::getRotation() const
+{
+    if (hasPhysics())
+    {
+        return math::degrees(m_body->GetAngle());
+    }
+    
+    return m_sprite.GetRotation();
+}
+
+void Entity::setRotation(float rotation)
+{
+    if (hasPhysics())
+    {
+        m_body->SetTransform(m_body->GetPosition(), math::radians(rotation));
+    }
+    
+    m_sprite.SetRotation(rotation);
+}
+
+b2Body* Entity::getBody() const
+{
+    return m_body;
 }
 
 bool Entity::hasPhysics() const

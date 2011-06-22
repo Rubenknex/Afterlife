@@ -4,7 +4,7 @@
 
 TestState::TestState()
 {
-    m_scene = new Scene();
+    m_scene = new Scene(true);
     
     setScriptingScene(m_scene);
     g_scriptManager.registerInterface(new ScriptInterface());

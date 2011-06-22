@@ -12,22 +12,19 @@
 
 #include "ContactListener.h"
 #include "DebugDrawer.h"
-#include "Entities/Entity.h"
 #include "Entities/Object.h"
-#include "Light.h"
 #include "ParticleSystem.h"
-#include "PointLight.h"
-#include "SpotLight.h"
-#include "../Game.h"
 #include "../Parsing.h"
 #include "../Renderers/LightRenderer.h"
-#include "../Scripting/Script.h"
-#include "../Scripting/ScriptManager.h"
+
+class Entity;
+class Light;
+class Script;
 
 class Scene
 {
 public:
-    Scene();
+    Scene(bool scriptingEnabled);
     ~Scene();
     
     void load(const std::string& filename);
@@ -36,9 +33,16 @@ public:
     void update(float dt);
     void draw(sf::RenderTarget& target);
     
+    bool isScriptingEnabled() const;
+    void setScriptingEnabled(bool enabled);
+    
     void addEntity(Entity* entity);
     Entity* getEntityById(const std::string& id);
+    std::vector<Entity*> getEntitiesAtPosition(const sf::Vector2f& pos);
     void scheduleEntityForRemoval(Entity* entity);
+    
+    bool isLightingEnabled() const;
+    void setLightingEnabled(bool enabled);
     
     void setAmbientColor(const sf::Color& ambientColor);
     
@@ -59,6 +63,7 @@ private:
     
     bool m_initialized;
     
+    bool m_scriptingEnabled;
     std::string m_scriptFile;
     Script* m_script;
     
@@ -67,6 +72,7 @@ private:
     std::vector<std::string> m_entitiesToRemove;
     boost::ptr_vector<Entity> m_entities;
     
+    bool m_lightingEnabled;
     sf::Color m_ambientColor;
     boost::ptr_map<std::string, Light> m_lights;
     LightRenderer m_lightRenderer;

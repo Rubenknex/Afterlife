@@ -42,10 +42,6 @@ public:
     
     void handleBeginContact(Entity* entity);
 
-    void setPosition(float x, float y);
-    void setRotation(float degrees);
-    void setScale(float scale);
-
 private:
     ObjectDef* m_def;
     boost::shared_ptr<sf::Image> m_image;

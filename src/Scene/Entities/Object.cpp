@@ -78,7 +78,7 @@ Object::Object(Scene* scene, const std::string& id, ObjectDef* def, int drawLaye
     Entity(scene, id),
     m_def(def)
 {
-    setType("object");
+    setType(Entity::OBJECT);
     setDrawLayer(drawLayer);
     
     m_image = IM.GetResource(m_def->m_imageFile);
@@ -136,14 +136,21 @@ Object::~Object()
 
 void Object::draw(sf::RenderTarget& target)
 {
+    if (hasPhysics())
+    {
+        b2Vec2 pos = m_body->GetPosition();
+        m_sprite.SetPosition(pos.x * m_scene->getMeterPixelRatio(), pos.y * m_scene->getMeterPixelRatio());
+    }
+    
     target.Draw(m_sprite);
 }
 
 void Object::handleBeginContact(Entity* entity)
 {
-    std::string type = entity->getType();
+    
 }
 
+/*
 void Object::setPosition(float x, float y)
 {
     m_sprite.SetPosition(x, y);
@@ -190,3 +197,4 @@ void Object::setScale(float scale)
         m_body->CreateFixture(&fixtureDef);
     }
 }
+*/

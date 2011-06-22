@@ -7,7 +7,7 @@ Zombie::Zombie(Scene* scene, const std::string& id, const sf::Vector2f& pos) :
     Entity(scene, id),
     m_health(100.0f)
 {
-    setType("zombie");
+    setType(Entity::ZOMBIE);
     setDrawLayer(3);
     
     m_sprite.SetImage(*IM.GetResource("data/Images/zombie_1.png"));
@@ -67,7 +67,7 @@ void Zombie::draw(sf::RenderTarget& target)
 
 void Zombie::handleBeginContact(Entity* entity)
 {
-    std::string type = entity->getType();
+    
 }
 
 void Zombie::handleEndContact(Entity* entity)

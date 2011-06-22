@@ -34,8 +34,8 @@ public:
     
     const std::string& getId() const;
     
-    const std::string& getType() const;
-    void setType(const std::string& type);
+    EntityType getType() const;
+    void setType(EntityType type);
     
     bool receivesLight() const;
     void setReceivesLight(bool receiveLight);
@@ -46,6 +46,11 @@ public:
     const sf::Vector2f getPosition() const;
     void setPosition(const sf::Vector2f& pos);
     
+    float getRotation() const;
+    void setRotation(float rotation);
+    
+    b2Body* getBody() const;
+    
     bool hasPhysics() const;
     bool hasScripting() const;
     
@@ -55,7 +60,7 @@ protected:
     Scene* m_scene;
     
     std::string m_id;
-    std::string m_type;
+    EntityType m_type;
     
     bool m_receiveLight;
     
