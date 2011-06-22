@@ -74,13 +74,14 @@ void Scene::load(const std::string& filename)
         if (it != m_objectDefs.end())
         {
             std::string id = object["id"].asString();
+            int drawLayer = object["drawLayer"].asInt();
             parsing::Vector2 position = parsing::vector2(object["position"].asString());
             sf::Vector2f pos(position.x, position.y);
             float rotation = object["rotation"].asDouble();
             float scale = object["scale"].asDouble();
             bool physics = object["physics"].asBool();
             
-            Object* obj = new Object(this, id, &it->second, pos, rotation, scale, physics);
+            Object* obj = new Object(this, id, &it->second, drawLayer, pos, rotation, scale, physics);
             
             m_entities.push_back(obj);
         }
@@ -142,6 +143,14 @@ void Scene::update(float dt)
         m_entities[i].update(dt);
     }
     
+    // Sort the entities based on drawing layer.
+    m_entities.sort(m_entities.begin(), m_entities.end());
+    
+    for (int i = 0; i < (int)m_particleSystems.size(); i++)
+    {
+        m_particleSystems[i].update(dt);
+    }
+    
     // Update the Box2D world
     m_b2World.Step(1.0f / 60.0f, 6, 2);
     m_b2World.ClearForces();
@@ -169,6 +178,11 @@ void Scene::draw(sf::RenderTarget& target)
          m_entities[i].draw(target);
     }
     
+    for (int i = 0; i < (int)m_particleSystems.size(); i++)
+    {
+        m_particleSystems[i].draw(target);
+    }
+    
     m_lightRenderer.setLights(&m_lights);
     m_lightRenderer.setAmbientColor(m_ambientColor);
     m_lightRenderer.draw(target);
@@ -180,8 +194,15 @@ void Scene::addEntity(Entity* entity)
 {
     m_entities.push_back(entity);
     
-    //boost::ptr_vector<Entity>::iterator it = m_entities.begin();
-    //m_entities.sort(it; it);
+    //std::cout << "Sorting Entities" << std::endl;
+    
+    //m_entities.sort(m_entities.begin(), m_entities.end());
+    
+    //std::cout << "Draw Layers:" << std::endl;
+    //for (int i = 0; i < m_entities.size(); i++)
+    //{
+    //    std::cout << m_entities[i].getId() << ": " << m_entities[i].getDrawLayer() << std::endl;
+    //}
 }
 
 void Scene::scheduleEntityForRemoval(Entity* entity)
@@ -209,6 +230,29 @@ Light* Scene::getLightByName(const std::string& name)
     return NULL;
 }
 
+void Scene::loadParticleSystem(const std::string& filename)
+{
+    ParticleSystem ps;
+    ps.load(filename);
+    
+    m_particleSystems.push_back(ps);
+    
+    std::sort(m_particleSystems.begin(), m_particleSystems.end());
+}
+
+void Scene::fireParticleSystem(const std::string& name, const sf::Vector2f& pos)
+{
+    for (int i = 0; i < (int)m_particleSystems.size(); i++)
+    {
+        if (m_particleSystems[i].getName() == name)
+        {
+            m_particleSystems[i].fire(pos);
+            
+            break;
+        }
+    }
+}
+
 b2World* Scene::getB2World()
 {
     return &m_b2World;
@@ -219,10 +263,9 @@ float Scene::getMeterPixelRatio()
     return m_meterPixelRatio;
 }
 
-std::string Scene::getRandomId()
+std::string Scene::getRandomId(const std::string& prefix)
 {
-    int id = sf::Randomizer::Random(0, 1000000);
+    int randomId = math::rand(0, 10000000);
     
-    // Check if id is already in use
-    return boost::lexical_cast<std::string>(id);
+    return boost::str(boost::format("%1%%2%") % prefix % randomId);
 }

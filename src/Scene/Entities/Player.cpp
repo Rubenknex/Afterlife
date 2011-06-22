@@ -8,6 +8,7 @@ Player::Player(Scene* scene, const std::string& id) :
     m_flashLight(new SpotLight("flashlight", sf::Vector2f(0.0f, 0.0f), 1.0f, 200.0f, sf::Color(255, 230, 230), 0.0f, 15.0f))
 {
     setType("player");
+    setDrawLayer(3);
     
     m_sprite.SetImage(*IM.GetResource("data/Images/player_gun.png"));
     m_sprite.SetSubRect(sf::IntRect(0, 0, 45, 60));
@@ -76,7 +77,7 @@ void Player::update(float dt)
         b2Vec2 bPos = m_body->GetPosition();
         sf::Vector2f pos(bPos.x * m_scene->getMeterPixelRatio(), bPos.y * m_scene->getMeterPixelRatio());
         
-        m_scene->addEntity(new Projectile(m_scene, m_scene->getRandomId(), getPosition(), math::degrees(rotation), 30.0f, 30.0f));
+        m_scene->addEntity(new Projectile(m_scene, m_scene->getRandomId("projectile"), getPosition(), math::degrees(rotation), 30.0f, 30.0f));
     }
     
     m_flashLight->setPosition(getPosition());

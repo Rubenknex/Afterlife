@@ -4,9 +4,11 @@
 
 Decal::Decal(Scene* scene, const std::string& id, const sf::Vector2f& pos, float rotation, const std::string& decalFile, float fadingTime) : 
     Entity(scene, id),
-    m_fadingTime(fadingTime)
+    m_fadingTime(fadingTime),
+    m_fadingTimer(0.0f)
 {
     setType("decal");
+    setDrawLayer(2);
     
     m_sprite.SetImage(*IM.GetResource(decalFile));
     m_sprite.SetSubRect(sf::IntRect(0, 0, 45, 60));

@@ -74,11 +74,12 @@ void ObjectDef::save(const std::string& filename)
     out.close();
 }
 
-Object::Object(Scene* scene, const std::string& id, ObjectDef* def, const sf::Vector2f& pos, float degrees, float scale, bool usePhysics) :
+Object::Object(Scene* scene, const std::string& id, ObjectDef* def, int drawLayer, const sf::Vector2f& pos, float degrees, float scale, bool usePhysics) :
     Entity(scene, id),
     m_def(def)
 {
     setType("object");
+    setDrawLayer(drawLayer);
     
     m_image = IM.GetResource(m_def->m_imageFile);
     m_image->SetSmooth(true);

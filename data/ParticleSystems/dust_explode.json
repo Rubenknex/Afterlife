@@ -1,0 +1,18 @@
+{
+    "name" : "dust_explode",
+    "texture" : "data/Images/Particles/particle_round.png",
+    "color" : "50 50 50",
+    "drawOrder" : 0,
+    "minSpeed" : 150,
+    "maxSpeed" : 250,
+    "minAngle" : 0,
+    "maxAngle" : 360,
+    "minScale" : 0.1,
+    "maxScale" : 0.2,
+    "minRotation" : 0,
+    "maxRotation" : 0,
+    "minLifeSpan" : 0.2,
+    "maxLifeSpan" : 0.3,
+    "minParticles" : 4,
+    "maxParticles" : 6
+}

@@ -7,7 +7,6 @@
 #include <Box2D/Box2D.h>
 #include <fstream>
 #include <json/json.h>
-#include <map>
 #include <SFML/Graphics.hpp>
 #include <vector>
 
@@ -16,6 +15,7 @@
 #include "Entities/Entity.h"
 #include "Entities/Object.h"
 #include "Light.h"
+#include "ParticleSystem.h"
 #include "PointLight.h"
 #include "SpotLight.h"
 #include "../Game.h"
@@ -42,11 +42,14 @@ public:
     void addLight(Light* light);
     Light* getLightByName(const std::string& name);
     
+    void loadParticleSystem(const std::string& filename);
+    void fireParticleSystem(const std::string& name, const sf::Vector2f& pos);
+    
     b2World* getB2World();
     
     float getMeterPixelRatio();
     
-    std::string getRandomId();
+    std::string getRandomId(const std::string& prefix);
 
 private:
     std::string m_name;
@@ -62,6 +65,8 @@ private:
     sf::Color m_ambientColor;
     boost::ptr_map<std::string, Light> m_lights;
     LightRenderer m_lightRenderer;
+    
+    std::vector<ParticleSystem> m_particleSystems;
     
     b2World m_b2World;
     float m_meterPixelRatio;

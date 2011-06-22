@@ -5,6 +5,9 @@ TestState::TestState()
     m_scene = new Scene();
     m_scene->load("data/Scenes/scene1.json");
     
+    m_scene->loadParticleSystem("data/ParticleSystems/blood.json");
+    m_scene->loadParticleSystem("data/ParticleSystems/smoke_dark.json");
+    
     m_player = new Player(m_scene, "player");
     m_scene->addEntity(m_player);
     

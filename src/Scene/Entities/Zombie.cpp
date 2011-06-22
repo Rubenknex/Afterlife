@@ -8,6 +8,7 @@ Zombie::Zombie(Scene* scene, const std::string& id, const sf::Vector2f& pos) :
     m_health(100.0f)
 {
     setType("zombie");
+    setDrawLayer(3);
     
     m_sprite.SetImage(*IM.GetResource("data/Images/zombie_1.png"));
     m_sprite.SetSubRect(sf::IntRect(0, 0, 45, 60));
@@ -50,7 +51,7 @@ void Zombie::update(float dt)
         
         std::string decalFile = boost::str(boost::format("data/Images/Decals/blood_%1%.png") % sf::Randomizer::Random(1, 4));
         
-        m_scene->addEntity(new Decal(m_scene, m_scene->getRandomId(), pos, sf::Randomizer::Random(0.0f, 360.0f), decalFile, sf::Randomizer::Random(10.0f, 15.0f)));
+        m_scene->addEntity(new Decal(m_scene, m_scene->getRandomId("decal"), pos, sf::Randomizer::Random(0.0f, 360.0f), decalFile, sf::Randomizer::Random(10.0f, 15.0f)));
         
         m_scene->scheduleEntityForRemoval(this);
     }
@@ -66,7 +67,12 @@ void Zombie::draw(sf::RenderTarget& target)
 
 void Zombie::handleBeginContact(Entity* entity)
 {
+    std::string type = entity->getType();
     
+    if (type == "projectile")
+    {
+        m_scene->fireParticleSystem("blood", getPosition() + sf::Vector2f(math::rand(-15.0f, 15.0f), math::rand(-15.0f, 15.0f)));
+    }
 }
 
 void Zombie::handleEndContact(Entity* entity)

@@ -10,6 +10,7 @@ Projectile::Projectile(Scene* scene, const std::string& id, const sf::Vector2f& 
     m_lifeTimeTimer(0.0f)
 {
     setType("projectile");
+    setDrawLayer(4);
     
     m_velocity = b2Vec2(cos(math::radians(direction)), sin(math::radians(direction)));
     m_velocity *= speed;

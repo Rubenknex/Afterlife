@@ -5,7 +5,8 @@
 Entity::Entity(Scene* scene, const std::string& id) :
     m_scene(scene),
     m_id(id),
-    m_drawOrder(0),
+    m_receiveLight(true),
+    m_drawLayer(0),
     m_body(NULL),
     m_script(NULL)
 {
@@ -31,12 +32,12 @@ void Entity::handleBeginContact(Entity* entity) { }
 
 void Entity::handleEndContact(Entity* entity) { }
 
-std::string Entity::getId()
+const std::string& Entity::getId() const
 {
     return m_id;
 }
 
-std::string Entity::getType()
+const std::string& Entity::getType() const
 {
     return m_type;
 }
@@ -46,17 +47,17 @@ void Entity::setType(const std::string& type)
     m_type = type;
 }
 
-int Entity::getDrawOrder() const
+int Entity::getDrawLayer() const
 {
-    return m_drawOrder;
+    return m_drawLayer;
 }
 
-void Entity::setDrawOrder(int drawOrder)
+void Entity::setDrawLayer(int drawLayer)
 {
-    m_drawOrder = drawOrder;
+    m_drawLayer = drawLayer;
 }
 
-sf::Vector2f Entity::getPosition()
+const sf::Vector2f Entity::getPosition() const
 {
     if (hasPhysics())
     {
@@ -68,17 +69,17 @@ sf::Vector2f Entity::getPosition()
     return sf::Vector2f(0.0f, 0.0f);
 }
 
-bool Entity::hasPhysics()
+bool Entity::hasPhysics() const
 {
     return m_body != NULL;
 }
 
-bool Entity::hasScripting()
+bool Entity::hasScripting() const
 {
     return m_script != NULL;
 }
 
 bool Entity::operator<(const Entity& rhs) const
 {
-    return rhs.getDrawOrder() < m_drawOrder;
+    return m_drawLayer < rhs.m_drawLayer;
 }

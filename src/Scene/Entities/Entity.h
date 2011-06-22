@@ -31,18 +31,21 @@ public:
     virtual void handleBeginContact(Entity* entity);
     virtual void handleEndContact(Entity* entity);
     
-    std::string getId();
+    const std::string& getId() const;
     
-    std::string getType();
+    const std::string& getType() const;
     void setType(const std::string& type);
     
-    int getDrawOrder() const;
-    void setDrawOrder(int drawOrder);
+    bool receivesLight() const;
+    void setReceivesLight(bool receiveLight);
     
-    sf::Vector2f getPosition();
+    int getDrawLayer() const;
+    void setDrawLayer(int drawLayer);
     
-    bool hasPhysics();
-    bool hasScripting();
+    const sf::Vector2f getPosition() const;
+    
+    bool hasPhysics() const;
+    bool hasScripting() const;
     
     bool operator<(const Entity& rhs) const;
     
@@ -52,7 +55,9 @@ protected:
     std::string m_id;
     std::string m_type;
     
-    int m_drawOrder;
+    bool m_receiveLight;
+    
+    int m_drawLayer;
     sf::Sprite m_sprite;
 
     b2Body* m_body;
