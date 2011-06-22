@@ -1,0 +1,18 @@
+{
+    "name" : "dust",
+    "texture" : "data/Images/Particles/particle_round.png",
+    "color" : "119 119 119",
+    "drawOrder" : 0,
+    "minSpeed" : 20,
+    "maxSpeed" : 30,
+    "minAngle" : 0,
+    "maxAngle" : 360,
+    "minScale" : 0.05,
+    "maxScale" : 0.1,
+    "minRotation" : 0,
+    "maxRotation" : 0,
+    "minLifeSpan" : 0.2,
+    "maxLifeSpan" : 0.3,
+    "minParticles" : 1,
+    "maxParticles" : 2
+}
