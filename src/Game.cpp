@@ -1,5 +1,7 @@
 #include "Game.h"
  
+#include "GameStates/MenuState.h"
+#include "GameStates/TestState.h"
 #include "Scripting/ScriptManager.h"
  
 sf::RenderWindow* g_Window;
@@ -21,9 +23,6 @@ void Game::initialize()
     m_Window.EnableVerticalSync(true);
  
     g_Window = &m_Window;
- 
-    //boost::shared_ptr<PlayState> playState(new PlayState(&m_Window));
-    //pushState(playState);
     
     boost::shared_ptr<TestState> testState(new TestState());
     pushState(testState);
@@ -73,6 +72,8 @@ void Game::run()
  
 void Game::pushState(GameStatePtr state)
 {
+    state->setGame(this);
+    
     m_States.push(state);
 }
  

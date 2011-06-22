@@ -14,7 +14,7 @@
 class Player : public Entity
 {
 public:
-    Player(Scene* scene, const std::string& id);
+    Player(Scene* scene, const std::string& id, const sf::Vector2f& pos);
     ~Player();
     
     void update(float dt);

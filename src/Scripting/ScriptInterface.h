@@ -2,22 +2,22 @@
 #define SCRIPTINTERFACE_H_INCLUDED
 
 #include <angelscript.h>
-#include <boost/shared_ptr.hpp>
 #include <iostream>
 
 #include "IScriptInterface.h"
-#include "../World.h"
 
-    void setWorld(World* world);
+class Scene;
 
-    class ScriptInterface : public IScriptInterface
-    {
-        public:
-            void registerProperties(asIScriptEngine* engine);
-            void registerFunctions(asIScriptEngine* engine);
-            void registerTypes(asIScriptEngine* engine);
-    };
+void setScriptingScene(Scene* scene);
 
-    extern World* g_World;
+class ScriptInterface : public IScriptInterface
+{
+public:
+    void registerProperties(asIScriptEngine* engine);
+    void registerFunctions(asIScriptEngine* engine);
+    void registerTypes(asIScriptEngine* engine);
+};
+
+extern Scene* g_scriptingScene;
 
 #endif // SCRIPTINTERFACE_H_INCLUDED

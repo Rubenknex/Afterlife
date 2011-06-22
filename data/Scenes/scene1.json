@@ -14,6 +14,7 @@
         {
             "type" : "background",
             "id" : "background_1",
+            "drawLayer" : 0,
             "physics" : false,
             "position" : "350.0 250.0",
             "rotation" : 0.0,
@@ -22,6 +23,7 @@
         {
             "type" : "car_blue",
             "id" : "car_1",
+            "drawLayer" : 1,
             "physics" : true,
             "position" : "100.0 250.0",
             "rotation" : 40.0,
@@ -30,6 +32,7 @@
         {
             "type" : "car_red",
             "id" : "car_2",
+            "drawLayer" : 1,
             "physics" : true,
             "position" : "700.0 300.0",
             "rotation" : 90.0,
@@ -38,6 +41,7 @@
         {
             "type" : "crate",
             "id" : "crate_1",
+            "drawLayer" : 1,
             "physics" : true,
             "position" : "100.0 100.0",
             "rotation" : 60.0,
@@ -46,6 +50,7 @@
         {
             "type" : "crate",
             "id" : "crate_2",
+            "drawLayer" : 1,
             "physics" : true,
             "position" : "500.0 400.0",
             "rotation" : 20.0,
@@ -68,7 +73,7 @@
             "type" : "spot",
             "id" : "ambient_spot_1",
             "position" : "400.0 150.0",
-            "radius" : 200.0,
+            "radius" : 400.0,
             "intensity" : 1.0,
             "color" : "255 0 0",
             "angle" : 45.0,

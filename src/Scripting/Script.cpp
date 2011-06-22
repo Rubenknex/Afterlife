@@ -1,10 +1,10 @@
 #include "Script.h"
 
     Script::Script(ScriptManager* manager, const std::string& moduleName) :
-        m_Manager(manager)
+        m_manager(manager)
     {
-        m_Manager->m_Builder.StartNewModule(m_Manager->m_Engine, moduleName.c_str());
-        m_Module = m_Manager->m_Engine->GetModule(moduleName.c_str());
+        m_manager->m_builder.StartNewModule(m_manager->m_engine, moduleName.c_str());
+        m_module = m_manager->m_engine->GetModule(moduleName.c_str());
     }
 
     Script::~Script()
@@ -14,46 +14,46 @@
 
     void Script::loadSection(const std::string& filename)
     {
-        m_Manager->m_Builder.AddSectionFromFile(filename.c_str());
+        m_manager->m_builder.AddSectionFromFile(filename.c_str());
     }
 
     void Script::build()
     {
-        m_Manager->m_Builder.BuildModule();
+        m_manager->m_builder.BuildModule();
 
-        m_Compiled = true;
+        m_compiled = true;
     }
 
     void Script::prepareFunction(const std::string& name)
     {
-        m_FuncId = m_Module->GetFunctionIdByName(name.c_str());
-        m_Manager->m_Context->Prepare(m_FuncId);
+        m_funcId = m_module->GetFunctionIdByName(name.c_str());
+        m_manager->m_context->Prepare(m_funcId);
     }
 
     void Script::setArgInt(int arg, int value)
     {
-        m_Manager->m_Context->SetArgDWord(arg, value);
+        m_manager->m_context->SetArgDWord(arg, value);
     }
 
     void Script::setArgFloat(int arg, float value)
     {
-        m_Manager->m_Context->SetArgFloat(arg, value);
+        m_manager->m_context->SetArgFloat(arg, value);
     }
 
     void Script::setArgDouble(int arg, double value)
     {
-        m_Manager->m_Context->SetArgDouble(arg, value);
+        m_manager->m_context->SetArgDouble(arg, value);
     }
 
     void Script::setArgObject(int arg, void* value)
     {
-        m_Manager->m_Context->SetArgObject(arg, value);
+        m_manager->m_context->SetArgObject(arg, value);
     }
 
     void Script::executeFunction()
     {
-        if (m_FuncId != -1)
-            m_Manager->m_Context->Execute();
+        if (m_funcId != -1)
+            m_manager->m_context->Execute();
 
-        m_FuncId = -1;
+        m_funcId = -1;
     }

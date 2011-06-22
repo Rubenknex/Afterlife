@@ -15,10 +15,11 @@ public:
     enum EntityType
     {
         DECAL = (1 << 0),
-        OBJECT = (1 << 1),
-        PLAYER = (1 << 2),
-        PROJECTILE = (1 << 3),
-        ZOMBIE = (1 << 4),
+        GRENADE = (1 << 1),
+        OBJECT = (1 << 2),
+        PLAYER = (1 << 3),
+        PROJECTILE = (1 << 4),
+        ZOMBIE = (1 << 5),
     };
 
 public:
@@ -43,6 +44,7 @@ public:
     void setDrawLayer(int drawLayer);
     
     const sf::Vector2f getPosition() const;
+    void setPosition(const sf::Vector2f& pos);
     
     bool hasPhysics() const;
     bool hasScripting() const;

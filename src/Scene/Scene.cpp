@@ -1,6 +1,7 @@
 #include "Scene.h"
 
 Scene::Scene() :
+    m_initialized(false),
     m_script(NULL),
     m_ambientColor(sf::Color::White),
     m_lightRenderer(1280, 720, 640, 360),
@@ -51,7 +52,7 @@ void Scene::load(const std::string& filename)
     m_name = root["name"].asString();
     
     m_scriptFile = root["script"].asString();
-    m_script = new Script(&g_ScriptManager, m_name);
+    m_script = new Script(&g_scriptManager, m_name);
     m_script->loadSection(m_scriptFile);
     m_script->build();
     
@@ -83,7 +84,7 @@ void Scene::load(const std::string& filename)
             
             Object* obj = new Object(this, id, &it->second, drawLayer, pos, rotation, scale, physics);
             
-            m_entities.push_back(obj);
+            addEntity(obj);
         }
     }
     
@@ -132,6 +133,14 @@ void Scene::update(float dt)
     // Run the script update function
     if (m_script != NULL)
     {
+        if (!m_initialized)
+        {
+            m_script->prepareFunction("initialize");
+            m_script->executeFunction();
+            
+            m_initialized = true;
+        }
+        
         m_script->prepareFunction("update");
         m_script->setArgFloat(0, dt);
         m_script->executeFunction();
@@ -205,23 +214,41 @@ void Scene::addEntity(Entity* entity)
     //}
 }
 
+Entity* Scene::getEntityById(const std::string& id)
+{
+    for (int i = 0; i < m_entities.size(); i++)
+    {
+        if (m_entities[i].getId() == id)
+        {
+            return &m_entities[i];
+        }
+    }
+    
+    return NULL;
+}
+
 void Scene::scheduleEntityForRemoval(Entity* entity)
 {
     m_entitiesToRemove.push_back(entity->getId());
 }
 
+void Scene::setAmbientColor(const sf::Color& ambientColor)
+{
+    m_ambientColor = ambientColor;
+}
+
 void Scene::addLight(Light* light)
 {
-    std::string key = light->getName();
+    std::string key = light->getId();
     m_lights.insert(key, light);
 }
 
-Light* Scene::getLightByName(const std::string& name)
+Light* Scene::getLightById(const std::string& id)
 {
     boost::ptr_map<std::string, Light>::iterator it;
     for (it = m_lights.begin(); it != m_lights.end(); it++)
     {
-        if (it->second->getName() == name)
+        if (it->second->getId() == id)
         {
             return it->second;
         }

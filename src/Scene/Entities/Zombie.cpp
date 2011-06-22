@@ -68,11 +68,6 @@ void Zombie::draw(sf::RenderTarget& target)
 void Zombie::handleBeginContact(Entity* entity)
 {
     std::string type = entity->getType();
-    
-    if (type == "projectile")
-    {
-        m_scene->fireParticleSystem("blood", getPosition() + sf::Vector2f(math::rand(-15.0f, 15.0f), math::rand(-15.0f, 15.0f)));
-    }
 }
 
 void Zombie::handleEndContact(Entity* entity)

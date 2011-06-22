@@ -37,10 +37,13 @@ public:
     void draw(sf::RenderTarget& target);
     
     void addEntity(Entity* entity);
+    Entity* getEntityById(const std::string& id);
     void scheduleEntityForRemoval(Entity* entity);
     
+    void setAmbientColor(const sf::Color& ambientColor);
+    
     void addLight(Light* light);
-    Light* getLightByName(const std::string& name);
+    Light* getLightById(const std::string& id);
     
     void loadParticleSystem(const std::string& filename);
     void fireParticleSystem(const std::string& name, const sf::Vector2f& pos);
@@ -53,6 +56,8 @@ public:
 
 private:
     std::string m_name;
+    
+    bool m_initialized;
     
     std::string m_scriptFile;
     Script* m_script;

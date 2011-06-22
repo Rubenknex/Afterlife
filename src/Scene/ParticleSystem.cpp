@@ -175,8 +175,6 @@ void ParticleSystem::draw(sf::RenderTarget& target)
     {
         if (m_particles[i].alive)
         {
-            std::cout << "Drawing a particle" << std::endl;
-            
             m_texture.SetPosition(m_particles[i].pos);
             m_texture.SetScale(m_particles[i].scale, m_particles[i].scale);
             m_texture.SetRotation(m_particles[i].rotation);

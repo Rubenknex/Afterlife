@@ -1,25 +1,32 @@
 #include "ScriptManager.h"
 
-#include "ScriptInterface.h"
+#include "IScriptInterface.h"
 
-ScriptManager g_ScriptManager;
+ScriptManager g_scriptManager;
 
 ScriptManager::ScriptManager()
 {
-    m_Engine = asCreateScriptEngine(ANGELSCRIPT_VERSION);
+    m_engine = asCreateScriptEngine(ANGELSCRIPT_VERSION);
 
-    m_Engine->SetMessageCallback(asMETHOD(ScriptManager, messageCallBack), this, asCALL_THISCALL);
+    m_engine->SetMessageCallback(asMETHOD(ScriptManager, messageCallBack), this, asCALL_THISCALL);
 
-    RegisterScriptMath(m_Engine);
-    RegisterStdString(m_Engine);
+    RegisterScriptMath(m_engine);
+    RegisterStdString(m_engine);
 
-    m_Context = m_Engine->CreateContext();
+    m_context = m_engine->CreateContext();
 }
 
 ScriptManager::~ScriptManager()
 {
-    m_Context->Release();
-    m_Engine->Release();
+    m_context->Release();
+    m_engine->Release();
+}
+
+void ScriptManager::registerInterface(IScriptInterface* interface)
+{
+    interface->registerTypes(m_engine);
+    interface->registerProperties(m_engine);
+    interface->registerFunctions(m_engine);
 }
 
 void ScriptManager::messageCallBack(const asSMessageInfo* msg, void* param)

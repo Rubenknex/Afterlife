@@ -31,12 +31,12 @@
             void executeFunction();
 
         private:
-            ScriptManager* m_Manager;
-            asIScriptModule* m_Module;
+            ScriptManager* m_manager;
+            asIScriptModule* m_module;
 
-            bool m_Compiled;
+            bool m_compiled;
 
-            int m_FuncId;
+            int m_funcId;
     };
 
 #endif // SCRIPT_H_INCLUDED

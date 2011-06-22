@@ -1,12 +1,12 @@
 void initialize()
 {
     //playMusic("data/Sounds/Ambience/ambience_1.ogg");
-    
-    //setAmbientColor(60, 60, 60);
-    
-    //addWeaponPickup("data/Weapons/ak47.xml", Vec2(500.0f, 500.0f));
-    //addWeaponPickup("data/Weapons/uzi.xml", Vec2(600.0f, 500.0f));
-    //addWeaponPickup("data/Weapons/famas.xml", Vec2(500.0f, 600.0f));
+
+    addPlayer("player", Vec2(200.0, 200.0));
+
+    addZombie("zombie_1", Vec2(100.0, 100.0));
+    addZombie("zombie_2", Vec2(300.0, 100.0));
+    addZombie("zombie_3", Vec2(200.0, 400.0));
 }
 
 float timer = 0.0f;
@@ -15,7 +15,8 @@ void update(float dt)
 {
     timer += dt;
 
-    //print("Updating! timer: " + timer);
+    setLightIntensity("ambient_point_1", rand(0.7, 0.9));
 
-    //setLightIntensity("ambient_spot_1", rand(0.5f,0.7f));
+    float spotAngle = getLightAngle("ambient_spot_1");
+    setLightAngle("ambient_spot_1", spotAngle + 0.4);
 }

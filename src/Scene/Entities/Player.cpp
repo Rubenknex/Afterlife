@@ -3,7 +3,7 @@
 #include "Projectile.h"
 #include "../Scene.h"
 
-Player::Player(Scene* scene, const std::string& id) : 
+Player::Player(Scene* scene, const std::string& id, const sf::Vector2f& pos) : 
     Entity(scene, id),
     m_flashLight(new SpotLight("flashlight", sf::Vector2f(0.0f, 0.0f), 1.0f, 200.0f, sf::Color(255, 230, 230), 0.0f, 15.0f))
 {
@@ -16,7 +16,7 @@ Player::Player(Scene* scene, const std::string& id) :
     
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
-    bodyDef.position.Set(0.0f, 0.0f);
+    bodyDef.position.Set(pos.x / m_scene->getMeterPixelRatio(), pos.y / m_scene->getMeterPixelRatio());
     bodyDef.userData = this;
     
     m_body = m_scene->getB2World()->CreateBody(&bodyDef);
@@ -79,6 +79,10 @@ void Player::update(float dt)
         
         m_scene->addEntity(new Projectile(m_scene, m_scene->getRandomId("projectile"), getPosition(), math::degrees(rotation), 30.0f, 30.0f));
     }
+    
+    sf::Vector2f newCenter = math::lerp(g_Window->GetView().GetCenter(), getPosition(), 0.05f);
+    sf::View newView(newCenter, g_Window->GetView().GetSize());
+    g_Window->SetView(newView);
     
     m_flashLight->setPosition(getPosition());
     m_flashLight->setAngle(m_sprite.GetRotation() + 90.0f);

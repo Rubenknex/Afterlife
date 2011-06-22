@@ -139,6 +139,11 @@ void Object::draw(sf::RenderTarget& target)
     target.Draw(m_sprite);
 }
 
+void Object::handleBeginContact(Entity* entity)
+{
+    std::string type = entity->getType();
+}
+
 void Object::setPosition(float x, float y)
 {
     m_sprite.SetPosition(x, y);

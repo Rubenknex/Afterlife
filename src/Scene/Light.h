@@ -12,19 +12,22 @@
 class Light
 {
 public:
-    Light(const std::string& name, const sf::Vector2f& pos, float intensity, float radius, const sf::Color& color);
+    Light(const std::string& id, const sf::Vector2f& pos, float intensity, float radius, const sf::Color& color);
     ~Light();
  
     void draw(sf::RenderTarget* target);
  
-    std::string getName();
+    const std::string& getId() const;
  
-    const sf::Vector2f& getPosition();
+    const sf::Vector2f& getPosition() const;
     void setPosition(const sf::Vector2f& pos);
+    
+    float getIntensity() const;
     void setIntensity(float intensity);
-    float getIntensity();
-    float getRadius();
+    
+    float getRadius() const;
     void setRadius(float radius);
+    
     void setOn(bool on);
  
 protected:
@@ -34,14 +37,15 @@ protected:
     void addTriangle(const sf::Vector2f v1, const sf::Vector2f v2);
  
 protected:
-    std::string m_Name;
-    bool mOn;
-    sf::Vector2f mPosition;
-    float mIntensity;
-    float mRadius;
-    sf::Color mColor;
+    std::string m_id;
+    
+    bool m_on;
+    sf::Vector2f m_position;
+    float m_intensity;
+    float m_radius;
+    sf::Color m_color;
  
-    std::vector<sf::Shape> mTriangles;
+    std::vector<sf::Shape> m_triangles;
 };
  
 #endif // LIGHT_H_INCLUDED

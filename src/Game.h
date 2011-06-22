@@ -6,9 +6,8 @@
 #include <queue>
  
 #include "InputState.h"
-#include "GameStates/PlayState.h"
-#include "GameStates/TestState.h"
  
+class IGameState;
 class StateManager;
  
 typedef boost::shared_ptr<IGameState> GameStatePtr;

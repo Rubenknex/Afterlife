@@ -1,12 +1,12 @@
 #include "Light.h"
  
-Light::Light(const std::string& name, const sf::Vector2f& pos, float intensity, float radius, const sf::Color& color) :
-    m_Name(name),
-    mOn(true),
-    mPosition(pos),
-    mIntensity(intensity),
-    mRadius(radius),
-    mColor(color)
+Light::Light(const std::string& id, const sf::Vector2f& pos, float intensity, float radius, const sf::Color& color) :
+    m_id(id),
+    m_on(true),
+    m_position(pos),
+    m_intensity(intensity),
+    m_radius(radius),
+    m_color(color)
 {
  
 }
@@ -18,79 +18,79 @@ Light::~Light()
  
 void Light::draw(sf::RenderTarget* target)
 {
-    if (mOn)
+    if (m_on)
     {
-        for (int i = 0; i < (int)mTriangles.size(); i++)
+        for (int i = 0; i < (int)m_triangles.size(); i++)
         {
-            target->Draw(mTriangles[i]);
+            target->Draw(m_triangles[i]);
         }
     }
 }
  
-std::string Light::getName()
+const std::string& Light::getId() const
 {
-    return m_Name;
+    return m_id;
 }
  
-const sf::Vector2f& Light::getPosition()
+const sf::Vector2f& Light::getPosition() const
 {
-    return mPosition;
+    return m_position;
 }
  
 void Light::setPosition(const sf::Vector2f& pos)
 {
-    mPosition = pos;
+    m_position = pos;
  
-    for (int i = 0; i < (int)mTriangles.size(); i++)
+    for (int i = 0; i < (int)m_triangles.size(); i++)
     {
-        mTriangles[i].SetPosition(pos);
+        m_triangles[i].SetPosition(pos);
     }
 }
  
+float Light::getIntensity() const
+{
+    return m_intensity;
+}
+
 void Light::setIntensity(float intensity)
 {
-    mIntensity = intensity;
+    m_intensity = intensity;
  
-    for (int i = 0; i < (int)mTriangles.size(); i++)
+    for (int i = 0; i < (int)m_triangles.size(); i++)
     {
-        mTriangles[i].SetPointColor(0, sf::Color((int)(mIntensity * mColor.r), (int)(mIntensity * mColor.g), (int)(mIntensity * mColor.b)));
+        m_triangles[i].SetPointColor(0, sf::Color((int)(m_intensity * m_color.r), (int)(m_intensity * m_color.g), (int)(m_intensity * m_color.b)));
     }
 }
- 
-float Light::getIntensity()
+
+float Light::getRadius() const
 {
-    return mIntensity;
-}
- 
-float Light::getRadius()
-{
-    return mRadius;
+    return m_radius;
 }
  
 void Light::setRadius(float radius)
 {
-    mRadius = radius;
+    m_radius = radius;
  
     generateVertices();
 }
  
 void Light::setOn(bool on)
 {
-    mOn = on;
+    m_on = on;
 }
  
 void Light::addTriangle(const sf::Vector2f v1, const sf::Vector2f v2)
 {
     sf::Shape triangle;
  
-    triangle.AddPoint(0.0f, 0.0f, sf::Color((int)(mIntensity * mColor.r), (int)(mIntensity * mColor.g), (int)(mIntensity * mColor.b)), sf::Color(255, 255, 255));
+    triangle.AddPoint(0.0f, 0.0f, sf::Color((int)(m_intensity * m_color.r), (int)(m_intensity * m_color.g), (int)(m_intensity * m_color.b)), sf::Color(255, 255, 255));
  
     triangle.AddPoint(v1, sf::Color(0, 0, 0), sf::Color(255, 255, 255));
     triangle.AddPoint(v2, sf::Color(0, 0, 0), sf::Color(255, 255, 255));
  
     triangle.SetBlendMode(sf::Blend::Add);
-    triangle.SetPosition(mPosition);
+    triangle.SetPosition(m_position);
  
-    mTriangles.push_back(triangle);
+    m_triangles.push_back(triangle);
 }
  

@@ -6,17 +6,18 @@
 class SpotLight : public Light
 {
 public:
-    SpotLight(const std::string& name, const sf::Vector2f& pos, float intensity, float radius, const sf::Color& color, float angle, float openAngle);
+    SpotLight(const std::string& id, const sf::Vector2f& pos, float intensity, float radius, const sf::Color& color, float angle, float openAngle);
     ~SpotLight();
  
+    float getAngle() const;
     void setAngle(float angle);
  
 private:
     void generateVertices();
  
 private:
-    float mAngle;
-    float mOpenAngle;
+    float m_angle;
+    float m_openAngle;
 };
  
 #endif // SPOTLIGHT_H_INCLUDED

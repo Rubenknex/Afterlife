@@ -71,6 +71,8 @@ void Projectile::handleBeginContact(Entity* entity)
     
     if (type == "object")
     {
+        m_scene->fireParticleSystem("dust", getPosition());
+        
         m_scene->scheduleEntityForRemoval(this);
     }
     else if (type == "zombie")
@@ -78,6 +80,8 @@ void Projectile::handleBeginContact(Entity* entity)
         Zombie* zombie = static_cast<Zombie*>(entity);
         
         zombie->inflictDamage(m_damage);
+        
+        m_scene->fireParticleSystem("blood", getPosition());
         
         m_scene->scheduleEntityForRemoval(this);
     }

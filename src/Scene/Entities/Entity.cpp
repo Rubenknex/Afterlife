@@ -15,7 +15,7 @@ Entity::Entity(Scene* scene, const std::string& id) :
 
 Entity::~Entity()
 {
-    std::cout << "Entity Destructor!" << std::endl;
+    //std::cout << "Entity Destructor!" << std::endl;
     
     if (hasPhysics())
         m_scene->getB2World()->DestroyBody(m_body);
@@ -67,6 +67,14 @@ const sf::Vector2f Entity::getPosition() const
     }
     
     return sf::Vector2f(0.0f, 0.0f);
+}
+
+void Entity::setPosition(const sf::Vector2f& pos)
+{
+    if (hasPhysics())
+    {
+        m_body->SetTransform(b2Vec2(pos.x / m_scene->getMeterPixelRatio(), pos.y / m_scene->getMeterPixelRatio()), m_body->GetAngle());
+    }
 }
 
 bool Entity::hasPhysics() const

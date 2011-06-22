@@ -18,19 +18,18 @@ public:
     ScriptManager();
     ~ScriptManager();
 
-    void initialize();
     void registerInterface(IScriptInterface* interface);
 
 private:
     void messageCallBack(const asSMessageInfo* msg, void* param);
 
 private:
-    CScriptBuilder m_Builder;
+    CScriptBuilder m_builder;
 
-    asIScriptEngine* m_Engine;
-    asIScriptContext* m_Context;
+    asIScriptEngine* m_engine;
+    asIScriptContext* m_context;
 };
 
-extern ScriptManager g_ScriptManager;
+extern ScriptManager g_scriptManager;
 
 #endif // SCRIPTMANAGER_H_INCLUDED

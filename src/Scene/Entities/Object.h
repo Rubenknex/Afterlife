@@ -39,6 +39,8 @@ public:
     ~Object();
     
     void draw(sf::RenderTarget& target);
+    
+    void handleBeginContact(Entity* entity);
 
     void setPosition(float x, float y);
     void setRotation(float degrees);
