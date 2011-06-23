@@ -18,7 +18,7 @@
             "physics" : false,
             "position" : "350.0 250.0",
             "rotation" : 0.0,
-            "scale" : 1.0
+            "scale" : "1.0 1.0"
         },
         {
             "type" : "car_blue",
@@ -27,7 +27,7 @@
             "physics" : true,
             "position" : "100.0 250.0",
             "rotation" : 40.0,
-            "scale" : 1.2
+            "scale" : "1.2 1.2"
         },
         {
             "type" : "car_red",
@@ -36,7 +36,7 @@
             "physics" : true,
             "position" : "700.0 300.0",
             "rotation" : 90.0,
-            "scale" : 1.2
+            "scale" : "1.2 1.2"
         },
         {
             "type" : "crate",
@@ -45,7 +45,7 @@
             "physics" : true,
             "position" : "100.0 100.0",
             "rotation" : 60.0,
-            "scale" : 0.5
+            "scale" : "0.5 0.5"
         },
         {
             "type" : "crate",
@@ -54,10 +54,10 @@
             "physics" : true,
             "position" : "500.0 400.0",
             "rotation" : 20.0,
-            "scale" : 0.5
+            "scale" : "0.5 0.5"
         }
     ],
-    "ambientColor" : "100 100 100",
+    "ambientColor" : "30 30 30",
     "lights" :
     [
         {

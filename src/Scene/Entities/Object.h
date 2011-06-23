@@ -35,12 +35,13 @@ public:
 class Object : public Entity
 {
 public:
-    Object(Scene* scene, const std::string& id, ObjectDef* def, int drawLayer, const sf::Vector2f& pos, float degrees, float scale, bool usePhysics);
+    Object(Scene* scene, const std::string& id, ObjectDef* def, int drawLayer, const sf::Vector2f& pos, float degrees, const sf::Vector2f& scale, bool usePhysics);
     ~Object();
     
     void draw(sf::RenderTarget& target);
     
-    void handleBeginContact(Entity* entity);
+    const sf::Vector2f& getScale() const;
+    void setScale(const sf::Vector2f& scale);
     
     ObjectDef* getObjectDef() const;
 

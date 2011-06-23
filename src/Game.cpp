@@ -25,11 +25,11 @@ void Game::initialize()
  
     g_Window = &m_Window;
     
-    //boost::shared_ptr<TestState> testState(new TestState());
-    //pushState(testState);
+    boost::shared_ptr<TestState> testState(new TestState());
+    pushState(testState);
     
-    GameStatePtr editorState(new EditorState());
-    pushState(editorState);
+    //GameStatePtr editorState(new EditorState());
+    //pushState(editorState);
 }
  
 void Game::update()

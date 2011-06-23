@@ -74,7 +74,7 @@ void ObjectDef::save(const std::string& filename)
     out.close();
 }
 
-Object::Object(Scene* scene, const std::string& id, ObjectDef* def, int drawLayer, const sf::Vector2f& pos, float degrees, float scale, bool usePhysics) :
+Object::Object(Scene* scene, const std::string& id, ObjectDef* def, int drawLayer, const sf::Vector2f& pos, float degrees, const sf::Vector2f& scale, bool usePhysics) :
     Entity(scene, id),
     m_def(def)
 {
@@ -90,7 +90,7 @@ Object::Object(Scene* scene, const std::string& id, ObjectDef* def, int drawLaye
     
     m_sprite.SetPosition(pos);
     m_sprite.SetRotation(degrees);
-    m_sprite.SetScale(scale, scale);
+    m_sprite.SetScale(scale);
     
     std::cout << "Creating Object: " << m_def->m_type << std::endl;
     
@@ -104,28 +104,7 @@ Object::Object(Scene* scene, const std::string& id, ObjectDef* def, int drawLaye
         
         m_body = m_scene->getB2World()->CreateBody(&bodyDef);
         
-        b2PolygonShape shape;
-        
-        // Transform the vertices to meters instead of pixels.
-        std::vector<b2Vec2> transformedVertices;
-        for (int i = 0; i < (int)m_def->m_vertices.size(); i++)
-        {
-            float tX = (m_def->m_vertices[i].x / m_scene->getMeterPixelRatio()) * scale;
-            float tY = (m_def->m_vertices[i].y / m_scene->getMeterPixelRatio()) * scale;
-            transformedVertices.push_back(b2Vec2(tX, tY));
-        }
-        
-        shape.Set(&transformedVertices[0], transformedVertices.size());
-        
-        b2FixtureDef fixtureDef;
-        fixtureDef.shape = &shape;
-        fixtureDef.friction = m_def->m_friction;
-        fixtureDef.density = m_def->m_density;
-        fixtureDef.restitution = m_def->m_restitution;
-        fixtureDef.filter.categoryBits = Entity::OBJECT;
-        fixtureDef.filter.maskBits = Entity::PLAYER | Entity::PROJECTILE | Entity::ZOMBIE;
-        
-        m_body->CreateFixture(&fixtureDef);
+        setScale(scale);
     }
 }
 
@@ -140,46 +119,25 @@ void Object::draw(sf::RenderTarget& target)
     {
         b2Vec2 pos = m_body->GetPosition();
         m_sprite.SetPosition(pos.x * m_scene->getMeterPixelRatio(), pos.y * m_scene->getMeterPixelRatio());
+        m_sprite.SetRotation(math::degrees(m_body->GetAngle()));
     }
     
     target.Draw(m_sprite);
 }
 
-void Object::handleBeginContact(Entity* entity)
+const sf::Vector2f& Object::getScale() const
 {
-    
+    return m_sprite.GetScale();
 }
 
-ObjectDef* Object::getObjectDef() const
+void Object::setScale(const sf::Vector2f& scale)
 {
-    return m_def;
-}
-
-/*
-void Object::setPosition(float x, float y)
-{
-    m_sprite.SetPosition(x, y);
+    if (scale.x < 0.01f || scale.y < 0.01f)
+        return;
     
-    if (m_body != NULL)
-        m_body->SetTransform(b2Vec2(x / m_scene->getMeterPixelRatio(), y / m_scene->getMeterPixelRatio()), math::radians(m_sprite.GetRotation()));
-}
-
-void Object::setRotation(float degrees)
-{
-    m_sprite.SetRotation(degrees);
+    m_sprite.SetScale(scale);
     
-    if (m_body != NULL)
-    {
-        b2Transform transform = m_body->GetTransform();
-        m_body->SetTransform(transform.position, math::radians(degrees));
-    }
-}
-
-void Object::setScale(float scale)
-{
-    m_sprite.SetScale(scale, scale);
-    
-    if (m_body != NULL)
+    if (hasPhysics())
     {
         b2PolygonShape shape;
         
@@ -187,7 +145,7 @@ void Object::setScale(float scale)
         std::vector<b2Vec2> transformedVertices;
         for (int i = 0; i < (int)m_def->m_vertices.size(); i++)
         {
-            transformedVertices.push_back(b2Vec2((m_def->m_vertices[i].x / m_scene->getMeterPixelRatio()) * scale, (m_def->m_vertices[i].y / m_scene->getMeterPixelRatio()) * scale));
+            transformedVertices.push_back(b2Vec2((m_def->m_vertices[i].x / m_scene->getMeterPixelRatio()) * scale.x, (m_def->m_vertices[i].y / m_scene->getMeterPixelRatio()) * scale.y));
         }
         
         shape.Set(&transformedVertices[0], transformedVertices.size());
@@ -197,9 +155,17 @@ void Object::setScale(float scale)
         fixtureDef.friction = m_def->m_friction;
         fixtureDef.density = m_def->m_density;
         fixtureDef.restitution = m_def->m_restitution;
+        fixtureDef.filter.categoryBits = Entity::OBJECT;
+        fixtureDef.filter.maskBits = Entity::PLAYER | Entity::PROJECTILE | Entity::ZOMBIE;
         
-        m_body->DestroyFixture(m_body->GetFixtureList());
+        if (m_body->GetFixtureList() != NULL)
+            m_body->DestroyFixture(m_body->GetFixtureList());
+        
         m_body->CreateFixture(&fixtureDef);
     }
 }
-*/
+
+ObjectDef* Object::getObjectDef() const
+{
+    return m_def;
+}

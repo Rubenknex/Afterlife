@@ -5,6 +5,8 @@ SpotLight::SpotLight(const std::string& id, const sf::Vector2f& pos, float inten
     m_angle(angle),
     m_openAngle(openAngle)
 {
+    setType(LT_SPOT);
+    
     generateVertices();
 }
  

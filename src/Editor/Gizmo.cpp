@@ -118,10 +118,11 @@ void Gizmo::update(float dt)
                 sf::Vector2f localXRectPos = objPos + dirNormal * 50.0f;
                 sf::Vector2f localYRectPos = objPos + math::cross(dirNormal) * 50.0f;
                 
-                if (m_editMode != Gizmo::EM_SCALE_LOCAL_X)
+                if (m_editMode != Gizmo::EM_SCALE_LOCAL_X && m_editMode != Gizmo::EM_SCALE_LOCAL_Y)
                 {
                     sf::FloatRect localXRect(localXRectPos.x - 10.0f, localXRectPos.y - 10.0f, 20.0f, 20.0f);
                     sf::FloatRect localYRect(localYRectPos.x - 10.0f, localYRectPos.y - 10.0f, 20.0f, 20.0f);
+                    sf::FloatRect freeRect(objPos.x - 10.0f, objPos.y - 10.0f, 20.0f, 20.0f);
                     
                     if (localXRect.Contains(mousePos))
                     {
@@ -130,6 +131,10 @@ void Gizmo::update(float dt)
                     else if (localYRect.Contains(mousePos))
                     {
                         m_editMode = Gizmo::EM_SCALE_LOCAL_Y;
+                    }
+                    else if (freeRect.Contains(mousePos))
+                    {
+                        m_editMode = Gizmo::EM_SCALE_FREE;
                     }
                 }
             }
@@ -180,7 +185,15 @@ void Gizmo::update(float dt)
             case Gizmo::EM_SCALE_LOCAL_Y:
             {
                 sf::Vector2f scale = m_selectedObject->getScale();
+                scale.y += (float)g_Input.getMouseDelta().x / 100.0f;
+                m_selectedObject->setScale(scale);
+            }
+            break;
+            case Gizmo::EM_SCALE_FREE:
+            {
+                sf::Vector2f scale = m_selectedObject->getScale();
                 scale.x += (float)g_Input.getMouseDelta().x / 100.0f;
+                scale.y += (float)g_Input.getMouseDelta().x / 100.0f;
                 m_selectedObject->setScale(scale);
             }
             break;
@@ -210,6 +223,7 @@ void Gizmo::draw(sf::RenderTarget& target)
                 m_triangleUp.SetPosition(objPos);
                 m_triangleRight.SetPosition(objPos);
                 m_rectangleCenter.SetPosition(objPos);
+                m_rectangleCenter.SetRotation(0.0f);
                 
                 target.Draw(m_rectangleCenter);
                 target.Draw(m_lineUp);
@@ -237,6 +251,9 @@ void Gizmo::draw(sf::RenderTarget& target)
                 float angle = m_selectedObject->getRotation();
                 sf::Vector2f dirNormal(cos(math::radians(angle)), sin(math::radians(angle)));
                 
+                m_rectangleCenter.SetPosition(objPos);
+                m_rectangleCenter.SetRotation(angle);
+                
                 m_lineScaleBlue.SetPosition(objPos);
                 m_lineScaleBlue.SetRotation(angle);
                 m_lineScaleRed.SetPosition(objPos);
@@ -247,6 +264,7 @@ void Gizmo::draw(sf::RenderTarget& target)
                 m_rectangleRight.SetRotation(angle);
                 m_rectangleRight.SetPosition(objPos);
                 
+                target.Draw(m_rectangleCenter);
                 target.Draw(m_lineScaleBlue);
                 target.Draw(m_lineScaleRed);
                 target.Draw(m_rectangleUp);

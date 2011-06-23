@@ -12,12 +12,22 @@
 class Light
 {
 public:
+    enum LightType
+    {
+        LT_POINT,
+        LT_SPOT,
+    };
+    
+public:
     Light(const std::string& id, const sf::Vector2f& pos, float intensity, float radius, const sf::Color& color);
     ~Light();
  
     void draw(sf::RenderTarget* target);
  
     const std::string& getId() const;
+    
+    LightType getType() const;
+    void setType(LightType type);
  
     const sf::Vector2f& getPosition() const;
     void setPosition(const sf::Vector2f& pos);
@@ -27,6 +37,9 @@ public:
     
     float getRadius() const;
     void setRadius(float radius);
+    
+    const sf::Color& getColor() const;
+    void setColor(const sf::Color& color);
     
     void setOn(bool on);
  
@@ -38,6 +51,7 @@ protected:
  
 protected:
     std::string m_id;
+    LightType m_type;
     
     bool m_on;
     sf::Vector2f m_position;

@@ -11,6 +11,7 @@
 Scene::Scene(bool scriptingEnabled) :
     m_initialized(false),
     m_scriptingEnabled(scriptingEnabled),
+    m_lightingEnabled(true),
     m_script(NULL),
     m_ambientColor(sf::Color::White),
     m_lightRenderer(1280, 720, 640, 360),
@@ -96,7 +97,8 @@ void Scene::load(const std::string& filename)
             parsing::Vector2 position = parsing::vector2(object["position"].asString());
             sf::Vector2f pos(position.x, position.y);
             float rotation = object["rotation"].asDouble();
-            float scale = object["scale"].asDouble();
+            parsing::Vector2 sca = parsing::vector2(object["scale"].asString());
+            sf::Vector2f scale(sca.x, sca.y);
             bool physics = object["physics"].asBool();
             
             Object* obj = new Object(this, id, &it->second, drawLayer, pos, rotation, scale, physics);
@@ -184,14 +186,23 @@ void Scene::save(const std::string& filename)
     {
         Json::Value light;
         
-        light["type"] = "";
-        light["id"] = it->second->getId();
+        Light* lightPtr = it->second;
+        
+        light["type"] = lightPtr->getType() == Light::LT_POINT ? "point" : "spot";
+        light["id"] = lightPtr->getId();
         light["position"] = "";
         light["radius"] = "";
         light["intensity"] = "";
-        light["color"] = "";
+        light["color"] = boost::str(boost::format("%1% %2% %3%") % m_ambientColor.r % m_ambientColor.g % m_ambientColor.b);
         
-        // quality or angle and open angle
+        if (lightPtr->getType() == Light::LT_POINT)
+        {
+            
+        }
+        else if (lightPtr->getType() == Light::LT_SPOT)
+        {
+            
+        }
         
         lights.append(light);
     }

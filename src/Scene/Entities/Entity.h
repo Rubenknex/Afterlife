@@ -37,19 +37,16 @@ public:
     EntityType getType() const;
     void setType(EntityType type);
     
-    bool receivesLight() const;
-    void setReceivesLight(bool receiveLight);
-    
     int getDrawLayer() const;
     void setDrawLayer(int drawLayer);
     
-    const sf::Vector2f getPosition() const;
+    virtual const sf::Vector2f getPosition() const;
     virtual void setPosition(const sf::Vector2f& pos);
     
-    float getRotation() const;
+    virtual float getRotation() const;
     virtual void setRotation(float rotation);
     
-    const sf::Vector2f& getScale() const;
+    virtual const sf::Vector2f& getScale() const;
     virtual void setScale(const sf::Vector2f& scale);
     
     b2Body* getBody() const;
@@ -65,13 +62,15 @@ protected:
     std::string m_id;
     EntityType m_type;
     
-    bool m_receiveLight;
+    sf::Vector2f m_position;
+    float m_rotation;
+    sf::Vector2f m_scale;
     
     int m_drawLayer;
     sf::Sprite m_sprite;
-
+    
     b2Body* m_body;
-
+    
     Script* m_script;
 };
 

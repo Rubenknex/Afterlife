@@ -5,7 +5,6 @@
 Entity::Entity(Scene* scene, const std::string& id) :
     m_scene(scene),
     m_id(id),
-    m_receiveLight(true),
     m_drawLayer(0),
     m_body(NULL),
     m_script(NULL)
@@ -15,8 +14,6 @@ Entity::Entity(Scene* scene, const std::string& id) :
 
 Entity::~Entity()
 {
-    //std::cout << "Entity Destructor!" << std::endl;
-    
     if (hasPhysics())
         m_scene->getB2World()->DestroyBody(m_body);
     
@@ -66,23 +63,21 @@ const sf::Vector2f Entity::getPosition() const
         return sf::Vector2f(bPos.x * m_scene->getMeterPixelRatio(), bPos.y * m_scene->getMeterPixelRatio());
     }
     
-    return sf::Vector2f(0.0f, 0.0f);
+    return m_sprite.GetPosition();
 }
 
 void Entity::setPosition(const sf::Vector2f& pos)
 {
     if (hasPhysics())
-    {
         m_body->SetTransform(b2Vec2(pos.x / m_scene->getMeterPixelRatio(), pos.y / m_scene->getMeterPixelRatio()), m_body->GetAngle());
-    }
+        
+    m_sprite.SetPosition(pos);
 }
 
 float Entity::getRotation() const
 {
     if (hasPhysics())
-    {
         return math::degrees(m_body->GetAngle());
-    }
     
     return m_sprite.GetRotation();
 }
@@ -90,9 +85,7 @@ float Entity::getRotation() const
 void Entity::setRotation(float rotation)
 {
     if (hasPhysics())
-    {
         m_body->SetTransform(m_body->GetPosition(), math::radians(rotation));
-    }
     
     m_sprite.SetRotation(rotation);
 }

@@ -31,6 +31,16 @@ const std::string& Light::getId() const
 {
     return m_id;
 }
+
+Light::LightType Light::getType() const
+{
+    return m_type;
+}
+
+void Light::setType(LightType type)
+{
+    m_type = type;
+}
  
 const sf::Vector2f& Light::getPosition() const
 {
@@ -71,6 +81,18 @@ void Light::setRadius(float radius)
 {
     m_radius = radius;
  
+    generateVertices();
+}
+
+const sf::Color& Light::getColor() const
+{
+    return m_color;
+}
+
+void Light::setColor(const sf::Color& color)
+{
+    m_color = color;
+    
     generateVertices();
 }
  

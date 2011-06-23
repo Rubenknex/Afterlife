@@ -24,6 +24,7 @@ public:
         EM_MOVE_GLOBAL_X,
         EM_MOVE_GLOBAL_Y,
         EM_ROTATE_FREE,
+        EM_SCALE_FREE,
         EM_SCALE_LOCAL_X,
         EM_SCALE_LOCAL_Y,
     };
