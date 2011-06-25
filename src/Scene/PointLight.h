@@ -8,6 +8,9 @@ class PointLight : public Light
 public:
     PointLight(const std::string& id, const sf::Vector2f& pos, float intensity, float radius, const sf::Color& color, int quality);
     ~PointLight();
+    
+    int getQuality() const;
+    void setQuality(int quality);
  
 private:
     void generateVertices();

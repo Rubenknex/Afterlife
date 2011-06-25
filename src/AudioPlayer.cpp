@@ -1,6 +1,6 @@
 #include "AudioPlayer.h"
 
-AudioPlayer g_AudioPlayer;
+AudioPlayer g_audioPlayer;
 
 void AudioPlayer::fadeInMusic(const std::string& name, float volume, float time)
 {

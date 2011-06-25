@@ -38,7 +38,7 @@ void Game::update()
     m_Framerate = 1.0f / dt;
     m_Clock.Reset();
  
-    g_Input.update(m_Window.GetInput());
+    g_input.update(m_Window.GetInput());
  
     if (m_States.size() > 0)
         m_States.front()->update(dt);

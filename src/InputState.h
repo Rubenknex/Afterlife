@@ -53,7 +53,7 @@ private:
 };
  
 /// There is only one keyboard/mouse per game, so just make it a global variable for ease of access.
-extern InputState g_Input;
+extern InputState g_input;
  
 #endif // INPUTSTATE_H_INCLUDED
  

@@ -29,6 +29,11 @@ void Entity::handleBeginContact(Entity* entity) { }
 
 void Entity::handleEndContact(Entity* entity) { }
 
+void Entity::setScene(Scene* scene)
+{
+    m_scene = scene;
+}
+
 const std::string& Entity::getId() const
 {
     return m_id;

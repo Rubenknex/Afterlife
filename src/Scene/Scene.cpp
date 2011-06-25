@@ -190,18 +190,23 @@ void Scene::save(const std::string& filename)
         
         light["type"] = lightPtr->getType() == Light::LT_POINT ? "point" : "spot";
         light["id"] = lightPtr->getId();
-        light["position"] = "";
-        light["radius"] = "";
-        light["intensity"] = "";
+        light["position"] = boost::str(boost::format("%1% %2%") % lightPtr->getPosition().x % lightPtr->getPosition().y);
+        light["radius"] = lightPtr->getRadius();
+        light["intensity"] = lightPtr->getIntensity();
         light["color"] = boost::str(boost::format("%1% %2% %3%") % m_ambientColor.r % m_ambientColor.g % m_ambientColor.b);
         
         if (lightPtr->getType() == Light::LT_POINT)
         {
+            PointLight* pointLight = static_cast<PointLight*>(lightPtr);
             
+            light["quality"] = pointLight->getQuality();
         }
         else if (lightPtr->getType() == Light::LT_SPOT)
         {
+            SpotLight* spotLight = static_cast<SpotLight*>(lightPtr);
             
+            light["angle"] = spotLight->getAngle();
+            light["openAngle"] = spotLight->getOpenAngle();
         }
         
         lights.append(light);
@@ -307,6 +312,8 @@ void Scene::setScriptingEnabled(bool enabled)
 
 void Scene::addEntity(Entity* entity)
 {
+    entity->setScene(this);
+    
     m_entities.push_back(entity);
 }
 

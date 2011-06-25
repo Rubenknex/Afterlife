@@ -13,6 +13,18 @@ PointLight::~PointLight()
 {
     
 }
+
+int PointLight::getQuality() const
+{
+    return m_quality;
+}
+
+void PointLight::setQuality(int quality)
+{
+    m_quality = quality;
+    
+    generateVertices();
+}
  
 void PointLight::generateVertices()
 {

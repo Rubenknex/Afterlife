@@ -1,6 +1,6 @@
 #include "InputState.h"
  
-InputState g_Input;
+InputState g_input;
  
 InputState::InputState()
 {

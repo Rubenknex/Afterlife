@@ -26,6 +26,18 @@ void SpotLight::setAngle(float angle)
  
     m_triangles[0].SetRotation(angle);
 }
+
+float SpotLight::getOpenAngle() const
+{
+    return m_openAngle;
+}
+
+void SpotLight::setOpenAngle(float openAngle)
+{
+    m_openAngle = openAngle;
+    
+    generateVertices();
+}
  
 void SpotLight::generateVertices()
 {

@@ -36,6 +36,9 @@ Player::Player(Scene* scene, const std::string& id, const sf::Vector2f& pos) :
     m_body->CreateFixture(&fixtureDef);
     
     m_scene->addLight(m_flashLight);
+    
+    m_gunDef.load("data/Weapons/ak47.json");
+    m_gun = new Gun(m_scene, &m_gunDef, this);
 }
 
 Player::~Player()
@@ -46,13 +49,13 @@ Player::~Player()
 void Player::update(float dt)
 {
     sf::Vector2f movement;
-    if (g_Input.isKeyDown(sf::Key::A))
+    if (g_input.isKeyDown(sf::Key::A))
         movement.x -= 1.0f;
-    if (g_Input.isKeyDown(sf::Key::D))
+    if (g_input.isKeyDown(sf::Key::D))
         movement.x += 1.0f;
-    if (g_Input.isKeyDown(sf::Key::W))
+    if (g_input.isKeyDown(sf::Key::W))
         movement.y -= 1.0f;
-    if (g_Input.isKeyDown(sf::Key::S))
+    if (g_input.isKeyDown(sf::Key::S))
         movement.y += 1.0f;
     
     if (movement.x != 0.0f || movement.y != 0.0f)
@@ -68,18 +71,21 @@ void Player::update(float dt)
         m_body->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
     }
     
-    sf::Vector2f mousePos(g_Input.getMouseX(), g_Input.getMouseY());
+    if (g_input.isMouseButtonDown(sf::Mouse::Left))
+    {
+        m_gun->shoot();
+    }
+    
+    if (g_input.isKeyFirstDown(sf::Key::R))
+    {
+        m_gun->reload();
+    }
+    
+    sf::Vector2f mousePos(g_input.getMouseX(), g_input.getMouseY());
     sf::Vector2f screenPos = g_Window->ConvertCoords(mousePos.x, mousePos.y);
     float rotation = atan2(screenPos.y - m_sprite.GetPosition().y, screenPos.x - m_sprite.GetPosition().x);
+    m_body->SetTransform(m_body->GetPosition(), rotation);
     m_sprite.SetRotation(math::degrees(rotation) - 90.0f);
-    
-    if (g_Input.isMouseButtonFirstDown(sf::Mouse::Left))
-    {
-        b2Vec2 bPos = m_body->GetPosition();
-        sf::Vector2f pos(bPos.x * m_scene->getMeterPixelRatio(), bPos.y * m_scene->getMeterPixelRatio());
-        
-        m_scene->addEntity(new Projectile(m_scene, m_scene->getRandomId("projectile"), getPosition(), math::degrees(rotation), 30.0f, 30.0f));
-    }
     
     sf::Vector2f newCenter = math::lerp(g_Window->GetView().GetCenter(), getPosition(), 0.05f);
     sf::View newView(newCenter, g_Window->GetView().GetSize());
@@ -87,6 +93,8 @@ void Player::update(float dt)
     
     m_flashLight->setPosition(getPosition());
     m_flashLight->setAngle(m_sprite.GetRotation() + 90.0f);
+    
+    m_gun->update(dt);
 }
 
 void Player::draw(sf::RenderTarget& target)
@@ -95,6 +103,8 @@ void Player::draw(sf::RenderTarget& target)
     m_sprite.SetPosition(pos.x * m_scene->getMeterPixelRatio(), pos.y * m_scene->getMeterPixelRatio());
     
     target.Draw(m_sprite);
+    
+    m_gun->draw(target);
 }
 
 void Player::handleBeginContact(Entity* entity)

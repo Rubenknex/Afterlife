@@ -21,13 +21,13 @@ public:
     void fadeInMusic(const std::string& name, float volume, float time);
     void fadeOutMusic(const std::string& name, float time);
  
-    void playSound(const std::string& name, float volume, float pitch);
+    void playSound(const std::string& name, float volume = 100.0f, float pitch = 1.0f);
  
 private:
     std::map<std::string, sf::Sound> m_Sounds;
 };
  
-extern AudioPlayer g_AudioPlayer;
+extern AudioPlayer g_audioPlayer;
  
 #endif // AUDIOPLAYER_H_INCLUDED
  

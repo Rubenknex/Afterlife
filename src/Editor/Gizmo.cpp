@@ -44,9 +44,9 @@ Gizmo::~Gizmo()
 
 void Gizmo::update(float dt)
 {
-    if (g_Input.isMouseButtonFirstDown(sf::Mouse::Left))
+    if (g_input.isMouseButtonFirstDown(sf::Mouse::Left))
     {
-        sf::Vector2f worldPos = g_Window->ConvertCoords(g_Input.getMouseX(), g_Input.getMouseY());
+        sf::Vector2f worldPos = g_Window->ConvertCoords(g_input.getMouseX(), g_input.getMouseY());
         
         std::vector<Entity*> entities = m_currentScene->getEntitiesAtPosition(worldPos);
         
@@ -64,10 +64,10 @@ void Gizmo::update(float dt)
             m_selectedObject = bestObject;
     }
     
-    if (g_Input.isMouseButtonDown(sf::Mouse::Left) && m_selectedObject != NULL && g_Input.getMouseDelta() != sf::Vector2i(0, 0))
+    if (g_input.isMouseButtonDown(sf::Mouse::Left) && m_selectedObject != NULL && g_input.getMouseDelta() != sf::Vector2i(0, 0))
     {
         sf::Vector2f objPos = m_selectedObject->getPosition();
-        sf::Vector2f mousePos = g_Window->ConvertCoords(g_Input.getMouseX(), g_Input.getMouseY());
+        sf::Vector2f mousePos = g_Window->ConvertCoords(g_input.getMouseX(), g_input.getMouseY());
         
         switch (m_gizmoMode)
         {
@@ -141,7 +141,7 @@ void Gizmo::update(float dt)
             break;
         }
     }
-    else if (g_Input.isMouseButtonFirstUp(sf::Mouse::Left))
+    else if (g_input.isMouseButtonFirstUp(sf::Mouse::Left))
     {
         m_editMode = Gizmo::EM_NONE;
     }
@@ -154,22 +154,22 @@ void Gizmo::update(float dt)
         {
             case Gizmo::EM_MOVE_FREE:
             {
-                m_selectedObject->setPosition(sf::Vector2f(objPos.x + g_Input.getMouseDelta().x, objPos.y + g_Input.getMouseDelta().y));
+                m_selectedObject->setPosition(sf::Vector2f(objPos.x + g_input.getMouseDelta().x, objPos.y + g_input.getMouseDelta().y));
             }
             break;
             case Gizmo::EM_MOVE_GLOBAL_X:
             {
-                m_selectedObject->setPosition(sf::Vector2f(objPos.x + g_Input.getMouseDelta().x, objPos.y));
+                m_selectedObject->setPosition(sf::Vector2f(objPos.x + g_input.getMouseDelta().x, objPos.y));
             }
             break;
             case Gizmo::EM_MOVE_GLOBAL_Y:
             {
-                m_selectedObject->setPosition(sf::Vector2f(objPos.x, objPos.y + g_Input.getMouseDelta().y));
+                m_selectedObject->setPosition(sf::Vector2f(objPos.x, objPos.y + g_input.getMouseDelta().y));
             }
             break;
             case Gizmo::EM_ROTATE_FREE:
             {
-                sf::Vector2f mousePos = g_Window->ConvertCoords(g_Input.getMouseX(), g_Input.getMouseY());
+                sf::Vector2f mousePos = g_Window->ConvertCoords(g_input.getMouseX(), g_input.getMouseY());
                 float objectMouseAngle = atan2(mousePos.y - objPos.y, mousePos.x - objPos.x);
                 
                 m_selectedObject->setRotation(math::degrees(objectMouseAngle));
@@ -178,33 +178,33 @@ void Gizmo::update(float dt)
             case Gizmo::EM_SCALE_LOCAL_X:
             {
                 sf::Vector2f scale = m_selectedObject->getScale();
-                scale.x += (float)g_Input.getMouseDelta().x / 100.0f;
+                scale.x += (float)g_input.getMouseDelta().x / 100.0f;
                 m_selectedObject->setScale(scale);
             }
             break;
             case Gizmo::EM_SCALE_LOCAL_Y:
             {
                 sf::Vector2f scale = m_selectedObject->getScale();
-                scale.y += (float)g_Input.getMouseDelta().x / 100.0f;
+                scale.y += (float)g_input.getMouseDelta().x / 100.0f;
                 m_selectedObject->setScale(scale);
             }
             break;
             case Gizmo::EM_SCALE_FREE:
             {
                 sf::Vector2f scale = m_selectedObject->getScale();
-                scale.x += (float)g_Input.getMouseDelta().x / 100.0f;
-                scale.y += (float)g_Input.getMouseDelta().x / 100.0f;
+                scale.x += (float)g_input.getMouseDelta().x / 100.0f;
+                scale.y += (float)g_input.getMouseDelta().x / 100.0f;
                 m_selectedObject->setScale(scale);
             }
             break;
         }
     }
     
-    if (g_Input.isKeyFirstDown(sf::Key::T))
+    if (g_input.isKeyFirstDown(sf::Key::T))
         m_gizmoMode = Gizmo::GM_MOVE;
-    else if (g_Input.isKeyFirstDown(sf::Key::R))
+    else if (g_input.isKeyFirstDown(sf::Key::R))
         m_gizmoMode = Gizmo::GM_ROTATE;
-    else if (g_Input.isKeyFirstDown(sf::Key::S))
+    else if (g_input.isKeyFirstDown(sf::Key::S))
         m_gizmoMode = Gizmo::GM_SCALE;
 }
 

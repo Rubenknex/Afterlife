@@ -32,6 +32,8 @@ public:
     virtual void handleBeginContact(Entity* entity);
     virtual void handleEndContact(Entity* entity);
     
+    void setScene(Scene* scene);
+    
     const std::string& getId() const;
     
     EntityType getType() const;

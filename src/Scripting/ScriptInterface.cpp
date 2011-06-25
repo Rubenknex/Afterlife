@@ -140,7 +140,7 @@ Vec2 asGetWindowSize()
 /// Input ///
 bool asIsKeyDown(const std::string& key)
 {
-    return g_Input.isKeyDown(g_Input.getKeyCode(key));
+    return g_input.isKeyDown(g_input.getKeyCode(key));
 }
 
 /// Random numbers ///
@@ -337,7 +337,7 @@ void asStopMusic(const std::string& filename)
 
 void asPlaySound(const std::string& filename, float volume, float pitch)
 {
-    g_AudioPlayer.playSound(filename, volume, pitch);
+    g_audioPlayer.playSound(filename, volume, pitch);
 }
 
 void ScriptInterface::registerProperties(asIScriptEngine* engine)

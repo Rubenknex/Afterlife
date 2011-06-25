@@ -7,6 +7,7 @@
 
 #include "Entity.h"
 #include "../SpotLight.h"
+#include "../../Gun.h"
 #include "../../InputState.h"
 #include "../../Math.h"
 #include "../../ResourceManager.h"
@@ -25,6 +26,9 @@ public:
 
 private:
     SpotLight* m_flashLight;
+    
+    GunDef m_gunDef;
+    Gun* m_gun;
 };
 
 #endif // PLAYER_H_INCLUDED

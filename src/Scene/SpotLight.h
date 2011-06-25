@@ -11,6 +11,9 @@ public:
  
     float getAngle() const;
     void setAngle(float angle);
+    
+    float getOpenAngle() const;
+    void setOpenAngle(float openAngle);
  
 private:
     void generateVertices();
